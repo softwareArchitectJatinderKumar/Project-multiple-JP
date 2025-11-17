@@ -1,0 +1,162 @@
+<app-topslider></app-topslider>
+<app-EditorHeader></app-EditorHeader>
+
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+  <div class="container-fluid ">
+    <div class="row">
+
+      <div class="col-md-12 grid-margin stretch-card">
+        <!-- <div class="card accordionColor "> -->
+        <div class="card-body m-5 ">
+          <h1 class="text-center themeClr"> All Manuscript Details </h1>
+        </div>
+        <div class="container-fluid d-flex justify-content-center">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label fs-3">Select Journal for Action </label>
+            </div>
+              <div class="col-md-4 mb-3">
+                <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
+                  (change)="setJournalId()">
+                  <option value="" disabled>Select Journal</option>
+                  <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
+                    {{ journalLists.journalTitle }}
+                  </option>
+                </select>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="d-flex p-2 align-items-center justify-content-center ">
+    <div class="container-fluid">
+      <div class="row" *ngIf="EditorData.length > 0; else NoData">
+        <div class="col-md-12 stretch-card">
+          <div class="card ">
+            <div class="card-body ">
+              <div class="table-responsive tableHeight">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of paginatedEditorData">
+                      <td *ngFor="let col of displayedEditorColumns">
+                        <ng-container [ngSwitch]="col">
+                          <button *ngSwitchCase="'fileUrl'" class="btn btn-dark"
+                            (click)="onSelectFileEditorX(row[col])">
+                            <!-- View File -->
+                            <i class="bi bi-file-earmark-text"></i>
+                          </button>
+                          <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
+                            data-bs-toggle="modal" data-bs-target="#assignReviewerModal">
+                            <!-- Assign -->
+                            <i class="bi bi-exclamation-circle"></i>
+                          </button>
+                          <span *ngSwitchDefault>{{ row[col] }}</span>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="pagination-controls">
+                  <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
+                  <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
+                  <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="card-body accordionColor " *ngIf="this.EditorData?.length>0; else NoData">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th *ngFor="let col of EditordisplayedColumns">{{ displayedEditorColumnHeaders[col] }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of paginatedEditorData">
+                    <td *ngFor="let col of EditordisplayedColumns">
+                      <ng-container [ngSwitch]="col">
+                        
+                        <button *ngSwitchCase="'fileUrl'" class="btn btn-dark" (click)="onSelectFileEditorX(row[col])">
+                          View File
+                        </button>
+
+                        
+                        <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
+                          data-bs-toggle="modal" data-bs-target="#assignReviewerModal">
+                          Take Action
+                        </button>
+
+                        <span *ngSwitchDefault>{{ row[col] }}</span>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="pagination-controls">
+                <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
+                <span> Page {{ currentPageEditor }} of {{ totalPagesEditor }} </span>
+                <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+              </div>
+            </div>
+          </div> -->
+      <ng-template #NoData>
+        <div class="themeClr tableHeight">
+          <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger "> No Manuscript Found </h1>
+        </div>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+  <div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="assignReviewer()">
+            <div class="mb-3 " >
+              <label class="form-label">Journal :</label>
+              <input type="text" class="form-control " [(ngModel)]="currentJournalTitle" name="JournalTitless"
+                readonly />
+            </div>
+
+
+            <div class="mb-3">
+              <label for="reviewerDropdown" class="form-label">Select Reviewer:</label>
+              <select id="reviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId" name="reviewerId"
+                required>
+                <option value="" disabled>Select Reviewer</option>
+                <option *ngFor="let reviewer of reviewerList" [value]="reviewer.emailId">
+                  {{ reviewer.candidateName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-success" [disabled]="selectedReviewerId === ''">Assign
+                Reviewer</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>

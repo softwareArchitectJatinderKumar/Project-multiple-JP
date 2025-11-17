@@ -1,0 +1,25 @@
+<section class="top-cited-authors-section">
+    <div class="container">
+        <div class="top-cited-authors-heading">
+            <h3>Top Cited Authors of the Journals</h3>
+            <p>Lovely Professional University Publications' top-cited authors (source: Google Scholar), papers having
+                more than 25 citations selected from all the journals, since their inception for providing the ideas,
+                knowledge, technology to the scientific community.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3" *ngFor="let Author of authorDetails">
+                <div class="top-authors" >
+                    <!-- <img src="assets/journal/11057.jpg" width="auto" height="auto" alt="" /> -->
+                    <!-- <img [src]="assets/journal/"+ width="auto" height="auto" alt="" />  assets\images\authors-->
+                    <img [src]="'assets/images/authors/'+ Author.imageUrl" [alt]="Author.firstName" [title]="Author.firstName">
+                    <h4>{{ Author.firstName }} {{Author.lastName}}</h4>
+                    <p>
+                        {{Author.publicationDetails}} <br/>
+                        {{Author.publications}} 
+                    </p> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

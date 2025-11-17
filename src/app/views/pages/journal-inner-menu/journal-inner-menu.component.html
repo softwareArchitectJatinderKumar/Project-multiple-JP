@@ -1,0 +1,93 @@
+
+<div class="Journalpage-custom-nav">
+    <nav>
+        <label for="drop" class="toggle">
+            <div class="mobile-nav-icon nav-toggle" onclick="myFunction(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </label>
+        <input type="checkbox" id="drop" />
+        <ul class="menu">
+            <li class="nextdrop" *ngIf="JournalIssues.length > 0"> <a class="dropa" (click)="VisitUrl(BookId, name, 'GetIssues')"> Published Issues <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ JournalIssues.length }} <span class="visually-hidden">unread issues</span> </span> </span> </a> </li>
+            <li><a (click)="VisitUrl(BookId,name,'About')">About</a></li>
+            <li><a (click)="VisitUrl(BookId,name,'EditorialBoard')">Editorial Board</a></li>
+            <!-- <li><a [ngStyle]="{'pointer-events': isDisabled ? 'none' : 'auto', 'color': isDisabled ? 'gray' : 'inherit'}" >Indexing</a></li> -->
+            <!-- <li><a (click)="VisitUrl(BookId,name,'Indexing')">Indexing</a></li> -->
+            <li class="nextdrop">
+                <label for="drop-1" class="toggle" onclick="myFunction(this)">Author Guidelines</label>
+                <a  class="dropa">Author Guidelines <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-1" />
+                <ul>
+                    <li><a (click)="VisitUrl(BookId,name,'AuthorGuidelines/ManuScriptPrepare')" >Manuscript Preparation</a></li>
+                    <!-- <li><a href="#manuscriptpreparation"  >Manuscript Preparation</a></li> -->
+                    <Li><a (click)="VisitUrl(BookId,name,'AuthorGuidelines/ManuScriptWorkFlow')">Manuscript Workflow</a></Li>
+                    <!-- <Li><a href="#manuscriptworkflow">Manuscript Workflow</a></Li> -->
+                </ul>
+            </li>
+            <li class="nextdrop">
+                <label for="drop-2" class="toggle"  onclick="myFunction(this)">Policies</label>
+                <a class="dropa">Policies <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-2" />
+                <ul>
+                    <li><a  (click)="VisitUrl(BookId,name,'Policies/EditorialPolicy')">Editorial Policy</a></li> 
+                    <!-- <li><a routerLink="/EditorialPolicy/{{BookId}}/{{name}}" outerLinkActive="active"> Editorial Policy </a></li> -->
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PeerReviewPolicy')" outerLinkActive="active">Peer Review Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/OpenAccessPolicy')">Open Access Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PlagiarismPolicy')">Plagiarism Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/ComplaintPolicy')">Complaint Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CrossMarkPolicy')">Cross Mark Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/ConflictInterestPolicy')">Conflict Of Interest Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CopyrightPolicy')">Copyright And Licencing Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CorrectionsRetractionPolicy')">Corrections Retraction
+                            Withdrawal Authorship Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/DigitalandSelfPolicy')">Digital And Self Archiving Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PublicationChargePolicy')">Publication Charge/Waiver Policy</a></li>
+                </ul>
+            </li>
+
+            <li class="nextdrop" *ngIf="LoginStatus === true; else loginRequired">
+                <label for="drop-2" class="toggle" onclick="PlusMinusFunction(this)">ManuScript</label>
+                <a class="dropa">Manuscript <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-2" />
+                <ul>
+                <li><a (click)="VisitUrl(BookId, name, 'SubmitManuScript')">Dashboard </a></li>
+                <li><a (click)="VisitUrl(BookId, name, 'MyManuScript')">My Requests</a></li>
+                </ul>
+            </li>
+            <li class="nextdrop" *ngIf="LoginStatus === true;">
+                <label for="drop-2" class="toggle" onclick="PlusMinusFunction(this)">Account Settings</label>
+                <a class="dropa">Account Settings <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-2" />
+                <ul>
+                <li><a (click)="VisitUrl(BookId, name, 'RecoverPasswordReset')">Change Password </a></li>
+                <li><a (click)="Logout()">Logout</a></li>
+                </ul>
+            </li>
+            <!-- <li *ngIf="LoginStatus=== true;"><a (click)="Logout()">Logout</a></li> -->
+            
+            <ng-template #loginRequired>
+                <li>
+                    <a (click)="VisitUrl(BookId, name, 'ExternalLogin')">Login </a>
+                </li>
+            </ng-template>
+              
+        </ul>
+    </nav>
+
+</div>
+

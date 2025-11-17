@@ -1,0 +1,71 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader></app-EDEditorHeader>
+
+<div class="full-page-loader" *ngIf="isLoadingPage" aria-label="Loading">
+  <div class="loader-spinner">
+      <span class="material-icons lg-48 spin-icon">autorenew</span>
+  </div>
+</div>
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center" *ngIf="!isLoadingPage">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body m-5">
+          <h1 class="text-center themeClr">All Issues Details</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Journal data loading spinner -->
+<div *ngIf="isLoadingJournal" class="d-flex justify-content-center my-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading journal issues...</span>
+  </div>
+</div>
+
+<div class="d-flex p-2 align-items-center justify-content-center" *ngIf="!isLoadingPage">
+  <div class="container-fluid" *ngIf="!isLoadingJournal">
+    <div class="row" *ngIf="JournalIssuesData.length > 0; else NoData">
+      <div class="col-md-12 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive tableHeight">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of paginatedJournalIssuesData">
+                    <td *ngFor="let col of displayedEditorColumns">
+                      <ng-container [ngSwitch]="col">
+                        <button *ngSwitchCase="'issueFileName'" class="btn btn-dark" (click)="onSelectFileEditorX(row[col])">
+                          <i class="bi bi-file-earmark-text"></i>
+                        </button>
+                        <span *ngSwitchDefault>{{ row[col] }}</span>
+                      </ng-container>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination-controls">
+                <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
+                <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
+                <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #NoData>
+      <div class="themeClr tableHeight">
+        <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger">No data Found</h1>
+      </div>
+    </ng-template>
+  </div>
+</div>

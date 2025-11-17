@@ -1,0 +1,129 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader [selectedRole]="this.selectedRole"></app-EDEditorHeader>
+<div class="row mt-5">
+  <div class="main-heading text-center mt-1">
+    <h1>
+      {{this.JournalTitle}}
+    </h1>
+  </div>
+</div>
+<div *ngIf="!loadingIndicator; else ErrorConnection" class="row w-100 mx-0 auth-page wrapper mt-5">
+  <div class="col-md-12 col-xl-12 mx-auto">
+    <div class="row">
+      <!-- Left Image Section -->
+      <div class="col-md-6 d-none d-lg-block" [ngStyle]="{
+           'background-image': 'url(https://www.lpu.in/journals/assets/images/login-left.png)',
+           'background-repeat': 'no-repeat',
+           'background-size': 'contain',
+           'background-position': 'center'
+         }">
+      </div>
+
+      <!-- Right Login Form Section -->
+      <div class="col-md-5 d-block">
+        <div class="w-100 px-4 py-5 auth-form-wrapper journal-login">
+
+          <div class="text-center mb-5 main-heading">
+            <h1 class="d-block mb-4"> LPU e-Journals <span>Login Page</span></h1>
+          </div>
+
+          <form [formGroup]="formdata" (ngSubmit)="OnSubmit()" autocomplete="off" class="px-2 mt-4">
+
+            <!-- User ID -->
+            <div class="mb-3 row ">
+              <label for="UserId" class="col-md-6 col-form-label">User Id</label>
+              <div class="col-md-6">
+                <input type="text" id="UserId" formControlName="Email" class="form-control"
+                  placeholder="Email Required">
+                <div *ngIf="submitted || email?.touched || email?.errors" class="text-danger">
+                  <small *ngIf="email?.errors?.['required']">User Id is required.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secret Key -->
+            <div class="mb-3 row journal-input-group">
+              <label for="secretKey" class="col-md-6 col-form-label">Secret Key</label>
+              <div class="col-md-6 position-relative">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control pr-5"
+                  placeholder="Enter password"
+                  formControlName="password"
+                  id="password"
+                />
+            
+                <!-- Eye icon inside the input -->
+                <i
+                  class="bi"
+                  [ngClass]="showPassword ? 'bi-eye-slash fs-4' : 'bi-eye fs-4'"
+                  (click)="togglePasswordVisibility()"
+                  style="position: absolute; top: 25%; right: 1.51rem; transform: translateY(-30%); cursor: pointer;"
+                ></i>
+            
+                <div *ngIf="submitted || passwordText?.touched || passwordText?.errors" class="text-danger mt-1">
+                  <small *ngIf="passwordText?.errors?.['required']">Password is required.</small>
+                  <small *ngIf="passwordText?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+                </div>
+              </div>
+            </div>
+            
+
+            <!-- Role Selection -->
+            <div class="mb-3 row ">
+              <label for="UserRole" class="col-md-6 col-form-label">Login Role</label>
+              <div class="col-md-6">
+                <select id="RolesDropdown" class="form-select" formControlName="UserRoles" required>
+                  <option value="" disabled>Select Role</option>
+                  <option *ngFor="let Role of availableRoles" [value]="Role.value">
+                    {{ Role.label }}
+                  </option>
+                </select>
+                <div *ngIf="submitted || userRole?.touched || userRole?.errors" class="text-danger">
+                  <small *ngIf="userRole?.errors?.['required']">Role is required.</small>
+                </div>
+                <div *ngIf="isForm1Submitted && !UserRole" class="invalid-feedback d-block">
+                  Required: Please select at least one UserRole.
+                </div>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-5 row">
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-danger  " [disabled]="formdata.invalid">Login</button>
+              </div>
+              <div class="col-md-4 text-start">
+                <button type="button" (click)="VisitUrl(BookId, name, 'signup')" class="btn btn-outline-danger ">
+                  Register Now
+                </button>
+              </div>
+              <div class="col-md-5 text-start">
+                <button type="button" (click)="VisitUrl(BookId, name, 'ForgotPassword')" class="btn btn-outline-danger ">
+                  Forgot Password
+                </button>
+              </div>
+            </div>
+           
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #ErrorConnection>
+  <div id="ServerError" class="row w-100 mx-0 auth-page wrapper">
+    <div class="col-sm-12" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <div class="d-flex justify-content-center align-item-center">
+        <span class="text-danger fs-3">Loading </span><br />
+        <div class="spinner-grow text-danger tex-center" style=" width: 14rem; height: 14rem;" role="status">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

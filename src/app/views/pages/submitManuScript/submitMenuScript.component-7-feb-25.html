@@ -1,0 +1,93 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<section>
+  <div class="container  about-journal">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row mb-4">
+          <div class="col-3">
+            <label for="ActionType" class="col-form-label">Select Option for Journal</label>
+          </div>
+          <div class="col-sm-3">
+            <div class="col-sm-3">
+              <div class="col-sm-3">
+                <select class="form-select"  [(ngModel)]='ActionType' style="width: auto;"
+                  (change)="onSubmissionTypeChange($event)">
+                  <option value="Select" selected>Select Action Type</option>
+                  <option *ngFor="let role of UserRolesArray" [value]="role.value">
+                    {{ role.label }}
+                  </option>
+                </select>
+              </div>
+          </div>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-info" (click)="showEditorData(this.userId)" [disabled]="ActionType=='Select'">Get Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container-fluid vh-100">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body" *ngIf="booksData?.length > 0; else NoData">
+          
+          <table mat-table [dataSource]="pagedData" class="mat-elevation-z8">
+            <!-- Define Columns Dynamically -->
+            <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+              <th mat-header-cell *matHeaderCellDef> {{ col }} </th>
+              <td mat-cell *matCellDef="let row">
+                <!-- Special Cases for fileUrl and Action -->
+                <ng-container *ngIf="col === 'fileUrl'; else checkAction">
+                  <button mat-button color="primary" (click)="onSelectFileX(row[col])">View File</button>
+                </ng-container>
+
+                <ng-template #checkAction>
+                  <ng-container *ngIf="col === 'Action'; else defaultCell">
+                    <button mat-button color="accent" (click)="onActionModal(row[col])">Perform Action</button>
+                  </ng-container>
+                </ng-template>
+
+                <!-- Default Cell for all other columns -->
+                <ng-template #defaultCell>
+                  {{ row[col] || 'N-A' }}
+                </ng-template>
+              </td>
+            </ng-container>
+
+            <!-- Header and Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <!-- Custom Paginator -->
+          <div class="custom-paginator">
+            <button mat-button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+
+            <button *ngFor="let page of totalPagesArray" mat-button [class.active]="currentPage === page"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+
+            <button mat-button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+          </div>
+
+          <p class="page-info">Page {{ currentPage }} of {{ totalPages }}</p>
+
+        </div>
+
+        <ng-template #NoData>
+          <div class="themeClr">
+            <h1 class="fs-2 text-center vh-50 p-3 m-4">No Data Found</h1>
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</div>

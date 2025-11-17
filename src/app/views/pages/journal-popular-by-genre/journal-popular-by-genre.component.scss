@@ -1,0 +1,82 @@
+.hidden {
+    display: block;
+  }
+  
+  .error-message {
+    // border: 1px solid ; /* 5px thick solid red border */
+    position: absolute;
+    margin-top: 2rem;
+    color: red;
+    font-size: 1rem;
+    padding: 1rem; 
+    height: auto;
+    background-color: transparent; /* Optional: Add background to make text more readable */
+  }
+  .arrowColor{
+    background-color: bisque !important;
+    // border: none !important;
+    color: black !important;
+  }
+
+
+  /* Hide image when load fails */
+.hidden {
+  display: none;
+}
+
+/* Error message for broken image */
+.error-message {
+  position: absolute;
+  margin-top: 2rem;
+  color: red;
+  font-size: 1rem;
+  padding: 1rem;
+  background-color: transparent;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.page-item {
+  margin: 0 4px;
+}
+
+.page-item .page-link {
+  color: #000;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.page-item .page-link:hover {
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
+
+.page-item.active .page-link {
+  background-color: #ffcc99;
+  border-color: #ffcc99;
+  color: #000;
+  font-weight: 600;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}

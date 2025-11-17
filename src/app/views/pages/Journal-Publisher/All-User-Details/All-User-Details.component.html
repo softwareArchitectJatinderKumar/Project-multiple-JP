@@ -1,0 +1,98 @@
+<app-topslider></app-topslider>
+<app-EditorHeader *ngIf="MenuBar == 'E'"></app-EditorHeader>
+<app-TopMenuBar *ngIf="MenuBar != 'E'"></app-TopMenuBar>
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+  <div class="container-fluid ">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body mt-5 ">
+          <h1 class="text-center "> All <span class="text-danger "> {{getUserRoleText(+this.Role)}} </span>Details </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center tableHeight">
+  <div class="container-fluid ">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body m-5 ">
+          <div class="row " *ngIf="this.Users?.length > 0; else noRecords">
+
+            <div class="container ">
+              <table id="UserslDataTableY" class="table table-bordered">
+                <thead>
+                  <tr>
+                    <!-- CandidateName, DepartmentName, Designation, Address, MobileNumber, UserRole, EmailId, JournalId, IsActive, IsApproved  -->
+                    <th class="form-label text-danger ">Sr.No</th>
+                    <th class="form-label text-danger">Candidate Name</th>
+                    <th class="form-label text-danger">Department </th>
+                    <th class="form-label text-danger">Designation </th>
+                    <th class="form-label text-danger">Mobile Number</th>
+                    <th class="form-label text-danger">Email Id</th>
+                    <th class="form-label text-danger">User Role</th>
+                    <!-- <th class="form-label text-danger">Journal Id</th> -->
+                    <th class="form-label text-danger">Current Status </th>
+                    <th class="form-label text-danger">Action Approve/ Disapprove </th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <ng-container *ngFor="let UsersDataRow of paginatedUsers; let i = index">
+                    <tr>
+                      <td class="form-label text-center">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                      <td class="form-label">{{ UsersDataRow.candidateName }}</td>
+                      <td class="form-label text-center">{{ UsersDataRow.departmentName }}</td>
+                      <td class="form-label text-center">{{ UsersDataRow.designation }}</td>
+                      <td class="form-label">{{ UsersDataRow.mobileNumber }}</td>
+                      <td class="form-label">{{ UsersDataRow.emailId }}</td>
+                      <td class="form-label"> {{ getUserRoleText(UsersDataRow.userRole) }}</td>
+                      <!-- <td class="form-label">{{ UsersDataRow.journalId>0 ? UsersDataRow.journalId: 'N/A' }}</td> -->
+                      <td class="form-label">
+                        <ng-container *ngIf="UsersDataRow.isActive=='0' && UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' && UsersDataRow.isApproved=='False'; else Actives">
+                          <span class="text-danger"> Inactive </span>
+                        </ng-container>
+                        <ng-template #Actives>
+                          <span class="text-success "> Active </span>
+                        </ng-template>
+                      </td>
+                      <td class="form-label">
+                        <ng-container *ngIf="UsersDataRow.isActive=='0' || UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' || UsersDataRow.isApproved=='False' || UsersDataRow.isApproved==null; else NoApp">
+                          <button class="btn btn-success btn-sm me-2" (click)="ChangeApproveStatus(UsersDataRow)" [ngClass]="'btn-success'">
+                            <i class="bi bi-check-circle"></i>
+                          </button>
+                          <button class="btn btn-danger btn-sm " (click)="DisapproveStatus(UsersDataRow)" [ngClass]=" 'btn-danger'">
+                            <i class="bi bi-x-circle"></i>
+                          </button>
+                        </ng-container>
+                        <ng-template #NoApp>
+                          <span class="text-danger "> <i class="bi bi-x-circle  "></i><br />Action Applied
+                          </span>
+                        </ng-template>
+                      </td>
+                      
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="d-flex justify-content- mt-3">
+              <button class="btn btn-danger btn-sm col-md-1" (click)="prevPage()"
+                [disabled]="currentPage === 1">Previous</button>
+                <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
+              <button class="btn btn-danger btn-sm col-md-1" (click)="nextPage()"
+                [disabled]="currentPage === totalPages">Next</button>
+            </div>
+
+          </div>
+
+          <ng-template #noRecords>
+            <p class="fs-2 text-danger text-center">No Data Available.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

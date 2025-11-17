@@ -1,0 +1,284 @@
+.box {
+    position: relative;
+}
+
+.custom-prev-arrow {
+    background-color: white;
+    left: 10px;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    top: 35%;
+    border-radius: 60%;
+    height: 4rem;
+    width: 4rem;
+    // background-image: url('../../../../assets/images/icon/left-arrow.svg');
+    cursor: pointer;
+    box-shadow: 10px 21px 41px rgba(0, 0, 0, 0.2);
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.custom-next-arrow {
+    right: 10px;
+    background-color: white;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    top: 35%;
+    border-radius: 60%;
+    height: 4rem;
+    width: 4rem;
+    // background-image: url('../../../../assets/images/icon/right-arrow.svg');
+    cursor: pointer;
+    box-shadow: 10px 21px 41px rgba(196, 22, 22, 0.2);
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.book {
+    display: inline-block;
+}
+
+.booka {
+    // width: 100%;
+    vertical-align: top;
+    display: inline-flex;
+    margin-top: 0px;
+    height: 26.5rem;
+}
+
+.containera {
+    margin-top: 0.8rem;
+    margin-left: 0.8rem;
+    // width: 90%;
+    height: 100%;
+    position: relative;
+}
+
+p {
+    line-height: initial;
+    font-size: 1.3rem;
+    color: white;
+    padding-left: 0.4rem;
+    // margin-top: 2.2rem;
+}
+
+.pic {
+    position: relative;
+}
+
+.cover {
+    width: 100%;
+    height: 22.5rem;
+}
+
+.pic img {
+    height: 19rem;
+    width: 13rem;
+    border-style: outset;
+    border: 1px;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    box-shadow: 0px 0px 4px 2px #00000040;
+}
+
+.about {
+    display: grid;
+    grid-template-columns: 50% 47%;
+    gap: 2%;
+    margin-top: 1.5rem;
+}
+
+h4 {
+    margin-left: 1rem;
+    color: white;
+    font-size: 1rem;
+}
+
+button {
+    margin-left: 0.5rem;
+    width: 8rem;
+    border-radius: 4rem;
+    background-color: white;
+    color: saddlebrown;
+    border-style: outset;
+    position: absolute;
+    bottom: 2.65rem;
+    font-size: 0.75rem;
+    box-shadow: 10px 21px 41px rgba(196, 22, 22, 0.2);
+}
+
+button:hover {
+    margin-left: 0.5rem;
+    border-radius: 4rem;
+    background-color: white;
+    color: orange;
+    border-style: outset;
+}
+
+.text {
+    margin-right: 2rem;
+    margin-top: 0.3rem;
+}
+
+.custom-next-arrow img {
+    margin-left: 1.3rem;
+    margin-top: 1.3rem;
+}
+
+.custom-prev-arrow img {
+    margin-left: 1.3rem;
+    margin-top: 1.3rem;
+}
+
+// @media all and (max-width: 1180px) {
+//     .booka {
+//         width: 5rem;
+//         height: 15rem;
+//     }
+
+//     .pic image {
+//         height: 2rem;
+//         width: 1rem;
+//     }
+// }
+
+// @media (min-width: 992px) and (max-width: 1199.98px) {
+//     .booka {
+//         width: 3rem;
+//         height: 10rem;
+//     }
+
+//     .pic image {
+//         height: 1rem;
+//         width: 0.5rem;
+//     }
+// }
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .cover {
+        width: auto;
+        height: 24.5rem;
+    }
+
+    .book {
+        width: 24rem !important;
+    }
+
+    .text {
+        margin-right: 6rem;
+        margin-top: 0.3rem;
+    }
+
+    .pic img {
+        margin-left: 0.1rem;
+        height: 19.5rem;
+    }
+
+    .booka {
+        height: 32.5rem;
+    }
+
+    button {
+        bottom: 3.65rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Medium devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .booka {
+        width: 3rem;
+        height: 10rem;
+    }
+
+    .pic image {
+        height: 1rem;
+        width: 0.5rem;
+    }
+
+}
+
+// @media (max-width: 575.98px) {
+//     .containera {
+//         width: 90%;
+//         height: 100%;
+//     }
+
+//     .booka {
+//         width: 35rem;
+//         height: 25rem;
+//     }
+
+//     .pic image {
+//         height: 1rem;
+//         width: 0.5rem;
+//     }
+// }
+
+@media (max-width: 575.98px) {
+    .cover {
+        width: auto;
+        height: 22.5rem;
+    }
+
+    // .book{
+    //     width: 24rem !important;
+    // }
+    p {
+        font-size: 1rem;
+        padding: 0rem !important;
+        margin: 1.2rem;
+    }
+
+    .about {
+        display: block;
+        margin: 0rem
+    }
+
+    .text {
+        font: 0.81rem;
+        position: absolute;
+        top: 14rem;
+        left: 0.1rem;
+        width: 14rem;
+    }
+
+
+    .pic img {
+        // position: absolute;
+        // top: 2rem;
+        // left: 3rem;
+        // margin-left: 0.1rem;
+        height: 12.5rem;
+        width: 12.1rem;
+        margin-bottom: 5.2rem;
+    }
+
+    .booka {
+        height: 32.5rem;
+    }
+
+    button {
+        bottom: 0.0rem;
+        font-size: 0.55rem;
+    }
+
+    .custom-prev-arrow {
+        top: 18%;
+        left: 0.01rem;
+    }
+
+    .custom-next-arrow {
+        top: 18%;
+        right: 5rem;
+    }
+
+    h4 {
+        font-size: 0.81rem;
+        margin-top: 1.5rem;
+        margin-bottom: 2.3rem;
+    }
+
+}

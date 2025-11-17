@@ -1,0 +1,44 @@
+<header>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg p-0">
+            <a class="navbar-brand mx-0" routerLink="/">
+                <img src="assets/images/logo/logo.svg"  height="80rem" width="80rem"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul *ngIf="show" class="navbar-nav mb-2 mb-lg-0">
+
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" routerLink="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.lpu.in/academics/research.php" target="_blank" rel="noopener noreferrer">RESEARCH</a></li>                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://conferences.lpu.in/?_gl=1*19uo6zf*_gcl_au*MTQyMzk3NTE0LjE3MjQxMjQ4Mjk." target="_blank" rel="noopener noreferrer">
+                          CONFERENCES
+                        </a>
+                      </li>
+                      
+                    <li class="nav-item"><a class="nav-link"  [ngStyle]="{'pointer-events': isDisabled ? 'none' : 'auto', 'color': isDisabled ? 'gray' : 'inherit'}"  routerLink="/" href="#Contactus">CONTACT US</a></li>
+                    
+                    <li class="nav-item srch-icon"><a class="nav-link" [ngStyle]="{'pointer-events': isDisabled ? 'none' : 'auto', 'color': isDisabled ? 'gray' : 'inherit'}" 
+                            (click)="toggleSearchForm()">
+                            <img src="assets/images/icon/search-icon.svg" /> SEARCH</a></li>
+
+
+                </ul>
+                <div class="search" [ngClass]="{ 'd-none': !showSearchForm }">
+                    <form class="d-flex" role="search" method="get">
+                        <input type="text" class="search-field" placeholder="Type &amp; Hit Enter.." value=""
+                            name="s" />
+
+                        <span class="search-submit" (click)="toggleSearchForm()"><img
+                                src="assets/images/icon/search-close.svg" /></span>
+                    </form>
+                </div>
+
+            </div>
+        </nav>
+    </div>
+</header>

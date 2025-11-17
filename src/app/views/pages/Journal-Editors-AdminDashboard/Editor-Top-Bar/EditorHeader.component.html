@@ -1,0 +1,117 @@
+
+
+<header *ngIf="LoginStatus === true">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg ">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul *ngIf="show" class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- <li class="nav-item"><a class="nav-link " routerLink="/">Home</a></li> -->
+                    <!-- <li class="nav-item"><a class="nav-link " (click)="VisitPage('AllJournals')"> Journals </a></li> -->
+                    <!--  -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Volumes
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+                            
+                            <li><a class="dropdown-item" (click)="VisitPage('AllVolumesIssues')">View All Papers</a></li>
+                            <li><a class="dropdown-item" (click)="VisitPage('NewVolume')">Add New Paper </a></li>
+                            <li><a class="dropdown-item" (click)="VisitPage('EditIssueDetails')">Edit Publication</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Editor Details
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+                            
+                            <li><a class="dropdown-item" (click)="VisitPage('ManageEditorDetails')">Manage Editors</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Manuscript
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+                            
+                            <li><a class="dropdown-item" (click)="VisitPage('EditorDashboard')">All Manuscripts </a></li>
+                            <li><a class="dropdown-item" (click)="VisitPage('ReviewersRemarks')">All Reviewer's Remarks </a></li>
+                            <!-- <li><a class="dropdown-item" (click)="VisitPage('UpdateJournalsDetails')">Assign Managing Editor </a></li> -->
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Editor Details
+                        </a>
+                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'AllUsersDetails')">Editors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'AllUsersDetails')">Authors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'AllUsersDetails')">Reviewers </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'AllUsersDetails')">Managing Editors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'AllUsersDetails')">View all </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            User Details
+                        </a>
+                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'AllUsersDetails')">Editors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'AllUsersDetails')">Authors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'AllUsersDetails')">Reviewers </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'AllUsersDetails')">Managing Editors </a></li>                             
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'AllUsersDetails')">View all </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="AccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account Setting
+                        </a>
+                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="AccountDropdown">
+                            <!-- <li><a class="dropdown-item" (click)="VisitPage('UpdateKey')">Change Password </a></li> -->
+                            <li><a class="dropdown-item" (click)="Logout()">Logout </a> </li>                             
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Logo -->
+            <a class="navbar-brand mx-0" routerLink="/">
+                <img src="assets/images/logo/logo.svg" height="80rem" width="80rem"/>
+            </a>
+        </nav>
+    </div>
+</header>
+<div class="container-fluid  mt-4 ">
+    <div class="card">
+    <div class="card-body">
+        <div class="row d-flex justify-content-center">
+            <div class="col-2">
+                <label class=" form-label fw-bolder">User Name
+                </label>
+            </div>
+            <div class="col-2">
+                <label class=" form-label fw-bolder">{{this.candidateName}}
+                </label>
+            </div>
+            <div class="col-4 text-center">
+                <label class="text-success  fs-3 fw-bolder "> Lpu e-Journal Editors Dashboard </label>
+            </div>
+            <div class="col-2 text-end">
+                <label class=" form-label fw-bolder">Department Name</label>
+            </div>
+            <div class="col-2">
+                <label class="form-label text-dark fw-bolder text-end"> {{this.departmentName}} </label>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</div>
+  
+  <!-- <router-outlet></router-outlet> -->

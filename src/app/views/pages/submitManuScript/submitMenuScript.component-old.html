@@ -1,0 +1,339 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<div class="row" *ngIf="bookData?.id > 0 ; else noRecords;">
+    <section>
+        <div class="container about-journal">
+          <div class="row">
+            <div class="col-lg-4 col-md-6">
+              <!-- <img [src]="bookData?.imageUrl" [alt]="bookData?.journalTitle" [title]="bookData?.journalTitle" width="auto"
+                height="auto" alt="" /> -->
+
+                
+            </div>
+            <div class="col-lg-12 col-md-6 ">
+              <h2>{{bookData?.journalTitle}} </h2>
+              <ul>
+                <li>Volume: <span>{{bookData?.volume == null ? 'NA': bookData.volume }}</span></li>
+                <li>Year: <span>{{ bookData?.publishDate == null ? 'NA' : bookData.publishDate}}</span></li>
+                <li>Editor in chief: <span>{{bookData?.editorName}}</span></li>
+              </ul>
+              <div class="d-flex justify-content-between">
+              <p [innerHTML]="bookData?.introduction" class=""></p>
+            </div>
+            </div>
+             
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-center pt-5 ">
+              <h1 class="mb-4">Submit your Manu script </h1>
+              <form [formGroup]="scriptUploadForm!" (ngSubmit)="onSubmit()">
+                <!-- Journal ID or Title -->
+                <div>
+                  <label for="journalId">Journal ID</label>
+                  <input id="journalId" formControlName="journalId" type="text" placeholder="Enter the Journal ID" />
+                  <div *ngIf="scriptUploadForm?.get('journalId')?.invalid && scriptUploadForm?.get('journalId')?.touched">
+                    <small class="error">Journal ID is required</small>
+                  </div>
+                </div>
+              
+                <!-- Description -->
+                <div>
+                  <label for="description">Description</label>
+                  <textarea id="description" formControlName="description" placeholder="Enter a description" rows="4"></textarea>
+                  <div *ngIf="scriptUploadForm?.get('description')?.invalid && scriptUploadForm?.get('description')?.touched">
+                    <small class="error">Description is required</small>
+                  </div>
+                </div>
+              
+                <!-- Script File Upload -->
+                <div>
+                  <label for="ManuScript">Upload Menu Script</label>
+                  <input id="ManuScript" type="file" (change)="onFileSelected($event)" />
+                  <div *ngIf="fileError">
+                    <small class="error">{{ fileError }}</small>
+                  </div>
+                </div>
+              
+                <!-- Submit Button -->
+                <button type="submit" [disabled]="scriptUploadForm?.invalid || !selectedFile">Submit</button>
+              </form>
+              
+
+              <form (ngSubmit)="onSubmit()" [formGroup]="validationForm1" style="margin-top: 20px;">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="row mb-3">
+                      <label for="firstName" class="col-sm-3 col-form-label">Journal Title :</label>
+                      <div class="col-sm-9">
+                        <!-- <input type="text" class="form-control" id="firstName" formControlName="firstName" 
+                    [ngClass]="{'is-invalid': isForm1Submitted && form1.firstName.errors}" placeholder="First name"> -->
+                        <input id="journalTitle" formControlName="journalTitle" class="form-control"
+                          placeholder="Journal Title" [(ngModel)]="JournalTitle" [disabled]="this.JournalTitle"
+                          [ngClass]="{'is-invalid': isForm1Submitted && form1.journalTitle.errors}">
+                         
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="row mb-3">
+                      <label for="lastName" class="col-sm-3 col-form-label">Journal ID</label>
+                      <div class="col-sm-9">                         
+                        <input id="subTitle" formControlName="subTitle" class="form-control" [(ngModel)]="BookId"
+                          placeholder="Journal Id">
+                         
+                      </div>
+                    </div>
+                  </div>
+  
+  
+                  <div class="col-md-6">
+                    <div class="row mb-3">
+                      <label for="userName" class="col-sm-3 col-form-label">Menu Script File</label>
+                      <div class="col-sm-9">
+                        <input id="ManuScript" type="file" (change)="onFileSelected($event)" />
+                        <div *ngIf="fileError">
+                          <small class="error">{{ fileError }}</small>
+                        </div>
+                        <!-- <input class="form-control" [(ngModel)]="fileNames" type="file" id="File" name="file"
+                          (change)="onFileSelected($event)" accept=".png, .jpg, .jpeg" formControlName="file" /> -->
+                        <div *ngIf="isForm1Submitted && form1.file.errors?.required" class="invalid-feedback">
+                          Required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+  
+  
+  
+                </div>
+                <div class="d-flex justify-content-center mt-2">
+                  <button class="btn btn-primary" type="submit">Continue</button>
+                </div>
+              </form>
+              <!-- <form id="UploadScriptForm">
+                <div class="row">
+                  <div class="col-3">
+                    <label class="form-label p-3">Description</label>
+                  </div>
+                  <div class="col-3">
+                    <textarea id="ScriptInfo" rows="4" cols="50" class="form-control"></textarea>
+                    
+                  </div>
+                
+                  <div class="col-3">
+                    <label class="form-label p-3">Upload Document</label>
+                  </div>
+                  <div class="col-3">
+                    <input type="file" id="File" name="File" class=" p-3" required ngModel class="form-control"
+                      (change)="onFileSelected($event)" accept=".zip, .rar, .7z" #file="ngModel" />
+                    <div *ngIf="file.invalid && file.touched" class="text-danger">
+                    
+                      File is required. Allowed formats: .zip, .rar (Max size: 5MB).
+                    </div>
+                    <span class="text-danger "><br />Allowed Documents format rar, zip and of Max size 5MB</span>
+                  </div>
+                
+                
+                </div>
+                <div class="row mt-5">
+                  <div class="col-md-12 mb-4 text-center">
+                    <button type="submit" class="lpu-btn border-0 px-5 mb-3" id="registerButton">Submit</button>
+                  </div>
+                </div>
+              </form> -->
+            </div>
+          </div>
+        </div>
+        </section>        
+    </div>
+          <div class="row">
+            <ng-template #noRecords>
+              <div class="row">
+                <div class="text-center">
+                  <!-- <h4 class="text-center fs-3 text-danger"> Loading Data.. </h4> -->
+                  <span class="text-danger fs-3">Loading </span><br />
+                  <div class="spinner-grow text-danger text-center" style=" width: 14rem; height: 14rem;" role="status">
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+<!-- 
+<div class="row w-100 mx-0 auth-page">
+  <div class="col-md-12 col-xl-12 mx-auto">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-6 pe-md-0">
+          <div class="auth-side-wrapper" style="height: 40rem; "
+            [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/lpu-assets/images/cif/login-left.png)' }">
+          </div>
+        </div>
+        <div class="col-md-6 ps-md-0">
+          <div class="auth-form-wrapper px-4 py-5">
+            <h2 class="nobleui-logo d-block mb-2"> LPU Journal <span>Menu Script Upload Form</span></h2>
+            <form id="UploadScriptForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="UserEmail">Email</label>
+                  <input type="email" class="form-control" id="UserEmail" placeholder="Enter Email" required>
+                  <small class="text-danger" id="UserEmailError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="CandidateName">Name</label>
+                  <input type="text" class="form-control" id="CandidateName" placeholder="Enter Name" required>
+                  <small class="text-danger" id="CandidateNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="SupervisorName">Name of Supervisor</label>
+                  <input type="text" class="form-control" id="SupervisorName" placeholder="Enter Name of Supervisor"
+                    required>
+                  <small class="text-danger" id="SupervisorNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="MobileNumber">Mobile</label>
+                  <input type="text" class="form-control" id="MobileNumber" placeholder="Enter Mobile Number" required>
+                  <small class="text-danger" id="MobileNumberError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="InstituteName">Organization</label>
+                  <input type="text" class="form-control" id="InstituteName" placeholder="Enter organization name"
+                    required>
+                  <small class="text-danger" id="InstituteNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="DepartmentName">Department</label>
+                  <input type="text" class="form-control" id="DepartmentName" placeholder="Enter Department" required>
+                  <small class="text-danger" id="DepartmentNameError"></small>
+                </div>
+
+            
+              </div>
+
+              <div class="col-md-12 mb-4 text-center">
+                <button type="submit" class="lpu-btn border-0 px-5 mb-3" id="registerButton">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- <div class="col-md-6 d-none reg-div">
+          <div class="cif-register">
+            <form id="userForm">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  If you already has an account, just <a class="login-link"><strong>sign
+                      in</strong></a>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="UserEmail">Email</label>
+                  <input type="email" class="form-control" id="UserEmail" placeholder="Enter Email" required>
+                  <small class="text-danger" id="UserEmailError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="CandidateName">Name</label>
+                  <input type="text" class="form-control" id="CandidateName" placeholder="Enter Name" required>
+                  <small class="text-danger" id="CandidateNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="SupervisorName">Name of Supervisor</label>
+                  <input type="text" class="form-control" id="SupervisorName" placeholder="Enter Name of Supervisor"
+                    required>
+                  <small class="text-danger" id="SupervisorNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="MobileNumber">Mobile</label>
+                  <input type="text" class="form-control" id="MobileNumber" placeholder="Enter Mobile Number" required>
+                  <small class="text-danger" id="MobileNumberError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="InstituteName">Organization</label>
+                  <input type="text" class="form-control" id="InstituteName" placeholder="Enter organization name"
+                    required>
+                  <small class="text-danger" id="InstituteNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="DepartmentName">Department</label>
+                  <input type="text" class="form-control" id="DepartmentName" placeholder="Enter Department" required>
+                  <small class="text-danger" id="DepartmentNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofType">ID Proof</label>
+                  <div class="form-group">
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Voter Card"> Voter Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Driving License"> Driving
+                      License
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Aadhar Card"> Aadhar Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Institute ID Card"> Institute
+                      ID Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="PAN card"> PAN card
+                    </label>
+                  </div>
+                  <small class="text-danger" id="IdProofTypeError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofNumber">ID Number</label>
+                  <input type="text" class="form-control" id="IdProofNumber" placeholder="Enter ID Number" required>
+                  <small class="text-danger" id="IdProofNumberError"></small>
+
+                  <label class="form-label mt-3" for="UserRole">User Role</label>
+                  <select class="form-select form-control" id="UserRole" required>
+                    <option value="Select">Select</option>
+                    <option value="400001">External Users</option>
+                    <option value="400002">Industry Users</option>
+                  </select>
+                  <small class="text-danger" id="UserRoleError"></small>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <label class="form-label" for="txtAddress">Corresponding Address</label>
+                  <textarea class="form-control not-dark" id="txtAddress" name="txtAddress" rows="4" cols="30"
+                    required></textarea>
+                  <small class="text-danger" id="txtAddressError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="PasswordText">Password</label>
+                  <input type="password" class="form-control" id="PasswordText" placeholder="Enter Password" required>
+                  <small class="text-danger" id="PasswordTextError"></small>
+                  <small class="text-danger" id="PasswordMatchError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="confirm-password">Confirm Password</label>
+                  <input type="password" class="form-control" id="reg-confirm-password"
+                    placeholder="Enter Confirm Password" required>
+                  <small class="text-danger" id="ConfirmPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-4 text-center">
+                <button type="submit" class="lpu-btn border-0 px-5 mb-3" id="registerButton">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div> -->

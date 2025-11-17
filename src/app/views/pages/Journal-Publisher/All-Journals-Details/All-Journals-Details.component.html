@@ -1,0 +1,82 @@
+<app-topslider></app-topslider>
+<app-TopMenuBar></app-TopMenuBar>
+
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+  <div class="card-body m-1 ">
+    <h1 class="text-center themeClr"> All Journals </h1>
+  </div>
+</div>
+<div class="row d-flex align-items-center justify-content-start m-3">
+  <div class="col-2 ms-4"> <label class="fw-bolder fs-6 "> Search Journal </label></div>
+  <div class="col-4 ms-2">
+    <div class="mb-3">
+      <input [(ngModel)]="searchQueryx" (keyup)="searchx()" id="searchx" type="text" style=" width: 16rem;"
+        class="form-control" placeholder=" Search Text goes here... " aria-label="Search"
+        aria-describedby="basic-addon1" />
+    </div>
+  </div>
+</div>
+<div class="d-flex p-2 align-items-center justify-content-center tableHeight">
+  <div class="row accordionColor w-100" *ngIf="paginatedJournals.length > 0; else noRecords">
+    <div class="container-fluid">
+      <table id="JournalslDataTableY" class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="form-label text-danger">Sr.No</th>
+            <th class="form-label text-danger">Journal Title</th>
+            <th class="form-label text-danger">Sub Title</th>
+            <th class="form-label text-danger">Volume</th>
+            <th class="form-label text-danger">Published Date</th>
+            <th class="form-label text-danger">Editor In Chief</th>
+            <th class="form-label text-danger">Image</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let JournalsDataRow of paginatedJournals; let i = index">
+            <tr>
+              <td class="form-label text-center">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+              <td class="form-label">{{ JournalsDataRow.journalTitle }}</td>
+              <td class="form-label">
+                {{
+                JournalsDataRow.subTitle.split(' ').length > 5
+                ? JournalsDataRow.subTitle.split(' ').slice(0, 5).join(' ') + '...'
+                : JournalsDataRow.subTitle
+                }}
+              </td>
+              <td class="form-label text-center">{{ JournalsDataRow.volume }}</td>
+              <td class="form-label text-center">{{ JournalsDataRow.publishDate | date: 'dd/MM/yyyy' }}</td>
+              <td class="form-label">{{ JournalsDataRow.editorName }}</td>
+              <td class="text-center">
+                <ng-container *ngIf="JournalsDataRow.imageUrl; else NoSheetDoc">
+                  <a class="btn btn-info" [href]="serverUrl + JournalsDataRow.imageUrl" target="_blank">
+                    <i class="bi bi-file-earmark-text"></i>
+                  </a>
+                </ng-container>
+                <ng-template #NoSheetDoc>
+                  <span class="text-danger">No Uploaded Yet</span>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div class="d-flex justify-content-start m-3">
+      <button class="btn btn-danger btn-sm" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button class="btn btn-danger btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div> -->
+    <div class="d-flex justify-content-start m-3" *ngIf="totalPages > 0">
+      <button class="btn btn-danger btn-sm" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button class="btn btn-danger btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+    
+  </div>
+
+  <ng-template #noRecords>
+    <p class="fs-2 text-danger text-center">No Data Available.</p>
+  </ng-template>
+</div>

@@ -1,0 +1,59 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader></app-EDEditorHeader>
+<section>
+  <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+    <div class="container-fluid ">
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card-body m-5 ">
+            <h1 class="text-center themeClr"> Manuscript Details</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex p-2 align-items-center justify-content-center tableHeight">
+    <div class="container-fluid ">
+      <div class="row">
+        <div class="col-md-12" *ngIf="this.ManuscriptData?.length>0; else NoData">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center" *ngFor="let col of ManuscriptdisplayedColumns">{{
+                    displayedManuscriptColumnHeaders[col] }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of paginatedManuscriptData; let i = index">
+                  <td *ngFor="let col of ManuscriptdisplayedColumns" class="text-center">
+                    <ng-container [ngSwitch]="col">
+                      <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm "
+                        (click)="onSelectFileManuscriptX(row[col])">
+                        <i class="bi bi-file-earmark-text "></i>
+                      </button>
+                      <span *ngSwitchDefault>{{ row[col] }}</span>
+                    </ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="pagination-controls">
+              <button (click)="previousPageManuscript()" [disabled]="currentPageManuscript === 1">Previous</button>
+              <span> Page {{ currentPageManuscript }} of {{ totalPagesManuscript }} </span>
+              <button (click)="nextPageManuscript()"
+                [disabled]="currentPageManuscript === totalPagesManuscript">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #NoData>
+        <div class="themeClr">
+          <h1 class="fs-2 text-center vh-50 p-3 m-4 "> No Data Found </h1>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>

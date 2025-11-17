@@ -1,0 +1,236 @@
+<!-- <app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar> -->
+
+
+<div class="row w-100 mx-0 auth-page">
+  <div class="col-md-12 col-xl-12 mx-auto">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-6 pe-md-0">
+          <!-- <div class="auth-side-wrapper" style="height: 40rem; "
+            [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/lpu-assets/images/cif/login-left.png)' }">
+          </div> -->
+        </div>
+        <div class="col-md-6 ps-md-0">
+          <div class="auth-form-wrapper px-4 py-5">
+            <h2 class="nobleui-logo d-block mb-2"> LPU Journal <span>Registration Page</span></h2>
+            <form id="userForm">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <a routerLink="/Login" class="btn-icon-text mb-2 mb-md-0"> 
+                  If you already has an account, just <strong>sign in</strong></a>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="UserEmail">Email</label>
+                  <input type="email" class="form-control" id="UserEmail" placeholder="Enter Email" required>
+                  <small class="text-danger" id="UserEmailError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="CandidateName">Name</label>
+                  <input type="text" class="form-control" id="CandidateName" placeholder="Enter Name" required>
+                  <small class="text-danger" id="CandidateNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="SupervisorName">Name of Supervisor</label>
+                  <input type="text" class="form-control" id="SupervisorName" placeholder="Enter Name of Supervisor"
+                    required>
+                  <small class="text-danger" id="SupervisorNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="MobileNumber">Mobile</label>
+                  <input type="text" class="form-control" id="MobileNumber" placeholder="Enter Mobile Number" required>
+                  <small class="text-danger" id="MobileNumberError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="InstituteName">Organization</label>
+                  <input type="text" class="form-control" id="InstituteName" placeholder="Enter organization name"
+                    required>
+                  <small class="text-danger" id="InstituteNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="DepartmentName">Department</label>
+                  <input type="text" class="form-control" id="DepartmentName" placeholder="Enter Department" required>
+                  <small class="text-danger" id="DepartmentNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofType">ID Proof</label>
+                  <div class="form-group">
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Voter Card"> Voter Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Driving License"> Driving
+                      License
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Aadhar Card"> Aadhar Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Institute ID Card"> Institute
+                      ID Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="PAN card"> PAN card
+                    </label>
+                  </div>
+                  <small class="text-danger" id="IdProofTypeError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofNumber">ID Number</label>
+                  <input type="text" class="form-control" id="IdProofNumber" placeholder="Enter ID Number" required>
+                  <small class="text-danger" id="IdProofNumberError"></small>
+
+                 
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <label class="form-label" for="txtAddress">Corresponding Address</label>
+                  <textarea class="form-control not-dark" id="txtAddress" name="txtAddress" rows="4" cols="30"
+                    required></textarea>
+                  <small class="text-danger" id="txtAddressError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="PasswordText">Password</label>
+                  <input type="password" class="form-control" id="PasswordText" placeholder="Enter Password" required>
+                  <small class="text-danger" id="PasswordTextError"></small>
+                  <small class="text-danger" id="PasswordMatchError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="confirm-password">Confirm Password</label>
+                  <input type="password" class="form-control" id="reg-confirm-password"
+                    placeholder="Enter Confirm Password" required>
+                  <small class="text-danger" id="ConfirmPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-4 text-center">
+                <button type="submit" class="lpu-btn border-0 px-5 mb-3" id="registerButton">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- <div class="col-md-6 d-none reg-div">
+          <div class="cif-register">
+            <form id="userForm">
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  If you already has an account, just <a class="login-link"><strong>sign
+                      in</strong></a>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="UserEmail">Email</label>
+                  <input type="email" class="form-control" id="UserEmail" placeholder="Enter Email" required>
+                  <small class="text-danger" id="UserEmailError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="CandidateName">Name</label>
+                  <input type="text" class="form-control" id="CandidateName" placeholder="Enter Name" required>
+                  <small class="text-danger" id="CandidateNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="SupervisorName">Name of Supervisor</label>
+                  <input type="text" class="form-control" id="SupervisorName" placeholder="Enter Name of Supervisor"
+                    required>
+                  <small class="text-danger" id="SupervisorNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="MobileNumber">Mobile</label>
+                  <input type="text" class="form-control" id="MobileNumber" placeholder="Enter Mobile Number" required>
+                  <small class="text-danger" id="MobileNumberError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="InstituteName">Organization</label>
+                  <input type="text" class="form-control" id="InstituteName" placeholder="Enter organization name"
+                    required>
+                  <small class="text-danger" id="InstituteNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="DepartmentName">Department</label>
+                  <input type="text" class="form-control" id="DepartmentName" placeholder="Enter Department" required>
+                  <small class="text-danger" id="DepartmentNameError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofType">ID Proof</label>
+                  <div class="form-group">
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Voter Card"> Voter Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Driving License"> Driving
+                      License
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Aadhar Card"> Aadhar Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="Institute ID Card"> Institute
+                      ID Card
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="IdProofType" value="PAN card"> PAN card
+                    </label>
+                  </div>
+                  <small class="text-danger" id="IdProofTypeError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="IdProofNumber">ID Number</label>
+                  <input type="text" class="form-control" id="IdProofNumber" placeholder="Enter ID Number" required>
+                  <small class="text-danger" id="IdProofNumberError"></small>
+
+                  <label class="form-label mt-3" for="UserRole">User Role</label>
+                  <select class="form-select form-control" id="UserRole" required>
+                    <option value="Select">Select</option>
+                    <option value="400001">External Users</option>
+                    <option value="400002">Industry Users</option>
+                  </select>
+                  <small class="text-danger" id="UserRoleError"></small>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <label class="form-label" for="txtAddress">Corresponding Address</label>
+                  <textarea class="form-control not-dark" id="txtAddress" name="txtAddress" rows="4" cols="30"
+                    required></textarea>
+                  <small class="text-danger" id="txtAddressError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="PasswordText">Password</label>
+                  <input type="password" class="form-control" id="PasswordText" placeholder="Enter Password" required>
+                  <small class="text-danger" id="PasswordTextError"></small>
+                  <small class="text-danger" id="PasswordMatchError"></small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label class="form-label" for="confirm-password">Confirm Password</label>
+                  <input type="password" class="form-control" id="reg-confirm-password"
+                    placeholder="Enter Confirm Password" required>
+                  <small class="text-danger" id="ConfirmPasswordError"></small>
+                </div>
+              </div>
+
+              <div class="col-md-12 mb-4 text-center">
+                <button type="submit" class="lpu-btn border-0 px-5 mb-3" id="registerButton">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

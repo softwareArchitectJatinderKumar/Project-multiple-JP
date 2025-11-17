@@ -1,0 +1,306 @@
+<!-- <div class="container mt-4">
+  <h2 class="text-center mb-4">New Journal Entry</h2>
+
+  <ul class="nav nav-tabs justify-content-center mb-4">
+    <li class="nav-item" *ngFor="let title of stepTitles; let i = index">
+      <span
+        class="badge rounded-pill me-3 p-3 text-start "
+        [ngClass]="{
+          'bg-primary text-white': step === i + 1,
+          'bg-secondary text-light': step !== i + 1
+        }"
+      >
+      {{stepTitles[step - 1] }}
+ 
+      </span>
+    </li>
+  </ul>
+  
+
+ 
+  <form *ngIf="step === 1" [formGroup]="journalForm1" (ngSubmit)="nextStep()">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label>Journal Title</label>
+        <input formControlName="journalTitle" class="form-control" placeholder="Enter title" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Sub Title</label>
+        <input formControlName="subTitle" class="form-control" placeholder="Enter subtitle" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Volume</label>
+        <input formControlName="Volume" class="form-control" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Publish Date</label>
+        <input formControlName="publishDate" class="form-control" type="date" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label>Upload Cover Image</label>
+        <input type="file" (change)="onFileSelected($event)" class="form-control" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Introduction</label>
+        <textarea formControlName="Introduction" class="form-control" rows="3"></textarea>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Scope of Journals</label>
+        <input formControlName="scopeofjournals" class="form-control" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Thrust Area</label>
+        <input formControlName="thrustArea" class="form-control" />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label>Article Type</label>
+        <input formControlName="ArticleType" class="form-control" />
+      </div>
+    </div>
+
+    <div class="text-end">
+      <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+  </form>
+
+ 
+  <form *ngIf="step === 2" [formGroup]="journalForm2" (ngSubmit)="nextStep2()">
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let field of ['ISSNNo','RegNo','Periodicity','Language','Scope','ArticleProcessCharges','OpenAccess','Print','Online','ReviewProcess']">
+        <label>{{ field }}</label>
+        <input [formControlName]="field" class="form-control" />
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-secondary" (click)="previousStep()">Back</button>
+      <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+  </form>
+
+ 
+  <form *ngIf="step === 3" [formGroup]="editorForm" (ngSubmit)="finishFunction()">
+    <div formArrayName="EditorinChief" class="mb-4">
+      <div *ngFor="let editor of editorArray.controls; let i = index" [formGroupName]="i" class="card p-3 mb-3">
+        <h5>Editor {{ i + 1 }}</h5>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <select formControlName="EditorType" class="form-control">
+              <option *ngFor="let type of editorTypes" [value]="type">{{ type }}</option>
+            </select>
+            
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Editor Name</label>
+            <input formControlName="EditorName" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Designation</label>
+            <input formControlName="Designation" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Email</label>
+            <input formControlName="Email" type="email" class="form-control" />
+          </div>
+          <div class="col-md-12 mb-3">
+            <label>Address</label>
+            <textarea formControlName="EditorAddress" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <button *ngIf="editorArray.length > 1" type="button" class="btn btn-danger btn-sm" (click)="removeEditor(i)">
+          Remove Editor
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <button type="button" class="btn btn-info" (click)="addEditor()">+ Add Editor</button>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button type="button" class="btn btn-secondary" (click)="previousStep()">Back</button>
+      <button type="submit" class="btn btn-success">Finish</button>
+    </div>
+  </form>
+</div> -->
+<!-- journal-form.component.html (UI Form Template with Validation) -->
+<!-- journal-form.component.html (UI Form Template with Validation) -->
+
+<div class="tab-pane fade active show" id="NewJournalForm" *ngIf="isLoginFailed==false; else loginFailed">
+  <div class="container mt-4">
+    <!-- Step Navigation Badges -->
+    <div class="d-flex justify-content-center mb-4">
+      <span *ngFor="let title of stepTitles; let i = index" class="badge rounded-pill me-2"
+        [ngClass]="step === i + 1 ? 'bg-primary text-white' : 'bg-secondary text-light'">
+        {{ title }}
+      </span>
+    </div>
+
+    <!-- Step 1: Basic Info -->
+    <form [formGroup]="journalForm1" *ngIf="step === 1">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Journal Title</label>
+          <input formControlName="journalTitle" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'journalTitle')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'journalTitle')">{{ getErrorMessage(journalForm1,
+            'journalTitle') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Sub Title</label>
+          <input formControlName="subTitle" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'subTitle')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'subTitle')">{{ getErrorMessage(journalForm1,
+            'subTitle') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Volume</label>
+          <input formControlName="Volume" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'Volume')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'Volume')">{{ getErrorMessage(journalForm1,
+            'Volume') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Publish Date</label>
+          <input type="date" formControlName="publishDate" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'publishDate')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'publishDate')">{{ getErrorMessage(journalForm1,
+            'publishDate') }}</div>
+        </div>
+        <div class="col-12 mb-3">
+          <label>Introduction</label>
+          <textarea formControlName="Introduction" class="form-control" rows="3"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'Introduction')}"></textarea>
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'Introduction')">{{ getErrorMessage(journalForm1,
+            'Introduction') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Scope of Journals</label>
+          <input formControlName="scopeofjournals" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'scopeofjournals')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'scopeofjournals')">{{
+            getErrorMessage(journalForm1, 'scopeofjournals') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Thrust Area</label>
+          <input formControlName="thrustArea" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'thrustArea')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'thrustArea')">{{ getErrorMessage(journalForm1,
+            'thrustArea') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Article Type</label>
+          <input formControlName="ArticleType" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm1, 'ArticleType')}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm1, 'ArticleType')">{{ getErrorMessage(journalForm1,
+            'ArticleType') }}</div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Upload File</label>
+          <input type="file" (change)="onFileSelected($event)" class="form-control" />
+          <small *ngIf="fileNames">Selected: {{ fileNames }}</small>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary" (click)="nextStep()"
+          [disabled]="journalForm1.invalid">Next</button>
+      </div>
+    </form>
+
+    <!-- Step 2: Property Details -->
+    <form [formGroup]="journalForm2" *ngIf="step === 2">
+      <div class="row">
+        <div class="col-md-4 mb-3"
+          *ngFor="let field of ['ISSNNo', 'RegNo', 'Periodicity', 'Language', 'Scope', 'ArticleProcessCharges', 'OpenAccess', 'Print', 'Online', 'ReviewProcess']">
+          <label>{{ field }}</label>
+          <input [formControlName]="field" class="form-control"
+            [ngClass]="{'is-invalid': isInvalid(journalForm2, field)}" />
+          <div class="invalid-feedback" *ngIf="isInvalid(journalForm2, field)">{{ getErrorMessage(journalForm2, field)
+            }}</div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="previousStep()">Previous</button>
+        <button type="button" class="btn btn-primary" (click)="nextStep2()"
+          [disabled]="journalForm2.invalid">Next</button>
+      </div>
+    </form>
+
+    <!-- Step 3: Editor Details -->
+    <form [formGroup]="editorForm" *ngIf="step === 3">
+      <div formArrayName="EditorinChief">
+        <div *ngFor="let editor of editorArray.controls; let i = index" [formGroupName]="i"
+          class="border p-3 rounded mb-3">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label>Editor Type</label>
+              <select formControlName="EditorType" class="form-select"
+                [ngClass]="{'is-invalid': isInvalid(editor, 'EditorType')}">
+                <option value="">-- Select --</option>
+                <option *ngFor="let type of editorTypes" [value]="type">{{ type }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="isInvalid(editor, 'EditorType')">{{ getErrorMessage(editor,
+                'EditorType') }}</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Editor Name</label>
+              <input formControlName="EditorName" class="form-control"
+                [ngClass]="{'is-invalid': isInvalid(editor, 'EditorName')}">
+              <div class="invalid-feedback" *ngIf="isInvalid(editor, 'EditorName')">{{ getErrorMessage(editor,
+                'EditorName') }}</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label>Designation</label>
+              <input formControlName="Designation" class="form-control"
+                [ngClass]="{'is-invalid': isInvalid(editor, 'Designation')}">
+              <div class="invalid-feedback" *ngIf="isInvalid(editor, 'Designation')">{{ getErrorMessage(editor,
+                'Designation') }}</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Email</label>
+              <input formControlName="Email" class="form-control"
+                [ngClass]="{'is-invalid': isInvalid(editor, 'Email')}">
+              <div class="invalid-feedback" *ngIf="isInvalid(editor, 'Email')">{{ getErrorMessage(editor, 'Email') }}
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Editor Address</label>
+              <input formControlName="EditorAddress" class="form-control"
+                [ngClass]="{'is-invalid': isInvalid(editor, 'EditorAddress')}">
+              <div class="invalid-feedback" *ngIf="isInvalid(editor, 'EditorAddress')">{{ getErrorMessage(editor,
+                'EditorAddress') }}</div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-danger btn-sm" (click)="removeEditor(i)"
+            *ngIf="editorArray.length > 1">Remove</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-link" (click)="addEditor()">+ Add Another Editor</button>
+      <div class="d-flex justify-content-between mt-3">
+        <button type="button" class="btn btn-secondary" (click)="previousStep()">Previous</button>
+        <button type="button" class="btn btn-success" (click)="finishFunction()"
+          [disabled]="editorForm.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+<ng-template #loginFailed>
+  <div class="text-center bg-danger" *ngIf="isLoginFailed">
+    <h3 class="text-center fs-2 m-5 text-warn pt-5 "> Error in User Login . </h3>
+    <div class="row mt-4 mb-4">
+      <div class="col-sm-12 text-center">
+        <div class="mb-3 p-4">
+          <Label class="form-label fs-4 text-warn ">Something Went Wrong. Please Try login again!.</Label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

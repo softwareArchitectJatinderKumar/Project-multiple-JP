@@ -1,0 +1,222 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<!-- <app-EDEditorHeader></app-EDEditorHeader> -->
+<!-- <app-journal-inner-menu></app-journal-inner-menu> -->
+<!-- Global Loading Screen -->
+
+<ng-template #loginFailed>
+  <div class="vh-100 text-center mt-5" *ngIf="isLoading">
+    <div class="text-center">
+      <span class="text-danger fs-3">Processing</span><br />
+      <div class="spinner-grow text-danger text-center" style="width: 14rem; height: 14rem;" role="status"></div>
+    </div>
+  </div>
+</ng-template>
+<div class="row" id="PasswordChangepage" *ngIf="isLoading==false; else loginFailed">
+<div class="container-fluid  p-0 mt-3">
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card-body main-heading">
+        <h1 class="mb-4 text-center">Lpu e-Journals </h1>
+        <br />
+        <h1 class="mb-2 text-center main-heading "> Password Reset Page </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wizard-container vh-100">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body main-heading">
+
+          <!-- Step 1 -->
+          <div *ngIf="currentStep === 1" class="container">
+            <h3 class="main-heading">Your Registered Email</h3>
+            <form [formGroup]="emailFormGroup" novalidate>
+              <input type="email" id="email" formControlName="email" [(ngModel)]="userId" required autocomplete="off" />
+              <div *ngIf="emailFormGroup.get('email')?.touched && emailFormGroup.get('email')?.invalid">
+                <small *ngIf="emailFormGroup.get('email')?.hasError('required')">Email is required.</small>
+                <small *ngIf="emailFormGroup.get('email')?.hasError('email')">Enter a valid email.</small>
+              </div>
+              <button class="btn btn-outline-danger mt-4" type="button" (click)="checkEmail()" [disabled]="emailFormGroup.invalid">Next</button>
+              <p *ngIf="errorMessage" class="error text-danger fs-5 p-4 fw-bolder">{{ errorMessage }}</p>
+            </form>
+          </div>
+
+          <!-- Step 2 -->
+          <div *ngIf="currentStep === 2" class="container">
+            <h2 class="fs-2">Verify <span class="themeClr text-danger">{{ idProofType }}</span></h2>
+            <form [formGroup]="idProofFormGroup">
+              <input type="password" id="idProofNumber" formControlName="idProofNumber" required />
+              <div *ngIf="idProofFormGroup.get('idProofNumber')?.touched && idProofFormGroup.get('idProofNumber')?.invalid">
+                <small>ID Proof Number is required.</small>
+              </div>
+              <div class="row d-flex justify-content-between mt-4 mb-4">
+                <button class="btn btn-outline-danger col-2 m-4" type="button" (click)="previousStep()">Back</button>
+                <button class="btn btn-outline-danger col-2 m-4" type="button" (click)="verifyIdProof()" [disabled]="idProofFormGroup.invalid">Next</button>
+              </div>
+              <p *ngIf="errorMessage" class="error text-danger fs-5 p-4 fw-bolder">{{ errorMessage }}</p>
+            </form>
+          </div>
+
+          <!-- Step 3 -->
+          <div *ngIf="currentStep === 3" class="container">
+            <h2>Reset Your Password</h2>
+            <form [formGroup]="resetPasswordFormGroup">
+              <label for="password">New Password</label>
+              <input type="password" id="password" formControlName="password" required />
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" formControlName="confirmPassword" required />
+
+              <div *ngIf="resetPasswordFormGroup.get('password')?.touched && resetPasswordFormGroup.get('password')?.invalid">
+                <small class="text-danger">Password must be at least 8 characters long.</small>
+              </div>
+
+              <div *ngIf="resetPasswordFormGroup.get('confirmPassword')?.touched && resetPasswordFormGroup.get('confirmPassword')?.invalid">
+                <small class="text-danger">Confirm Password is required.</small>
+              </div>
+
+              <div *ngIf="resetPasswordFormGroup.errors?.['mismatch'] && resetPasswordFormGroup.get('confirmPassword')?.touched">
+                <small class="text-danger">Passwords do not match.</small>
+              </div>
+
+              <div class="row d-flex justify-content-between mt-4 mb-2">
+                <button class="col-2 me-4 btn btn-outline-danger" type="button" (click)="previousStep()">Back</button>
+                <button
+                  class="col-4 btn btn-outline-danger"
+                  type="button"
+                  (click)="resetPassword()"
+                  [disabled]="resetPasswordFormGroup.invalid || resetPasswordFormGroup.errors?.['mismatch'] || isLoading"> Submit
+                  <!-- <span *ngIf="!isLoading">Reset Password</span>
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                  <span *ngIf="isLoading"> Processing...</span> -->
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- <div class="wizard-container vh-100 ">
+  <div class="container-fluid  ">
+
+    <div class="row ">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body main-heading">
+          
+          <div *ngIf="currentStep == 1" class="container">
+            <h3 class="main-heading">Your Registered Email</h3>
+            <form [formGroup]="emailFormGroup" novalidate>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                [(ngModel)]="userId"
+                required
+                autocomplete="off" />
+            
+              <div *ngIf="emailFormGroup.get('email')?.touched && emailFormGroup.get('email')?.dirty && emailFormGroup.get('email')?.invalid">
+                <small *ngIf="emailFormGroup.get('email')?.hasError('required')">Email is required.</small>
+                <small *ngIf="emailFormGroup.get('email')?.hasError('email')">Enter a valid email.</small>
+              </div>
+            
+              <button class="btn btn-outline-danger mt-4" type="button" (click)="checkEmail()" [disabled]="emailFormGroup.invalid">
+                Next
+              </button>
+            
+              <p *ngIf="errorMessage" class="error text-danger fs-5 p-4 fw-bolder">{{ errorMessage }}</p>
+            </form>
+      
+          </div>
+
+          
+          <div *ngIf="currentStep === 2" class="container">
+            <h2 class="col-md-12 fs-2 "> Verify <span class="themeClr text-danger">{{ idProofType }} </span></h2>
+            <form [formGroup]="idProofFormGroup">
+              <input type="password" id="idProofNumber" formControlName="idProofNumber" required />
+              <div
+                *ngIf="idProofFormGroup.get('idProofNumber')?.touched && idProofFormGroup.get('idProofNumber')?.invalid">
+                <small>ID Proof Number is required.</small>
+              </div>
+              <div class="row d-flex justify-content-between mt-4 mb-4 ">
+                <button class="btn btn-outline-danger col-2 m-4" type="button" (click)="previousStep()">Back</button>
+                <button class="btn btn-outline-danger  col-2 m-4" (click)="verifyIdProof()"
+                  [disabled]="idProofFormGroup.invalid">Next</button>
+              </div>
+              <p *ngIf="errorMessage" class="error text-danger fs-5 p-4 fw-bolder">{{ errorMessage }}</p>
+            </form>
+          </div>
+
+          
+          <div *ngIf="currentStep === 3" class="container">
+            <h2>Reset Your Password</h2>
+          
+            <form [formGroup]="resetPasswordFormGroup">
+              <label for="password">New Password</label>
+              <input type="password" id="password" formControlName="password" required />
+          
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" formControlName="confirmPassword" required />
+          
+              
+              <div *ngIf="resetPasswordFormGroup.get('password')?.touched && resetPasswordFormGroup.get('password')?.invalid">
+                <small class="text-danger">Password must be at least 8 characters long.</small>
+              </div>
+          
+              <div *ngIf="resetPasswordFormGroup.get('confirmPassword')?.touched && resetPasswordFormGroup.get('confirmPassword')?.invalid">
+                <small class="text-danger">Confirm Password is required.</small>
+              </div>
+              <div *ngIf="resetPasswordFormGroup.errors?.['mismatch'] && resetPasswordFormGroup.get('confirmPassword')?.touched">
+                <small class="text-danger">Passwords do not match.</small>
+              </div>
+          
+              
+              <div class="row d-flex justify-content-between mt-4 mb-2">
+                <button class="col-2 me-4 btn btn-outline-danger" type="button" (click)="previousStep()">Back</button>
+          
+                <button
+                  class="col-4 btn btn-outline-danger"
+                  type="button"
+                  (click)="resetPassword()"
+                  [disabled]="resetPasswordFormGroup.invalid || resetPasswordFormGroup.errors?.['mismatch'] || isLoading"
+                >
+                  <span *ngIf="!isLoading">Reset Password</span>
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span *ngIf="isLoading"> Processing...</span>
+                </button>
+              </div>
+            </form>
+       
+          </div>
+        </div>
+       
+
+      </div>
+    </div>
+ 
+  </div>
+
+</div>
+
+<div class="container accordionColor ">
+  <ng-container *ngIf="isLoading">
+      <div class="row blockHeight">
+          <div class="text-center">
+              
+              <span class="text-danger fs-3">Loading </span><br />
+              <div class="spinner-grow text-danger text-center" style=" width: 14rem; height: 14rem;"
+                  role="status">
+              </div>
+          </div>
+      </div>
+    </ng-container>
+</div> -->

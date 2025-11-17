@@ -1,0 +1,222 @@
+.footer-address {
+  background: #292929;
+  padding: 20px 0;
+  color: rgba(255, 255, 255, .7);
+  text-align: center;
+}
+
+
+
+.copy-right-section {
+  background: #161616;
+  padding: 20px;
+  color: rgba(255, 255, 255, .5);
+  font-size: 13px;
+  text-align: center;
+  bottom: 0rem;
+  width: 100%;
+  // position: fixed;
+  margin-bottom: 0 !important;
+}
+
+.footer-email {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+  list-style: none;
+}
+
+.footer-email li a {
+  color: rgba(255, 255, 255, .7);
+  text-decoration: none;
+}
+
+.footer-email li:not(last-child) {
+  margin-right: 10px;
+}
+
+.footer-email li:after {
+  content: "|";
+  padding-left: 10px;
+}
+
+.footer-email li.last:after {
+  content: "";
+}
+
+@media (max-width:992px) {
+
+  .footer-email {
+
+      flex-direction: column;
+  }
+
+  .footer-email li:after {
+      content: "";
+      padding-left: 0;
+  }
+}
+
+
+// .footer {
+//     background-color: #333;
+//   text-align: center;
+//   padding: 10px 0;
+//   // position: relative;
+//   // position: absolute;
+//   width: 100%;
+//   bottom: 0;
+// }
+
+// .container {
+//   max-width: 1200px;
+//   margin: auto;
+// }
+
+// new style 
+// .footer-address {
+//   background: #292929;
+//   padding: 20px 0;
+//   color: rgba(255, 255, 255, .7);
+//   text-align: center;
+// }
+
+
+
+// .copy-right-section {
+//   background: #161616;
+//   padding: 20px;
+//   color: rgba(255, 255, 255, .5);
+//   font-size: 13px;
+//   text-align: center;
+// }
+
+// .footer-email {
+//   display: flex;
+//   margin-top: 10px;
+//   justify-content: center;
+//   list-style: none;
+// }
+
+// .footer-email li a {
+//   color: rgba(255, 255, 255, .7);
+//   text-decoration: none;
+// }
+
+// .footer-email li:not(last-child) {
+//   margin-right: 10px;
+// }
+
+// .footer-email li:after {
+//   content: "|";
+//   padding-left: 10px;
+// }
+
+// .footer-email li.last:after {
+//   content: "";
+// }
+
+// @media (max-width:992px) {
+
+//   .footer-email {
+
+//       flex-direction: column;
+//   }
+
+//   .footer-email li:after {
+//       content: "";
+//       padding-left: 0;
+//   }
+// }
+// // .footer-address {
+// //     background: #292929;
+// //     padding: 20px 0;
+// //     color: rgba(255, 255, 255, .7);
+// //     text-align: center;
+// // }
+// // .copy-right-section {
+// //     background: #161616;
+// //     padding: 20px;
+// //     color: rgba(255, 255, 255, .5);
+// //     font-size: 13px;
+// //     text-align: center;
+// //     width: 100%;
+// //     position: relative;  /* Fixes the footer at the bottom */
+// //     bottom: 0;
+// //     left: 0;
+// //     z-index: 1000; 
+// // }
+
+// // .footer-email {
+// //     display: flex;
+// //     margin-top: 10px;
+// //     justify-content: center;
+// //     list-style: none;
+// // }
+
+// // .footer-email li a {
+// //     color: rgba(255, 255, 255, .7);
+// //     text-decoration: none;
+// // }
+
+// // .footer-email li:not(last-child) {
+// //     margin-right: 10px;
+// // }
+
+// // .footer-email li:after {
+// //     content: "|";
+// //     padding-left: 10px;
+// // }
+
+// // .footer-email li.last:after {
+// //     content: "";
+// // }
+
+// // @media (max-width:992px) {
+
+// //     .footer-email {
+
+// //         flex-direction: column;
+// //     }
+
+// //     .footer-email li:after {
+// //         content: "";
+// //         padding-left: 0;
+// //     }
+// // }
+
+// //  new Styles
+
+// /* Basic footer styling */
+// .footer {
+//   background-color: #333;
+//   color: #fff;
+//   padding: 10px 0;
+//   text-align: center;
+//   width: 100%;
+//   position: relative;
+//   bottom: 0rem;
+// }
+
+// /* Ensures full height to position footer at the page bottom for short content */
+// // html, body {
+// //   height: 100%;
+// //   margin: 0;
+// // }
+
+// .wrapper {
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// main {
+//   flex: 1;
+// }
+
+//   body, html {
+//     min-height: 100vh;
+//     display: flex;
+//     flex-direction: column;
+//     margin: 0;
+//   }

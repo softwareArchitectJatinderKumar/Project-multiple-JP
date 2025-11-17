@@ -1,0 +1,136 @@
+<app-topslider></app-topslider>
+<app-TopMenuBar></app-TopMenuBar>
+
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+  <div class="container-fluid ">
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body">
+          <h1 class="text-center themeClr"> Update Journal Image </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="blockHeight">
+  <div class="row d-flex align-items-center justify-content-start m-3">
+    <div class="col-2 ms-4"> <label class="fw-bolder fs-6 "> Search Journal </label></div>
+    <div class="col-4 ms-2">
+      <div class="mb-3">
+        <input [(ngModel)]="searchQueryx" (keyup)="searchx()" id="searchx" type="text" style=" width: 16rem;"
+          class="form-control" placeholder=" Search Text goes here... " aria-label="Search" aria-describedby="basic-addon1" />
+      </div>
+    </div>
+  </div>
+  <div class="d-flex p-2 align-items-center justify-content-center tableHeight">
+    <div class="row accordionColor" *ngIf="this.TempAllJournalsDetails.length > 0; else noRecords">
+      <div class="container-fluid">
+        <table id="JournalslDataTableY" class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="form-label text-danger">Sr.No</th>
+              <th class="form-label text-danger">Journal Title</th>
+              <th class="form-label text-danger">Sub Title</th>
+              <!-- <th class="form-label text-danger">Published Date</th> -->
+
+              <th class="form-label text-danger">Image</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngFor="let JournalsDataRow of paginatedJournals; let i = index">
+              <tr>
+                <td class="form-label text-center">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                <td class="form-label">{{ JournalsDataRow.journalTitle }}</td>
+                <td class="form-label">
+                  {{
+                  JournalsDataRow.subTitle.split(' ').length > 8
+                  ? JournalsDataRow.subTitle.split(' ').slice(0, 8).join(' ') + '...'
+                  : JournalsDataRow.subTitle
+                  }}
+                </td>
+                <!-- <td class="form-label text-center">{{ JournalsDataRow.publishDate | date: 'dd/MM/yyyy' }}
+                            </td> -->
+                <td class="text-center">
+                  <ng-container *ngIf="JournalsDataRow.imageUrl">
+                    <button class="btn btn-primary" (click)="onTakeAction(JournalsDataRow)" data-bs-toggle="modal"
+                      data-bs-target="#UpdateJournalImageModal">
+                      <i class="bi bi-upload"></i>
+                    </button>
+                    <button class="btn btn-dark" (click)="onSelectFile(JournalsDataRow)">
+                      <i class="bi bi-file-earmark-text"></i>
+                    </button>
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-start m-3">
+        <button class="btn btn-danger btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+        <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button class="btn btn-danger btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
+
+    </div>
+
+    <ng-template #noRecords>
+      <p class="fs-2 text-danger text-center">No Data Available.</p>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="UpdateJournalImageModal" tabindex="-1" aria-labelledby="UpdateJournalImageModalLabel"  aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content custom-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="UpdateJournalImageModalLabel">Update Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="UpdateImage">
+            <div class="card-body">
+  
+              <div class="row mb-4">
+                <div class="col-sm">
+                  <label  class="col-sm-  col-form-label">Journal  </label>
+                  <!-- <label for="JournalId" class="form-label fw-bolder">{{this.selectedJournalId}}</label> -->
+                  <label for="JournalTitle" class="form-label fw-bolder">{{this.selectedJournalTitle}}</label>
+                </div>
+                <div class="col-sm">
+                  <label  class="col-sm-  col-form-label">Journal Image:</label>
+                  <div class="col-sm- ">
+                    <input class="form-control" [(ngModel)]="fileNamesX" type="file" id="File" name="file"
+                      (change)="onFileXSelected($event, this.selectedJournalId)" accept=".png, .jpg, .jpeg" />
+                    <div *ngIf="isForm1Submitted && form1.file.errors?.required" class="invalid-feedback">
+                      Required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm text-center">
+                  <label class="col-sm-  col-form-label">
+                    Action Button </label>
+                  <div class="col-sm- "><button type="submit" [disabled]="!fileChosen[this.selectedJournalId]"
+                      class="btn btn-danger btn-sm " (click)="UpdateFileDocument(this.selectedJournalId);">Replace </button>
+                  </div>
+                  <!-- <button type="submit" style="margin-top: 27px;" [disabled]="isInputDisabled" class="btn btn-dark me-2"
+                  (click)="UpdateImageData();">Submit</button> -->
+  
+                </div>
+              </div>
+              <div class="row mb-4">
+  
+              </div>
+  
+            </div>
+          </form>
+        
+      </div>
+    </div>
+  </div>
+</div>

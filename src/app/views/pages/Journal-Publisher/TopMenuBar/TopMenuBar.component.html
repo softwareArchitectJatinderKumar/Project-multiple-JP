@@ -1,0 +1,76 @@
+<header>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg ">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul *ngIf="show" class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <li class="nav-item"><a class="nav-link " (click)="VisitPage('PublisherDashboard')">Home</a></li> -->
+          <!-- <li class="nav-item"><a class="nav-link " (click)="VisitPage('AllJournals')"> Journals </a></li> -->
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Journals
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+
+              <li><a class="dropdown-item" (click)="VisitPage('AllJournals')">View all </a></li>
+              <li><a class="dropdown-item" (click)="VisitPage('UpdateJournalsDetails')">Update </a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              User Details
+            </a>
+            <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',0,'AllUsersDetails')">Editors </a></li>
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',1,'AllUsersDetails')">Authors </a></li>
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',2,'AllUsersDetails')">Reviewers </a></li>
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',3,'AllUsersDetails')">Publisher</a></li>
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',4,'AllUsersDetails')">Managing Editors </a></li>
+              <li><a class="dropdown-item" (click)="VisitUserPage('P',99,'AllUsersDetails')">View all </a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="AccountDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Account Setting
+            </a>
+            <ul class="dropdown-menu dropDownWidth" aria-labelledby="AccountDropdown">
+              <!-- <li><a class="dropdown-item" (click)="VisitPage('PublisherDashboard')">Change Password </a></li> -->
+              <li><a class="dropdown-item" (click)="Logout()">Logout </a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Logo -->
+      <a class="navbar-brand mx-0" routerLink="/">
+        <img src="assets/images/logo/logo.svg" height="80rem" width="80rem" />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<div class="row mt-2 mb-2 d-flex justify-content-center p-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="row d-flex justify-content-center">
+        <label class="col-1 fw-bolder">User Name
+        </label>
+        <label class="col-2 text-danger fw-bolder  ">{{this.candidateName}} </label>
+        <label class=" col-6 text-success text-center fs-3 fw-bolder "> Lpu e-Journal Publisher Dashboard </label>
+        <label class="col-1 fw-bolder">Email Id</label>
+        <label class="col-2 text-danger fw-bolder ">
+          {{this.user_Email?.length>0 ? this.user_Email: 'NA' }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <router-outlet></router-outlet> -->

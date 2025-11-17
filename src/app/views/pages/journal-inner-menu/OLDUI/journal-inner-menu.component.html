@@ -1,0 +1,67 @@
+
+<div class="page-custom-nav">
+    <nav>
+        <label for="drop" class="toggle">
+            <div class="mobile-nav-icon nav-toggle" onclick="myFunction(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </label>
+        <input type="checkbox" id="drop" />
+        <ul class="menu">
+            <!-- <li><a href="/JournalAbout">About</a></li> JournalAbout/:BookId/:name--> 
+            <li><a (click)="VisitUrl(BookId,name,'About')">About</a></li>
+            <li><a (click)="VisitUrl(BookId,name,'EditorialBoard')">Editorial Board</a></li>
+            <li><a >Indexing</a></li>
+            <!-- <li><a (click)="VisitUrl(BookId,name,'Indexing')">Indexing</a></li> -->
+            <li class="nextdrop">
+                <label for="drop-1" class="toggle" onclick="PlusMinusFunction(this)">Author Guidelines</label>
+                <a  class="dropa">Author Guidelines <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-1" />
+                <ul>
+                    <li><a (click)="VisitUrl(BookId,name,'AuthorGuidelines/ManuscriptPrepare')" >Manuscript Preparation</a></li>
+                    <!-- <li><a href="#manuscriptpreparation"  >Manuscript Preparation</a></li> -->
+                    <Li><a (click)="VisitUrl(BookId,name,'AuthorGuidelines/ManuscriptWorkFlow')">Manuscript Workflow</a></Li>
+                    <!-- <Li><a href="#manuscriptworkflow">Manuscript Workflow</a></Li> -->
+                </ul>
+            </li>
+            <li class="nextdrop">
+                <label for="drop-2" class="toggle" onclick="PlusMinusFunction(this)">Policies</label>
+                <a class="dropa">Policies <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path  d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg></a>
+                <input type="checkbox" id="drop-2" />
+                <ul>
+                    <li><a  (click)="VisitUrl(BookId,name,'Policies/EditorialPolicy')">Editorial Policy</a></li> 
+                    <!-- <li><a routerLink="/EditorialPolicy/{{BookId}}/{{name}}" outerLinkActive="active"> Editorial Policy </a></li> -->
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PeerReviewPolicy')" outerLinkActive="active">Peer Review Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/OpenAccessPolicy')">Open Access Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PlagiarismPolicy')">Plagiarism Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/ComplaintPolicy')">Complaint Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CrossMarkPolicy')">Cross Mark Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/ConflictInterestPolicy')">Conflict Of Interest Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CopyrightPolicy')">Copyright And Licencing Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/CorrectionsRetractionPolicy')">Corrections Retraction
+                            Withdrawal Authorship Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/DigitalandSelfPolicy')">Digital And Self Archiving Policy</a></li>
+                    <li><a (click)="VisitUrl(BookId,name,'Policies/PublicationChargePolicy')">Publication Charge/Waiver Policy</a></li>
+                </ul>
+            </li>
+            <li><a >Current Issues</a></li>
+            <!-- <li><a (click)="VisitUrl('JournalAbout',BookId,name)">Current Issues</a></li> -->
+            <li><a >Archives</a></li>
+            <!-- <li><a (click)="VisitUrl('JournalAbout',BookId,name)">Archives</a></li> -->
+            <li><a >Call For Papers</a></li>
+            <!-- <li><a (click)="VisitUrl('JournalAbout',BookId,name)">Call For Papers</a></li> -->
+            <li><a >Submit Manuscript</a></li>
+            <!-- <li><a (click)="VisitUrl('JournalAbout',BookId,name)">Submit Manuscript</a></li> -->
+        </ul>
+    </nav>
+
+</div>

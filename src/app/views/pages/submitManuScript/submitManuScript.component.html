@@ -1,0 +1,1064 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+
+<ng-container *ngIf="IsUploading; else dataLoadedBlock">
+  <!-- Loader Template -->
+  <div class="text-center">
+    <div class="text-center">
+      <span class="text-danger fs-3">Loading </span><br />
+      <div class="spinner-grow text-dark text-center" style="width: 25rem; height: 25rem;" role="status">
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #dataLoadedBlock>
+  <div class="row" id="ActionPage" *ngIf="isLoginFailed===false; else loginFailed">
+    <div class="row d-flex justify-content-center mt-2">
+      <!-- <div class="col-md-10 text-center">
+      <label class=" mt-4 text-dark fs-4"> Journal Title <span class=" ms-3 text-danger ">
+          {{this.JournalTitle}}</span></label>
+    </div> -->
+      <div class="main-heading text-center mt-5">
+        <h1>
+          {{this.JournalTitle}}
+        </h1>
+      </div>
+    </div>
+
+    <div class="row mt-2 mb-4 d-flex justify-content-center p-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="row d-flex justify-content-around">
+            <label class="col-3">User Name
+            </label>
+            <label class="col-3 text-dark  ">{{this.candidateName}} </label>
+
+            <label class="col-3 ">Email Id</label>
+            <label class="col-3 text-dark " style="text-align: right;font-weight: 700;">
+              {{this.userId?.length>0 ? this.userId: 'NA' }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav nav-tabs mt-4 d-flex justify-content-center" id="nav-tab" role="tablist">
+        <button *ngFor="let action of UserRolesArray; let i = index" class="dashboardButton me-5"
+          id="{{ action.id }}-tab" data-bs-toggle="tab" style="padding: 0.5rem 0.5rem;"
+          [attr.data-bs-target]="'#' + action.id" role="tab" [attr.aria-controls]="action.id" [class.active]="i === 0"
+          [attr.aria-selected]="i === 0 ? 'true' : 'false'">
+          {{ action.label }} Dashboard
+        </button>
+      </div>
+    </nav>
+
+    <div class="tab-content mt-4 blockHeight" id="nav-tabContent">
+      <div *ngFor="let action of UserRolesArray; let i = index" class="tab-pane fade" [class.show]="i === 0"
+        [class.active]="i === 0" id="{{ action.id }}" role="tabpanel" [attr.aria-labelledby]="action.id + '-tab'">
+
+        <ng-container [ngSwitch]="action.label">
+
+          <!-- Author Dashboard Author/ Submit Manuscript Dashboard -->
+          <div *ngSwitchCase="'Author/ Submit Manuscript'">
+
+            <div class="row d-flex p-3 align-items-center justify-content-center ">
+              <div class="col-md-12 grid-margin stretch-card">
+
+                <div class="text-center">
+                  <h2 class="text-center text-danger mb-2"> {{action.label}} Dashboard </h2>
+                </div>
+                <div class="container  ">
+                  <div class="row  mb-3">
+                    <h4 class="mb-4 mt-4 text-start">Submit Manuscript Form</h4>
+                  </div>
+                  <div class="row  mb-2 d-none">
+                    <div class="col-md-2 ">
+                      <label class="form-label">Volume:</label>
+                    </div>
+                    <div class="col-md-4 text-start ">
+                      <span class="text-dark">{{ bookData?.volume == null ? 'NA' : bookData.volume }}</span>
+                    </div>
+                    <div class="col-md-2">
+                      <label class=" form-label">Year:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="text-dark">{{ bookData?.publishDate == null ? 'NA' : bookData.publishDate }}</span>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-2">
+                      <label class="form-label">Editor in Chief:</label>
+                    </div>
+                    <div class="col-md-4 text-start">
+                      <span class="text-dark">{{ bookData?.editorName }}</span>
+                    </div>
+                  </div>
+                  <!-- <div class="row mb-4">
+                  <div class="col-md-2">
+                    <label class="form-label">Author Email:</label>
+                  </div>
+                  <div class="col-md-4 text-start">
+                    <span class="text-dark">{{ this.AuthorEmailId }}</span>
+                  </div>
+                </div> -->
+                  <div class="row mb-4">
+                    <div class="col-md-2">
+                      <label for="journalId">Journal ID:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="text-dark">{{ this.NewIdForJournal }}</span>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-2">
+                      <label for="journalId">Editor Email: </label>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="text-dark">{{ this.AuthorEmailId }}</span>
+                    </div>
+                  </div>
+                  <form [formGroup]="scriptUploadForm" (ngSubmit)="onSubmit()">
+                    <div class="row mb-4 d-none">
+                      <div class="col-md-2">
+                        <label for="journalTitle">Journal Title:</label>
+                      </div>
+                      <div class="col-md-4 text-start">
+                        <span class="text-dark">{{ JournalTitle }}</span>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="JournalSubTitle">Journal SubTitle:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="text-dark">{{ JournalSubTitle }}</span>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4 mt-2">
+                      <div class="col-md-2 mt-3">
+                        <label for="ManuScriptTitle">Manuscript Title</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input type="text" class="form-control" formControlName="ManuScriptTitle"
+                          placeholder="Provide Manuscript Title" />
+                        <div *ngIf="submitted || scriptUploadForm.get('ManuScriptTitle')?.touched" class="text-danger">
+                          <small *ngIf="scriptUploadForm.get('ManuScriptTitle')?.errors?.['required']">Manuscript Title
+                            is required.</small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-md-2">
+                        <label for="ManuScriptType">Manuscript Type:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <select class="form-select" formControlName="ManuScriptType">
+                          <option value="Select" disabled selected>Select Manuscript Type</option>
+                          <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                            {{ dropDown.ManuScriptType }}
+                          </option>
+                        </select>
+                        <div *ngIf="submitted || scriptUploadForm.get('ManuScriptType')?.touched" class="text-danger">
+                          <small *ngIf="scriptUploadForm.get('ManuScriptType')?.errors?.['required']">Manuscript Type is
+                            required.</small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-4">
+                      <div class="col-md-2">
+                        <label for="SubmissionType" class="form-label">Submission Type:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <select class="form-select" formControlName="SubmissionType"
+                          (change)="onSubmissionTypeChange($event)">
+                          <option value="Select" disabled selected>Select Submission Type</option>
+                          <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                            {{ dropDown.SubmissionType }}
+                          </option>
+                        </select>
+                        <div *ngIf="submitted || scriptUploadForm.get('SubmissionType')?.touched" class="text-danger">
+                          <small *ngIf="scriptUploadForm.get('SubmissionType')?.errors?.['required']">Submission Type is
+                            required.</small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
+                      <div class="col-md-2">
+                        <label for="SubItemType" class="form-label">Sub Item Type:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <select class="form-select" formControlName="SubItemType">
+                          <option value="Select" disabled selected>Select Sub Item Type</option>
+                          <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                            {{ dropDown.SubItemType }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-2">
+                        <label for="file" class="form-label">Upload File:</label>
+                      </div>
+                      <div class="col-md-4">
+                        <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                          (change)="onFileSelected($event)" accept="*.*" />
+                      </div>
+                      <div class="col-md-6 text-center text-danger">
+                        If file size > 20 MB kindly send additional file to Editor In Chief
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach More
+                          Document</button>
+                      </div>
+                    </div>
+                  </form>
+
+                  <!-- <form [formGroup]="scriptUploadForm" (ngSubmit)="onSubmit()">
+                  <div class="row mb-4 d-none">
+                    <div class="col-md-2">
+                      <label for="journalTitle">Journal Title:</label>
+                    </div>
+                    <div class="col-md-4 text-start">
+                      <span class="text-dark ">{{ JournalTitle }}</span>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="JournalSubTitle">Journal SubTitle:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <span class="text-dark ">{{ JournalSubTitle }}</span>
+                    </div>
+                  </div>
+
+                  <div class="row mb-4 mt-2">
+                    <div class="col-md-2 mt-3">
+                      <label for="ManuScriptTitle">Manuscript Title</label>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" class="form-control" formControlName="ManuScriptTitle" style="width: auto;" placeholder="Provide Manuscript Title"/>
+                      <div *ngIf="submitted || ManuScriptTitle?.touched || ManuScriptTitle?.errors" class="text-danger">
+                        <small *ngIf="ManuScriptTitle?.errors?.['required']">ManuScriptTitle  is required.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-2">
+                      <label for="ManuScriptType">Manuscript Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
+                        <option value="Select" selected>Select Manuscript Type</option>
+                        <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                          {{ dropDown.ManuScriptType }}
+                        </option>
+                      </select>
+                      <div *ngIf="submitted || ManuScriptType?.touched || ManuScriptType?.errors" class="text-danger">
+                        <small *ngIf="ManuScriptType?.errors?.['required']">ManuScriptType  is required.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-2 ">
+                      <label for="SubmissionType" class="form-label">Submission Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-select" formControlName="SubmissionType" style="width: auto;"
+                        (change)="onSubmissionTypeChange($event)">
+                        <option value="Select">Select Submission Type</option>
+                        <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                          {{ dropDown.SubmissionType }}
+                        </option>
+                      </select>
+                      <div *ngIf="submitted || SubmissionType?.touched || SubmissionType?.errors" class="text-danger">
+                        <small *ngIf="SubmissionType?.errors?.['required']">SubmissionType  is required.</small>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
+                    <div class="col-md-2 ">
+                      <label for="SubItemType" class="form-label">Sub Item Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-select" formControlName="SubItemType" style="width: auto;">
+                        <option value="Select">Select Sub Item Type</option>
+                        <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                          {{ dropDown.SubItemType }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row ">
+                    <div class="col-md-2">
+                      <label for="file" class="form-label">Upload File:</label>
+                    </div>
+                    <div class="col-md-4">
+                      <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                        style="width: 17.5rem;" (change)="onFileSelected($event)" accept="*.*" />
+                    </div>
+                    <div class="col-md-6 text-center  text-danger"> If file size > 20 MB kindly send additional file
+                      to Editor In Chief </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach
+                        More Document</button>
+                    </div>
+                  </div>
+
+                </form> -->
+                </div>
+                <div class="container  ">
+                  <!-- Cart Items Dashboard -->
+                  <div class="mt-5" *ngIf="cartItems.length > 0">
+                    <h5>Manuscript Details for Submission</h5>
+                    <table class="table table-bordered table-hover">
+                      <thead>
+                        <tr>
+                          <th>Manuscript Title</th>
+                          <th>Script Type</th>
+                          <th>Submission Type</th>
+                          <th>SubItem </th>
+                          <th>File Added </th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of cartItems; let i = index">
+                          <td>{{ item.ManuScriptTitle }}</td>
+                          <td>{{ item.ManuScriptType }}</td>
+                          <td>{{ item.SubmissionType }}</td>
+                          <td>{{ (item.SubItemType=='Select' || item.SubItemType=='') ? 'NA':item.SubItemType }}</td>
+                          <td>{{ getFileName(item.file) }}</td>
+                          <td>
+                            <button class="btn btn-danger" (click)="removeFromCart(i)">Remove</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="6" class="text-center">
+                            <button (click)="generateZip()">Generate ZIP</button>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="6" class="text-center">
+                            <label for="noteMsg" class="form-label">Note: Kindly click on generate Zip Button to enable
+                              the Submit
+                              Manuscript Button </label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="6"> <button class="btn btn-dark" (click)="uploadFile()"
+                              [disabled]="!this.generatedFile">Submit Manuscript </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviewer Dashboard -->
+          <div *ngSwitchCase="'Reviewer'">
+            <div class="row">
+              <div class="text-center">
+                <h2 class="text-center text-danger mb-5"> {{action.label}} Dashboard </h2>
+              </div>
+
+              <nav>
+                <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
+                  <!-- Manuscript To Review Tab -->
+                  <button class="dashboardButton me-5 active" id="ManuscriptToReview-all-tab" data-bs-toggle="tab"
+                    data-bs-target="#ManuscriptToReview-all" type="button" role="tab"
+                    aria-controls="ManuscriptToReview-all" aria-selected="true">
+                    Manuscript To Review
+                  </button>
+
+                  <!-- Reviewers Tab -->
+                  <button class="dashboardButton ms-5" id="Reviewed-all-tab" data-bs-toggle="tab"
+                    data-bs-target="#Reviewed-all" type="button" role="tab" aria-controls="Reviewed-all"
+                    aria-selected="false">
+                    Reviewers Remarks
+                  </button>
+                </div>
+              </nav>
+
+              <!-- SINGLE tab-content wrapper for all tab panes -->
+              <div class="tab-content mt-4" id="nav-tabContent">
+
+                <!-- Manuscript Tab Content (Initially Active) -->
+                <div class="tab-pane fade show active" id="ManuscriptToReview-all" role="tabpanel"
+                  aria-labelledby="ManuscriptToReview-all-tab">
+                  <div class="text-center">
+                    <h2 class="text-center text-danger mb-2"> To Review Manuscript Details </h2>
+                  </div>
+                  <div class="col-md-12 stretch-card accordionColor tableHeight">
+                    <div class="card accordionColor ">
+                      <div class="card-body accordionColor " *ngIf="this.ReviewerData?.length>0; else NoData">
+                        <div class="table-responsive">
+                          <table class="table  table-hover">
+                            <thead>
+                              <tr>
+                                <th> Sr.No</th>
+                                <th *ngFor="let col of ReviewerdisplayedColumns">{{ ReviewercolumnHeaders[col] }}</th>
+                                <!-- <th colspan="2"> Accept / Reject</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let row of paginatedReviewerData; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td *ngFor="let col of ReviewerdisplayedColumns">
+                                  <ng-container [ngSwitch]="col">
+                                    <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm"
+                                      (click)="onSelectFileX(row[col])">
+                                      <!-- View File -->
+                                      <i class="bi bi-file-earmark-text "></i>
+                                    </button>
+
+                                    <button *ngSwitchCase="'journalId'" class="btn btn-danger btn-sm"
+                                      (click)="onTakeAction2(row)" data-bs-toggle="modal"
+                                      data-bs-target="#ReviewerModal">
+                                      <!-- Take Action -->
+                                      <i class="bi bi-exclamation-circle"></i>
+                                    </button>
+                                    <span *ngSwitchCase="'manuScriptType'">
+                                      {{row[col]?.length>0? row[col]: 'NA'}}
+                                    </span>
+
+                                    <span *ngSwitchDefault>{{ row[col] }}</span>
+                                  </ng-container>
+                                </td>
+
+
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <div class="pagination-controls">
+                            <button (click)="previousPageReviewer()" class="btn btn-dark btn-sm"
+                              [disabled]="currentPageReviewer == 1">Previous</button>
+                            <span> Page {{ currentPageReviewer }} of {{ totalPagesReviewer }} </span>
+                            <button (click)="nextPageReviewer()" class="btn btn-dark btn-sm"
+                              [disabled]="currentPageReviewer == totalPagesReviewer">Next</button>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #NoData>
+                        <div class="themeClr">
+                          <h1 class="fs-2 text-center vh-50 p-3 m-4 "> No Data Found </h1>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="Reviewed-all" role="tabpanel" aria-labelledby="Reviewed-all-tab">
+              <div class="text-center">
+                <h2 class="text-center text-danger mb-2"> Reviewed Manuscript Details </h2>
+              </div>
+              <div class="container-fluid table-bordered table-responsive">
+                <div class="row">
+                  <div class="d-flex justify-content-center mb-2">
+                    <div class="col-md-2">
+                      <input type="text" class="form-control w-10" placeholder="Search Reviewer Remarks..."
+                        [(ngModel)]="searchText" (input)="applySearch()" />
+                    </div>
+                  </div>
+                  <div class="col-md-12 stretch-card">
+                    <div class="card accordionColor ">
+                      <div class="card-body accordionColor "
+                        *ngIf="filteredReviewerRemarksData.length > 0; else NoData">
+
+                        <div class="table-responsive">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th *ngFor="let col of ReviewerRemarksdisplayedColumns">
+                                  {{ displayedReviewerRemarksColumnHeaders[col] }}
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let row of paginatedReviewerRemarks">
+                                <td *ngFor="let col of ReviewerRemarksdisplayedColumns">
+                                  <ng-container [ngSwitch]="col">
+                                    <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm"
+                                      (click)="onSelectFileEditorX(row[col])">
+                                      <i class="bi bi-file-earmark-text"></i>
+                                    </button>
+                                    <span *ngSwitchCase="'journalId'" class="col-md-6">
+                                      <ng-container *ngIf="row.isActionable !== undefined">
+                                        <div *ngIf="row.isActionable === null; else actionApplied">
+                                          <button class="btn btn-success btn-sm" (click)="ChangeApproveStatus(row)">
+                                            <i class="bi bi-check-circle"></i>
+                                          </button>
+                                          <button class="btn btn-danger btn-sm" (click)="DisapproveStatus(row)">
+                                            <i class="bi bi-x-circle"></i>
+                                          </button>
+                                        </div>
+                                        <ng-template #actionApplied>
+                                          <span class="text-danger "> <i class="bi bi-x-circle  "><br /></i></span>
+                                        </ng-template>
+                                      </ng-container>
+                                    </span>
+
+                                    <!-- <span *ngSwitchCase="'journalId'" class="col-md-6">
+                                    <ng-container *ngIf="row.isActionable; else NoApp">
+                                      <button class="btn btn-success btn-sm" (click)="ChangeApproveStatus(row)"
+                                        [ngClass]="'btn-success'">
+                                        <i class="bi bi-check-circle"></i>
+                                      </button>
+                                      <button class="btn btn-danger btn-sm" (click)="DisapproveStatus(row)"
+                                        [ngClass]=" 'btn-danger'">
+                                        <i class="bi bi-x-circle"></i>
+                                      </button>
+                                    </ng-container>
+                                    <ng-template #NoApp>
+                                      <span class="text-danger "> <i class="bi bi-x-circle  "></i><br />Action Applied
+                                      </span>
+                                    </ng-template>
+        
+        
+                                  </span> -->
+
+                                    <span *ngSwitchCase="'isApproved'">
+                                      <span [ngClass]="row[col] == '1' ? 'text-success' : 'text-danger'">
+                                        {{ row[col] == '1' ? 'Approved' : 'Not Approved' }}
+                                      </span>{{row[col]}}
+                                    </span>
+                                    <span *ngSwitchCase="'newInformationRating'">
+                                      {{ row[col] !== null ? row[col] : 'N/A' }}
+                                    </span>
+                                    <span *ngSwitchCase="'approvalStatus'">
+                                      <span
+                                        [ngClass]="{'text-warning': row.isActionable == null,'text-success': row.isActionable == 1,'text-danger': row.isActionable == 0}">
+                                        {{ row.isActionable == null ? 'Pending' : row.isActionable == 1 ? 'Approved' :
+                                        'Rejected'
+                                        }}
+                                      </span>
+                                    </span>
+                                    <span *ngSwitchDefault>{{ row[col] }}</span>
+                                  </ng-container>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+
+                          <div class="pagination-controls">
+                            <button (click)="previousPageReviewerRemarks()"
+                              [disabled]="currentPageReviewerRemarks === 1">Previous</button>
+                            <span> Page {{ currentPageReviewerRemarks }} of {{ totalPagesReviewerRemarks }} </span>
+                            <button (click)="nextPageReviewerRemarks()"
+                              [disabled]="currentPageReviewerRemarks >= totalPagesReviewerRemarks">Next</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <ng-template #NoData>
+                        <div class="themeClr">
+                          <h1 class="fs-2 text-center vh-50 p-3 m-4 themeClr"> No Data Found </h1>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editor Dashboard -->
+          <div *ngSwitchCase="'Editor'">
+            <div class="text-center">
+              <h2 class="text-center text-danger mb-5"> {{action.label}} Dashboard </h2>
+            </div>
+            <nav>
+              <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
+                <!-- Manuscript Tab -->
+                <button class="dashboardButton me-5 active" id="Manuscript-all-tab" data-bs-toggle="tab"
+                  data-bs-target="#Manuscript-all" type="button" role="tab" aria-controls="Manuscript-all"
+                  aria-selected="true">
+                  Manuscript Submitted
+                </button>
+                <!-- Reviewers Tab -->
+                <button class="dashboardButton ms-5" id="Reviewers-all-tab" data-bs-toggle="tab"
+                  data-bs-target="#Reviewers-tab" type="button" role="tab" aria-controls="Reviewers-tab"
+                  aria-selected="false">
+                  Reviewers Remarks
+                </button>
+              </div>
+            </nav>
+
+            <div class="tab-content mt-4" id="nav-tabContent">
+
+              <!-- Manuscript Tab Content (Initially Active) -->
+              <div class="tab-pane fade show active" id="Manuscript-all" role="tabpanel"
+                aria-labelledby="Manuscript-all-tab">
+                <div class="text-center">
+                  <h2 class="text-center text-danger mb-2"> Manuscript Details </h2>
+                </div>
+                <div class="container-fluid table-bordered table-responsive">
+                  <div class="row">
+                    <div class="col-md-12 stretch-card">
+                      <div class="card accordionColor">
+                        <div class="card-body accordionColor" *ngIf="EditorData?.length > 0; else NoData">
+                          <div class="table-responsive">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th *ngFor="let col of EditordisplayedColumns">
+                                    {{ displayedEditorColumnHeaders[col] }}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let row of paginatedEditorData">
+                                  <td *ngFor="let col of EditordisplayedColumns">
+                                    <ng-container [ngSwitch]="col">
+                                      <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm"
+                                        (click)="onSelectFileEditorX(row[col])">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                      </button>
+                                      <span *ngSwitchCase="'reviewerAssigned'">
+                                        <button *ngIf="row[col]==null; else NA" class="btn btn-success btn-sm me-4"
+                                          (click)="onTakeAction(row)" data-bs-toggle="modal"
+                                          data-bs-target="#assignReviewerModal">
+                                          <i class="bi bi-circle"></i>
+                                        </button>
+                                      </span>
+                                      <ng-template #NA>
+                                        <div class="themeClr">
+                                          <span class="text-success ">
+                                            Reviewer Assigned
+                                            <!-- Current Reviewer <br/>{{row[col]}}  -->
+                                          </span>
+                                        </div>
+                                      </ng-template>
+                                      <span *ngSwitchCase="'manuScriptTitle'">
+                                        <span [ngClass]="{'text-danger me-2': !row[col]?.length}">
+                                          {{ row[col]?.length ? row[col] : 'Not Provided' }}
+                                        </span>
+                                      </span>
+                                      <span *ngSwitchCase="'journalId'">
+                                        <button class="btn btn-danger btn-sm" (click)="onDeleteAction(row)">
+                                          <i class="bi bi-exclamation-circle"></i>
+                                        </button>
+                                      </span>
+                                      <span *ngSwitchDefault>{{ row[col] }}</span>
+                                    </ng-container>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <!-- Pagination Controls -->
+                            <div class="pagination-controls">
+                              <button (click)="previousPageEditor()"
+                                [disabled]="currentPageEditor === 1">Previous</button>
+                              <span> Page {{ currentPageEditor }} of {{ totalPagesEditor }} </span>
+                              <button (click)="nextPageEditor()"
+                                [disabled]="currentPageEditor >= totalPagesEditor">Next</button>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-template #NoData>
+                          <div class="themeClr">
+                            <h1 class="fs-2 text-center vh-50 p-3 m-4"> No Data Found </h1>
+                          </div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--  Reviewers Tab Content (Initially Hidden) -->
+              <div class="tab-pane fade" id="Reviewers-tab" role="tabpanel" aria-labelledby="Reviewers-all-tab">
+                <div class="text-center">
+                  <h2 class="text-center text-danger mb-2"> All Reviews </h2>
+                </div>
+                <div class="container-fluid table-bordered table-responsive">
+                  <div class="row">
+                    <div class="col-md-12 stretch-card">
+                      <div class="card accordionColor">
+                        <div class="card-body accordionColor" *ngIf="ReviewerRemarksData.length > 0; else NoData">
+                          <div class="table-responsive">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th *ngFor="let col of ReviewerRemarksdisplayedColumns">
+                                    {{ displayedReviewerRemarksColumnHeaders[col] }}
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let row of paginatedReviewerRemarks">
+                                  <td *ngFor="let col of ReviewerRemarksdisplayedColumns">
+                                    <ng-container [ngSwitch]="col">
+                                      <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm"
+                                        (click)="onSelectFileEditorX(row[col])">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                      </button>
+                                      <span *ngSwitchCase="'journalId'" class="col-md-6">
+                                        <ng-container *ngIf="row.isActionable !== undefined">
+                                          <div *ngIf="row.isActionable === null; else actionApplied">
+                                            <button class="btn btn-success btn-sm" (click)="ChangeApproveStatus(row)">
+                                              <i class="bi bi-check-circle"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" (click)="DisapproveStatus(row)">
+                                              <i class="bi bi-x-circle"></i>
+                                            </button>
+                                          </div>
+                                          <ng-template #actionApplied>
+                                            <span class="text-danger "> <i class="bi bi-x-circle  "><br /></i></span>
+                                          </ng-template>
+                                        </ng-container>
+                                      </span>
+
+
+                                      <span *ngSwitchCase="'isApproved'">
+                                        <span [ngClass]="row[col] === '1' ? 'text-success' : 'text-danger'">
+                                          {{ row[col] === '1' ? 'Approved' : 'Not Approved' }}
+                                        </span>{{row[col]}}
+                                      </span>
+                                      <span *ngSwitchCase="'newInformationRating'">
+                                        {{ row[col] !== null ? row[col] : 'N/A' }}
+                                      </span>
+                                      <span *ngSwitchCase="'approvalStatus'">
+                                        <span [ngClass]="{
+                                                        'text-warning': row.isActionable == null,
+                                                        'text-success': row.isActionable == 1,
+                                                        'text-danger': row.isActionable == 0
+                                                      }">
+                                          {{ row.isActionable == null ? 'Pending' : row.isActionable == 1 ? 'Approved' :
+                                          'Rejected' }}
+                                        </span>
+                                      </span>
+                                      <span *ngSwitchDefault>{{ row[col] }}</span>
+                                    </ng-container>
+                                  </td>
+
+                                </tr>
+                              </tbody>
+                            </table>
+
+
+                            <div class="pagination-controls">
+                              <button (click)="previousPageReviewerRemarks()"
+                                [disabled]="currentPageReviewerRemarks === 1">Previous</button>
+                              <span> Page {{ currentPageReviewerRemarks }} of {{ totalPagesReviewerRemarks }} </span>
+                              <button (click)="nextPageReviewerRemarks()"
+                                [disabled]="currentPageReviewerRemarks >= totalPagesReviewerRemarks">Next</button>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-template #NoData>
+                          <div class="themeClr">
+                            <h1 class="fs-2 text-center vh-50 p-3 m-4"> No Data Found </h1>
+                          </div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Publisher Dashboard -->
+          <div *ngSwitchCase="'Publisher'">
+            <div class="text-center">
+              <h2 class="text-center text-danger mb-5"> {{action.label}} Dashboard </h2>
+            </div>
+            <div class="container-fluid table-bordered table-responsive">
+              <div class="row justify-content-center">
+                <div class="col-md-12">
+                  <div class="card accordionColor text-center p-4">
+                    <div class="row">
+                      <div class="col-12">
+                        <h2 class="text-dark m-0 ">
+                          <!-- Publisher-specific tools and settings. Manage publication scheduling and final release. -->
+                          Forbidden Access
+                        </h2>
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-12">
+                        <button class="btn btn-dark" disabled>Publish Article</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Default Dashboard (For any unknown role) -->
+          <div *ngSwitchDefault>
+            <div class="text-center">
+              <h2 class="text-center text-danger mb-5"> Invalid Section </h2>
+            </div>
+            <div class="container-fluid table-bordered table-responsive ">
+              <div class="row">
+                <div class="col-md-12 stretch-card">
+                  <div class="card accordionColor ">
+                    <div class="card">
+                      <div class="card-body">
+
+                        <label class="col-md-12 form-label text-danger text-center fs-4 ">
+                          Access Denied
+                        </label>
+                      </div>
+                      <div class="row d-flex justify-content-center">
+                        <label class="col-md-12 form-label " style="font-weight: 700;">
+                          <p class="text-center">You don't have access to this Dashboard.</p>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #loginFailed>
+  <div class="vh-100 text-center " *ngIf="isLoginFailed">
+    <h3 class="text-center fs-2 m-5 text-warn pt-5 "> Login Failed . </h3>
+    <div class="row mt-4 mb-4">
+      <div class="col-sm-12 text-center">
+        <div class="mb-3 p-4">
+          <Label class="form-label fs-4 text-warn ">Forbidden Access!.</Label>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Working logic for 3 internal user or one external user  -->
+<div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog custom-modal-size">
+    <div class="modal-content rounded-3 shadow-lg">
+      <div class="modal-header ">
+        <h5 class="fw-bold fs-4" id="assignReviewerModalLabel">Assign Reviewer</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+          (click)="resetSelectedReviewers()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="assignReviewer()" #reviewerForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label">Journal Title</label>
+            <input type="text" class="form-control" [(ngModel)]="JournalTitle" name="journalTitle" readonly />
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label fw-bold mb-3">Select Reviewer(s)</label>
+              <div class="dropdown mb-3">
+                <button class="btn btn-outline-dark dropdown-toggle w-42 text-start" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ selectedReviewerIds.length > 0 ? selectedReviewerIds.length + ' reviewer(s) selected' : 'Select at
+                  least 2
+                  Reviewers' }}
+                </button>
+                <ul class="dropdown-menu w-42 p-2 shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                  <li *ngFor="let reviewer of reviewerList">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" [id]="reviewer.emailId" [value]="reviewer.emailId"
+                        [checked]="selectedReviewerIds.includes(reviewer.emailId)"
+                        (change)="toggleReviewerSelection(reviewer.emailId, $event)" />
+                      <label class="form-check-label" [for]="reviewer.emailId">
+                        {{ reviewer.emailId }} -
+                        <span class="badge bg-success">{{ reviewer.specialization }}</span>
+                        <!--  
+                        // <span class="badge bg-success">
+                        //   {{ reviewer.userRole == '0' ? 'Author' : reviewer.userRole == '1' ? 'Editor' : reviewer.userRole
+                        //   == '2' ? 'Reviewer'  :'Multiple Roles' }}
+                        // </span>
+                        -->
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div *ngIf="reviewerForm.submitted && selectedReviewerIds.length === 0" class="text-danger mb-3">
+                Please select at least one reviewer.
+              </div>
+              <div class="mb-3" *ngIf="selectedReviewerIds.length > 0">
+                <label class="form-label fw-bold">Selected Reviewer(s):</label>
+                <div class="d-flex flex-wrap gap-1">
+                  <span *ngFor="let email of selectedReviewerIds; let last = last; let i = index">
+                    <span class="fw-semibold">{{ i + 1 }}.</span>
+                    {{ getReviewerNameByEmail(email) }}<span *ngIf="!last">, </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center border-top-0">
+            <button type="button" class="btn btn-outline-secondary me-2" data-bs-dismiss="modal"
+              (click)="resetSelectedReviewers(); scrollToTop()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="selectedReviewerIds.length < 2"
+              (click)="reviewerForm.ngSubmit.emit(); scrollToTop()">Assign Reviewers</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- submitReviewerForm Reviewers Modal -->
+<div class="modal fade" id="ReviewerModal" tabindex="-1" aria-labelledby="ReviewerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content custom-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ReviewerModalLabel">Reviewer Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitReviewerForm()">
+          <!-- Reviewer Recommendation Term Dropdown -->
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="recommendation" class="form-label ">Reviewer Term</label>
+              <select class="form-select" [(ngModel)]="reviewForm.recommendation" name="recommendation" required>
+                <option value="" disabled selected>Select Term</option>
+                <option value="Minor Revisions">Minor Revisions</option>
+                <option value="Major Revisions">Major Revisions</option>
+              </select>
+            </div>
+
+            <div class="col-md-4 mb-3">
+              <label for="rating" class="form-label ">Manuscript Rating (1-10)</label>
+              <input type="number" class="form-control form-control-sm" id="rating" min="1" max="10"
+                [(ngModel)]="reviewForm.rating" name="rating" required #ratingRef="ngModel" />
+              <div class="text-danger " *ngIf="ratingRef.invalid && (ratingRef.touched || ratingRef.dirty)">
+                Rating is required.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Transfer Authorization Response:</label>
+              <select class="form-select form-select-sm" id="transferAuthorization"
+                [(ngModel)]="reviewForm.transferAuthorization" name="transferAuthorization" required
+                #transferAuthorizationRef="ngModel">
+                <option value="" disabled selected>Select authorization</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              <div class="text-danger small"
+                *ngIf="transferAuthorizationRef.invalid && (transferAuthorizationRef.touched || transferAuthorizationRef.dirty)">
+                Transfer Authorization is required.
+              </div>
+            </div>
+          </div>
+          <!--  Feedback form   -->
+          <!-- <div class="row">
+            
+          </div> -->
+
+          <!-- Reviewer Questions -->
+          <div class="row">
+            <div class="col-md-4 mb-3" *ngFor="let question of reviewForm.questions; let i = index">
+              <label [for]="'question' + i" class="form-label  mb-2">{{ question.text }}</label>
+
+              <select class="form-select form-select-sm" [id]="'question' + i" [(ngModel)]="question.answer"
+                [name]="'question' + i" required #questionRef="ngModel">
+                <option value="" disabled selected>Select</option>
+                <option *ngFor="let option of question.options" [value]="option">{{ option }}</option>
+              </select>
+              <div class="text-danger small" *ngIf="questionRef.invalid && (questionRef.touched || questionRef.dirty)">
+                Answer is required.
+              </div>
+            </div>
+          </div>
+          <div class="card mb-2">
+            <div class="card-header bg-light py-1 px-2">
+              <h6 class="mb-0 fs-6">Final Decision</h6>
+            </div>
+            <div class="card-body p-1">
+              <div class="row g-3">
+                <div class="col-md-4 mt-5">
+                  <label class="form-label">Comments to Author:</label>
+                  <textarea class="form-control form-control-sm" id="commentsToAuthor"
+                    [(ngModel)]="reviewForm.commentsToAuthor" name="commentsToAuthor" required minlength="50"
+                    #commentsToAuthorRef="ngModel" rows="5"></textarea>
+                  <div class="text-danger small"
+                    *ngIf="commentsToAuthorRef.invalid && (commentsToAuthorRef.touched || commentsToAuthorRef.dirty)">
+                    <div *ngIf="commentsToAuthorRef.errors?.['required']">Comments are required.</div>
+                    <div *ngIf="commentsToAuthorRef.errors?.['minlength']">Minimum 50 characters required.</div>
+                  </div>
+                </div>
+                <div class="col-md-3 mt-5">
+                  <label class="form-label">Comments to Editor:</label>
+
+                  <textarea class="form-control form-control-sm" id="commentsToEditor"
+                    [(ngModel)]="reviewForm.commentsToEditor" name="commentsToEditor" required minlength="50"
+                    #commentsToEditorRef="ngModel" rows="5"></textarea>
+                  <div class="text-danger small"
+                    *ngIf="commentsToEditorRef.invalid && (commentsToEditorRef.touched || commentsToEditorRef.dirty)">
+                    <div *ngIf="commentsToEditorRef.errors?.['required']">Comments are required.</div>
+                    <div *ngIf="commentsToEditorRef.errors?.['minlength']">Minimum 50 characters required.</div>
+                  </div>
+                </div>
+                <div class="col-md-4 mt-5">
+                  <label for="approvalAction" class="form-label">Decision</label>
+
+                  <select class="form-select form-select-sm" id="approvalAction" [(ngModel)]="reviewForm.approvalAction"
+                    name="approvalAction" required #approvalActionRef="ngModel">
+                    <option value="" disabled selected>Select decision</option>
+                    <option value="Accept with minor corrections">Accept with minor corrections</option>
+                    <option value="Accept with major corrections">Accept with major corrections</option>
+                    <option value="Accept in the current form">Accept in the current form</option>
+                    <option value="Editing requires">Editing requires</option>
+                  </select>
+
+
+                  <div class="text-danger small"
+                    *ngIf="approvalActionRef.invalid && (approvalActionRef.touched || approvalActionRef.dirty)">
+                    Approval Action is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Sending Manuscript master Id {{this.ManuscriptMasterId }}</label>
+            </div>
+          </div> -->
+
+          <div class="modal-footer py-1 px-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm"
+              [disabled]="this.reviewForm.commentsToAuthor.length < 5">
+              <i class="bi bi-send-fill me-1"></i>Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

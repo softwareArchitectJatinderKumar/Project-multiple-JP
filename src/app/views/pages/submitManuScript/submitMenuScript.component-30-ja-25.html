@@ -1,0 +1,345 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+
+<div class="row" *ngIf="bookData?.id > 0 ; else noRecords;">
+  <section>
+    <div class="container about-journal">
+      <div class="row">
+        <h1 class="mb-5 mt-4 text-center">Submit your Manuscript</h1>
+
+        <!-- <div class="col-md-12">
+          <h2>{{ bookData?.journalTitle }}</h2>
+        </div>
+        <div class="col-md-12">
+          <p class="fs-2 fw-bold" [innerHTML]="bookData?.introduction"></p>
+        </div> -->
+        <div class="col-md-12">
+          <div class="row mb-2">
+            <label class="col-sm-2 col-form-label">Volume:</label>
+            <div class="col-sm-10">
+              <span class="text-dark">{{ bookData?.volume == null ? 'NA' : bookData.volume }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mb-2">
+            <label class="col-sm-2 col-form-label">Year:</label>
+            <div class="col-sm-10">
+              <span class="text-dark">{{ bookData?.publishDate == null ? 'NA' : bookData.publishDate }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row mb-2">
+            <label class="col-sm-2 col-form-label">Editor in Chief:</label>
+            <div class="col-sm-10">
+              <span class="text-dark">{{ bookData?.editorName }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col-md-12 text-center pt-2 ">
+          <form [formGroup]="scriptUploadForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="journalId" class="col-sm-2 ">Journal ID:</label>
+                  <div class="col-sm-10 text-start">
+                    <span class="text-dark">{{ JournalId }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="journalTitle" class="col-sm-2 ">Journal Title:</label>
+                  <div class="col-sm-10 text-start">
+                    <span class="text-dark ">{{ JournalTitle }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="JournalSubTitle" class="col-sm-2  ">Journal SubTitle:</label>
+                  <div class="col-sm-10 text-start">
+                    <span class="text-dark ">{{ JournalSubTitle }}</span>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <!-- <div class="row">
+
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="ManuScriptType" class="col-sm-2">Script Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" formControlName="ManuScriptType" style=" width: auto;">
+                      <option value="Select">Select Script Type</option>
+                      <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                        {{ dropDown.ManuScriptType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="SubmissionType" class="col-sm-2 col-form-label">Submission Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select  " formControlName="SubmissionType" style=" width: auto;">
+                      <option value="Select">Select Submission Type</option>
+                      <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                        {{ dropDown.SubmissionType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="SubItemType" class="col-sm-2 col-form-label">Sub Item Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select  " formControlName="SubItemType" style=" width: auto;">
+                      <option value="Select">Select SubItem Type</option>
+                      <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                        {{ dropDown.SubItemType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="row mb-4 justify-contents-between">
+                  <label for="file" class="col-sm-2 col-form-label">Upload File:</label>
+                  <div class="col-sm-4">
+                    <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                      style=" width: auto;" (change)="onFileSelected($event)" accept="*.*" />
+                  </div>
+                  <div class="col-sm-4 ms-5 text-start text-danger"> If file size > 20 MB kindly send additional file to Editor In Chief</div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Add to Cart</button>
+              </div>
+            </div> -->
+
+
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="ManuScriptType" class="col-sm-2">Script Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
+                      <option value="Select">Select Script Type</option>
+                      <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                        {{ dropDown.ManuScriptType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-md-12">
+                <div class="row mb-4">
+                  <label for="SubmissionType" class="col-sm-2 col-form-label">Submission Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" formControlName="SubmissionType" style="width: auto;" (change)="onSubmissionTypeChange($event)">
+                      <option value="Select">Select Submission Type</option>
+                      <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                        {{ dropDown.SubmissionType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Conditionally display Sub Item Type based on Submission Type -->
+              <div *ngIf="submissionType === 'Manuscript'" class="col-md-12">
+                <div class="row mb-4">
+                  <label for="SubItemType" class="col-sm-2 col-form-label">Sub Item Type:</label>
+                  <div class="col-sm-10">
+                    <select class="form-select" formControlName="SubItemType" style="width: auto;">
+                      <option value="Select">Select SubItem Type</option>
+                      <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                        {{ dropDown.SubItemType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-md-12">
+                <div class="row mb-4 justify-contents-between">
+                  <label for="file" class="col-sm-2 col-form-label">Upload File:</label>
+                  <div class="col-sm-4">
+                    <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                      style="width: auto;" (change)="onFileSelected($event)" accept="*.*" />
+                  </div>
+                  <div class="col-sm-4 ms-5 text-start text-danger"> If file size > 20 MB kindly send additional file to Editor In Chief</div>
+                </div>
+              </div>
+            
+              <div class="col-md-12">
+                <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Add to Cart</button>
+              </div>
+            </div>
+            
+            <!-- <div class="row m-3">
+              <div class="col-md-6">
+                <div class="row mb-3">
+                  <label for="ManuScriptType" class="col-sm-4  ">Script Type:</label>
+                  <div class="col-sm-8">
+                    <select class="form-select" formControlName="ManuScriptType">
+                      <option value="">Select Script Type</option>
+                      <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                        {{ dropDown.ManuScriptType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-md-6">
+                <div class="row mb-3">
+                  <label for="SubmissionType" class="col-sm-4 col-form-label">Submission Type:</label>
+                  <div class="col-sm-8">
+                    <select class="form-select" formControlName="SubmissionType">
+                      <option value="">Select Submission Type</option>
+                      <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                        {{ dropDown.SubmissionType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="col-md-4">
+                <div class="row mb-3">
+                  <label for="file" class="col-sm-4 col-form-label">Upload File:</label>
+                  <div class="col-sm-8">
+                    <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                      (change)="onFileSelected($event)" accept=".zip, .rar, .7z" />
+                    <small class="text-danger">Allowed formats: .zip, .rar, .7z | Max size: 5MB</small>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </form>
+
+          <!-- Cart Items Section -->
+          <!-- <div class="mt-5" *ngIf="cartItems.length > 0">
+            <h5>Manuscript Details for Submission</h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Script Type</th>
+                  <th>Submission Type</th>
+                  <th>SubItem </th>
+                  <th>File Added </th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cartItems; let i = index">
+                  <td>{{ item.ManuScriptType }}</td>
+                  <td>{{ item.SubmissionType }}</td>
+                  <td>{{ item.SubItemType }}</td>
+                  <td>{{ getFileName(item.file) }}</td>
+                  <td>
+                    <button class="btn btn-danger" (click)="removeFromCart(i)">Remove</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <label>
+                      <input type="radio" name="fileType" [(ngModel)]="selectedOption" value="pdf"> Generate PDF
+                    </label>
+                    <label class="ms-3">
+                      <input type="radio" name="fileType" [(ngModel)]="selectedOption" value="zip"> Generate ZIP
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4"> <button class="btn btn-danger" (click)="saveAll()">SAVE ALL </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+
+          <div class="mt-5" *ngIf="cartItems.length > 0">
+            <h5>Manuscript Details for Submission</h5>
+          
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Script Type</th>
+                  <th>Submission Type</th>
+                  <th>SubItem</th>
+                  <th>File Added</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cartItems; let i = index">
+                  <td>{{ item.ManuScriptType }}</td>
+                  <td>{{ item.SubmissionType }}</td>
+                  <td>{{ item.SubItemType }}</td>
+                  <td>{{ getFileName(item.file) }}</td>
+                  <td>
+                    <button class="btn btn-danger" (click)="removeFromCart(i)">Remove</button>
+                  </td>
+                </tr>
+          
+                <tr>
+                  <td colspan="4">
+                    <label>
+                      <input type="radio" name="generateOption" value="pdf" [(ngModel)]="selectedOption"> Generate PDF
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                      <input type="radio" name="generateOption" value="zip" [(ngModel)]="selectedOption"> Generate ZIP
+                    </label>
+                  </td>
+                </tr>
+          
+                <tr>
+                  <td colspan="4">
+                    <button class="btn btn-success" (click)="generateSelectedOption()">Generate Selected Option</button>
+                    <button class="btn btn-danger" (click)="saveAll()">SAVE ALL</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="row">
+  <ng-template #noRecords>
+    <div class="row">
+      <div class="text-center">
+        <!-- <h4 class="text-center fs-3 text-danger"> Loading Data.. </h4> -->
+        <span class="text-danger fs-3">Loading </span><br />
+        <div class="spinner-grow text-danger text-center" style=" width: 14rem; height: 14rem;" role="status">
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

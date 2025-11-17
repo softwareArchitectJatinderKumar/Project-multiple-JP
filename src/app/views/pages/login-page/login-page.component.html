@@ -1,0 +1,66 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<section class="section">
+<div class="row  auth-page">
+
+    <div class="container">
+    <div class="card">
+      <div class="row">
+        <div class="col-md-6 d-lg-block">
+          <div class="auth-side-wrapper"
+            [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/lpu-assets/images/cif/login-left.png)' }">
+          </div>
+        </div>
+        <div class="col-md-6 login-div d-flex justify-content-around">
+          <div class="auth-form-wrapper px-4 py-5">
+            <a routerLink="." class="nobleui-logo d-block mb-2 ms-5 fs-2">LPU Journal Web <span>Portal</span></a>
+            <h5 class="text-dark fw-normal mb-4">Welcome back! Log in to your account.</h5>
+            <form class="forms-sample" [formGroup]="formdata" (ngSubmit)="OnSubmit()">
+              <div class="mb-3 mt-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" formControlName="Email" placeholder="Enter Email or User Id " class="form-control"
+                  id="exampleInputEmail1">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" formControlName="password" class="form-control" placeholder="Enter Password"
+                  id="exampleInputPassword1" autocomplete="current-password">
+              </div>
+              <div class="mb-3">
+                <label class="form-check-label" for="authCheck">
+                  Choose Role
+                </label>
+                <select class="form-select w-50" formControlName="UserRoleS" (change)="CheckUserType($event)">
+                    <option value="Select">Login As </option>
+                    <option value="1">Student</option>
+                    <option value="2">Industry Users</option>
+                    <option value="3">Research Users</option>
+                    <option value="4">Other Users</option>
+                </select>
+                <span *ngIf="userRole && userRole.invalid && userRole.touched">Field Required</span>
+                <span class="mt-4 text-danger fs-5">* All Field Required</span>
+              </div>
+              <div class="mb-5 mt-5">
+
+                <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0" [disabled]=formdata.invalid>
+                  Login</button>
+                <!-- <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0" (click)="onLoggedin($event)">Login</button> -->
+                <!-- <button type="button" class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
+                    <i class="feather icon-twitter btn-icon-prepend"></i>
+                    Recover Password
+                </button> -->
+                <!-- <button type="button" class="btn btn-primary me-2 mb-2 mb-md-0" routerLink="/InternalLogin" >Internal User Login</button> -->
+                <a routerLink="/signup" class="btn btn-primary btn-icon-text mb-2 mb-md-0">Not a user? Sign up</a>
+              </div>
+              <!-- <a routerLink="/InternalUserLogin" class="btn btn-danger btn-icon-text mb-2 ms-5 mb-md-0">LPU User
+                Login</a> -->
+              <!-- <a routerLink="/auth/register" class="d-block mt-3 text-muted">Not a user? Sign up</a> -->
+              <!-- <a routerLink="/AdminLogin" class="d-block mt-3 text-muted">CIF Admin </a> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

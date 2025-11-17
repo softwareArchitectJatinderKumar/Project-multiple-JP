@@ -1,0 +1,218 @@
+
+<section>
+    <div class="container journal-details-tabs">
+        <div class="row">
+            <ul class="nav-tabs border-0 d-none d-lg-flex flex-column col-lg-3" id="journal-details-tab" role="tablist">
+                <li>
+                    <a class="active" id="Introduction-tab" data-bs-toggle="tab" data-bs-target="#Introduction-tab-pane"
+                        role="tab" aria-controls="Introduction-tab-pane" aria-selected="true">Introduction</a>
+                </li>
+                <li>
+                    <a class="" id="Scope-of-Journal-tab" data-bs-toggle="tab"
+                        data-bs-target="#Scope-of-Journal-tab-pane" role="tab" aria-controls="Scope-of-Journal-tab-pane"
+                        aria-selected="false">Scope of Journal</a>
+                </li>
+                <li>
+                    <a class="" id="Thrust-Areas-tab" data-bs-toggle="tab" data-bs-target="#Thrust-Areas-tab-pane"
+                        role="tab" aria-controls="Thrust-Areas-tab-pane" aria-selected="false">Thrust Areas</a>
+                </li>
+
+                <li>
+                    <a class="" id="Article-Types-tab" data-bs-toggle="tab" data-bs-target="#Article-Types-tab-pane"
+                        role="tab" aria-controls="Article-Types-tab-pane" aria-selected="false">Article Types</a>
+                </li>
+                <!-- <li>
+                    <a class="" id="Editorial-Members-tab" data-bs-toggle="tab"
+                        data-bs-target="#Editorial-Members-tab-pane" role="tab"
+                        aria-controls="Editorial-Members-tab-pane" aria-selected="false">Editorial Members</a>
+                </li> -->
+
+            </ul>
+            <div class="tab-content accordion col-lg-9 col-md-12" id="journal-details-tab-Content" *ngFor="let Item of BooksTabsData">
+                <div class="tab-pane fade show active accordion-item" id="Introduction-tab-pane" role="tabpanel"
+                    aria-labelledby="Introduction-tab" tabindex="0">
+
+                    <h2 class="accordion-header d-lg-none" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">Introduction</button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show d-lg-block"
+                        aria-labelledby="headingOne" data-bs-parent="#journal-details-tab-Content">
+                        <div class="accordion-body" id="journal-scroll">
+                            <!-- <p>The “International Journal of Recent Advances in Healthcare and Pharmaceutical
+                                Technology” is an official scientific publication of the School of Pharmaceutical
+                                Sciences, Lovely Professional University. Phagwara, Punjab, India.
+                            </p> -->
+                            <p >                                 <!-- <li *ngFor="let item of items">{{ item }}</li> -->
+                                {{Item.aboutBook}}                            
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade accordion-item" id="Scope-of-Journal-tab-pane" role="tabpanel"
+                    aria-labelledby="Scope-of-Journal-tab" tabindex="0">
+                    <h2 class="accordion-header d-lg-none" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Scope of Journal
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse d-lg-block" aria-labelledby="headingTwo"
+                        data-bs-parent="#journal-details-tab-Content">
+                        <div class="accordion-body" id="scope-scroll">
+                            <!-- <p>“International Journal of Recent Advances in Healthcare & Pharmaceutical Technology” is
+                                an interdisciplinary peer reviewed journal. It will publish editorial commentaries,
+                                scientific news, reviews (including mini reviews, systematic reviews, critical reviews,
+                                and topical reviews), original research papers, and research records. The area of focus
+                                shall be concepts in advanced health care, allied biosciences, alternative therapeutic
+                                care, pharmaceutical and analytical technologies, biomedical engineering, clinical waste
+                                management, natural product research, clinical pharmacodynamics and pharmacokinetics,
+                                drug lead discoveries, clinical research & management, regulatory challenges, and
+                                Pharmacoeconomics.</p>
+                            <p>The Journal covers cutting-edge medical and pharmaceutical technologies.</p> -->
+                            <p>  
+                               {{Item.journalScope}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade accordion-item" id="Thrust-Areas-tab-pane" role="tabpanel"
+                    aria-labelledby="Thrust-Areas-tab" tabindex="0">
+                    <h2 class="accordion-header d-lg-none" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Thrust Areas
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse d-lg-block"
+                        aria-labelledby="headingThree" data-bs-parent="#journal-details-tab-Content">
+                        <div class="accordion-body" id="thrust-scroll">
+                            <!-- <ul>
+                                <li>Novel pedagogical and regulatory approaches in the health care fields of pharmacy
+                                    and the allied health professions</li>
+                                <li>Therapeutic care regulatory issues in the modern era</li>
+                                <li>Current advancements in pharmaceutical and health care engineering (Nanomedicine,
+                                    medical robots, nanobots, and various novel drug delivery systems)</li>
+                                <li>Alternative and modern therapeutic approaches to multi drug resistant diseases</li>
+                                <li>Ayurvedic life sciences</li>
+                                <li>Nutrition & Dietetics</li>
+                                <li>Public Health</li>
+                                <li>Health & Social Care, Health science</li>
+                                <li>Cellular & Molecular Medicine</li>
+                                <li>Laboratory medical sciences</li>
+                                <li>Rehabilitation sciences</li>
+                                <li>Biological medicine research and development (Alternative systems of medicine,
+                                    pharmacognosy, Phytochemistry, herbal drug technologies, microbiology,
+                                    biotechnology, Phytopharmacy, and phytomedicine).</li>
+                            </ul> -->
+                            <ul> 
+                                <li *ngFor="let thrustArea of Item.thrustAreas.split('|')">{{ thrustArea }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade accordion-item" id="Article-Types-tab-pane" role="tabpanel"
+                    aria-labelledby="Article-Types-tab" tabindex="0">
+                    <h2 class="accordion-header d-lg-none" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Article Types
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse d-lg-block"
+                        aria-labelledby="headingThree" data-bs-parent="#journal-details-tab-Content">
+                        <div class="accordion-body" id="article-scroll">
+                            <p>Anticipated content, by article type include original research, short reports or letters,
+                                review articles, case studies, methodologies or method. A brief outline of the article
+                                types is given below:</p>
+                            <!-- <ul>
+                                <li><strong>Original Research</strong>
+                                    The ideal length for an article is 12-15 typed pages, or about 5,000 words
+                                    (including references, tables, and figures). References should be limited to
+                                    approaches that have already been publicly reported. It is recommended that no more
+                                    than fifty sources be cited (except for review articles or reports on microarray
+                                    data). There has to be a detailed setup, materials, and procedures section in the
+                                    article.</li>
+                                <li><strong>Short Communications</strong>
+                                    Short communications should fit on four to eight pages of typewritten text, or no
+                                    more than two drawings and 2,500 words.</li>
+                                <li><strong>Review Articles</strong>
+                                    Concise and critical updates on a topic of current relevance can be provided in the
+                                    form of review articles. Acceptable herbal drug monographs will address contemporary
+                                    pharmacological & toxicological challenges and provide a perspective on potential
+                                </li>
+                            </ul> -->
+                            <ul> 
+                                <li *ngFor="let article of Item.articleTypes.split('|')">{{ article }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="tab-pane fade accordion-item" id="Editorial-Members-tab-pane" role="tabpanel"
+                    aria-labelledby="Editorial-Members-tab" tabindex="0">
+                    <h2 class="accordion-header d-lg-none" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Editorial Members
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse d-lg-block"
+                        aria-labelledby="headingThree" data-bs-parent="#journal-details-tab-Content">
+                        <div class="accordion-body" id="editorial-scroll">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <h5 class="mb-3"><strong>Editor-in-Chief</strong></h5>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Dr. Monica Gulati Dean and Registrar</strong>
+                                    <p>Faculty of Allied Medical Sciences </p>
+                                    <p>Lovely Professional University </p>
+                                    <p>Phagwara-144411, Punjab, India </p>
+                                    <p><b>Email:</b> <a
+                                            href="mailto:monica.gulati@lpu.co.in">monica.gulati@lpu.co.in</a> </p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Dr. Abhijeet Pandey</strong>
+                                    <p>Formulation Scientist </p>
+                                    <p>Novartis</p>
+                                    <p>Hyderabad, Telangana, India</p>
+                                    <p><b>Email:</b> <a
+                                            href="mailto:abhijeet.pandey@novartis.com ">abhijeet.pandey@novartis.com
+                                        </a> </p>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <h5 class="mb-3"><strong>Managing Editor</strong></h5>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <strong>Dr. Sachin Kumar Singh</strong>
+                                    <p>Professor and Head</p>
+                                    <p>Dept. of Ph. Chemistry and Ph. Analysis</p>
+                                    <p>School of Pharmaceutical sciences</p>
+                                    <p>Lovely Professional University</p>
+                                    <p>Phagwara-144411, Punjab, India </p>
+                                    <p><b>Email:</b> <a href="mailto:sachin.16030@lpu.co.in">sachin.16030@lpu.co.in</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    if ($(window).width() >= 992) {
+        $('#journal-scroll, #scope-scroll, #thrust-scroll, #article-scroll, #editorial-scroll').slimscroll({
+            height: '400px',
+            alwaysVisible: true,
+            distance: '5px',
+            railVisible: true,
+            size: '2px',
+            color: '#E77000',
+            opacity: 1
+        });
+    }
+    </script>

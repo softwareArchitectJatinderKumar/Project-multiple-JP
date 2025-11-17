@@ -1,0 +1,190 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader></app-EDEditorHeader>
+<div class="row d-flex p-3 align-items-center justify-content-center ">
+    <div class="col-md-12 grid-margin stretch-card blockHeight">
+        <div class="text-center">
+            <h2 class="text-center text-danger mb-2"> Author Dashboard </h2>
+        </div>
+        <div class="container  ">
+            <div class="row  mb-3">
+                <h4 class="mb-4 mt-4 text-start">Submit Manuscript Form</h4>
+            </div>
+            <div class="row  mb-2 d-none">
+                <div class="col-md-2 ">
+                    <label class="form-label">Volume:</label>
+                </div>
+                <div class="col-md-4 text-start ">
+                    <span class="text-dark">{{ bookData?.volume == null ? 'NA' : bookData.volume }}</span>
+                </div>
+                <div class="col-md-2">
+                    <label class=" form-label">Year:</label>
+                </div>
+                <div class="col-md-4">
+                    <span class="text-dark">{{ bookData?.publishDate == null ? 'NA' : bookData.publishDate }}</span>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <label class="form-label">Editor in Chief:</label>
+                </div>
+                <div class="col-md-4 text-start">
+                    <span class="text-dark">{{ bookData?.editorName }}</span>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <label class="form-label">Author Email:</label>
+                </div>
+                <div class="col-md-4 text-start">
+                    <span class="text-dark">{{ this.AuthorEmailId }}</span>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <label for="journalId">Journal ID:</label>
+                </div>
+                <div class="col-md-4">
+                    <span class="text-dark">{{ this.NewIdForJournal }}</span>
+                </div>
+            </div>
+            <form [formGroup]="ManuScriptUploadForm" (ngSubmit)="onSubmit()">
+                <div class="row mb-4 d-none">
+                    <div class="col-md-2">
+                        <label for="journalTitle">Journal Title:</label>
+                    </div>
+                    <div class="col-md-4 text-start">
+                        <span class="text-dark ">{{ JournalTitle }}</span>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="JournalSubTitle">Journal SubTitle:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <span class="text-dark ">{{ JournalSubTitle }}</span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <label for="ManuScriptType">Manuscript Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
+                            <option value="Select" selected>Select Manuscript Type</option>
+                            <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                                {{ dropDown.ManuScriptType }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-2 ">
+                        <label for="SubmissionType" class="form-label">Submission Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" formControlName="SubmissionType" style="width: auto;"
+                            (change)="onSubmissionTypeChange($event)">
+                            <option value="Select">Select Submission Type</option>
+                            <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                                {{ dropDown.SubmissionType }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
+                    <div class="col-md-2 ">
+                        <label for="SubItemType" class="form-label">Sub Item Type:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" formControlName="SubItemType" style="width: auto;">
+                            <option value="Select">Select Sub Item Type</option>
+                            <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                                {{ dropDown.SubItemType }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <div class="col-md-2">
+                        <label for="file" class="form-label">Upload File:</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                            style="width: auto;" (change)="onFileSelected($event)" accept="*.*" />
+                    </div>
+                    <div class="col-md-6 text-start text-danger "> If file size > 20 MB kindly send additional file
+                        to Editor In Chief</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary" [disabled]="ManuScriptUploadForm.invalid">Attach
+                            More Document</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="container  ">
+            <!-- Cart Items Dashboard -->
+            <div class="mt-5" *ngIf="cartItems.length > 0">
+                <h5>Manuscript Details for Submission</h5>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Script Type</th>
+                            <th>Submission Type</th>
+                            <th>SubItem </th>
+                            <th>File Added </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of cartItems; let i = index">
+                            <td>{{ item.ManuScriptType }}</td>
+                            <td>{{ item.SubmissionType }}</td>
+                            <td>{{ (item.SubItemType=='Select' || item.SubItemType=='') ? 'NA':item.SubItemType }}</td>
+                            <td>{{ getFileName(item.file) }}</td>
+                            <td>
+                                <button class="btn btn-danger" (click)="removeFromCart(i)">Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <button (click)="generateZip()">Generate ZIP</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <label for="noteMsg" class="form-label">Note: Kindly click on generate Zip Button to
+                                    enable
+                                    the Submit
+                                    Manuscript Button </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"> <button class="btn btn-dark" (click)="uploadFile()"
+                                    [disabled]="!this.generatedFile">Submit Manuscript </button>
+                            </td>
+                            <!-- <td colspan="5"> <button class="btn btn-dark" (click)="uploadFile()"
+                                    [disabled]="!this.generatedFile">Submit Manuscript </button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Loaders" *ngIf="isLoading==true">
+    <div class="col-sm-12" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="d-flex justify-content-center align-item-center">
+            <span class="text-danger fs-3">Loading </span><br />
+            <div class="spinner-grow text-danger tex-center" style=" width: 14rem; height: 14rem;" role="status">
+            </div>
+        </div>
+        <p>Please wait, uploading your manuscript...</p>
+    </div>
+</div>

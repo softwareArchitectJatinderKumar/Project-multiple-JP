@@ -1,0 +1,40 @@
+<div class="box">
+    <ngx-slick-carousel class="carousel" #slickModel="slick-carousel" [config]="slideConfig">
+        <div class="book slide" ngxSlickItem *ngFor="let slide of slides; let i = index">
+          <div class="booka">
+            <div class="cover" [ngStyle]="{'background-color': getBackgroundColor(i)}">
+              <!-- <h4>{{slide.journalTitle}}</h4> -->
+              <div class="JournalTitle">
+                <h4 class="fs-4">{{ slide.journalTitle }} </h4>
+                <!-- <h4 class="fs-4">{{ slide.journalTitle.slice(0, 62) }} </h4> -->
+              </div>
+              <div class="containera">
+                <div class="about">
+                  <div class="pic">
+                    <img [src]="this.serverUrl+slide.imageUrl"
+                         [ngClass]="{'hidden': imageLoadError[i]}" 
+                         (error)="handleImageError(i)" 
+                         (load)="checkImageLoad($event, i)" />
+                    <p *ngIf="imageLoadError[i]" class="error-message">Error loading image</p>
+                  </div>
+                  <div class="text">
+                    <p>
+                      {{
+                        slide.subTitle.split(' ').length > 8
+                          ? slide.subTitle.split(' ').slice(0, 8).join(' ') + '...'
+                          : slide.subTitle
+                      }}
+                      <a class="ms-3 mt-2 btn badge bg-danger" *ngIf="slide.subTitle.split(' ').length > 8" (click)="navigateToUrl(slide.id)"> Read More</a>
+                    </p>
+                       
+                    <button class="btn" (click)="navigateToUrl(slide.id)">See The Journal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ngx-slick-carousel>
+    <div class="custom-prev-arrow " (click)="slickModel.slickPrev()"><img src="assets/images/icon/left-arrow.svg"></div>
+    <div class="custom-next-arrow" (click)="slickModel.slickNext()"><img src="assets/images/icon/right-arrow.svg"></div>
+</div>

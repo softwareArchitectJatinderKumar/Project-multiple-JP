@@ -1,0 +1,35 @@
+<header>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg p-0">
+            <a class="navbar-brand" routerLink="/">
+                <img src="http://172.17.60.201/assets/images/logo/logo.svg" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul *ngIf="show"  class="navbar-nav mb-2 mb-lg-0">
+                    
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#Research">RESEARCH</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#Conferences">CONFERENCES</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#Contactus">CONTACT US</a></li>
+                   
+                    <li class="nav-item srch-icon"><a class="nav-link" (click)="toggleSearchForm()"> 
+                        <img src="http://172.17.60.201/assets/images/icon/search-icon.svg" /> SEARCH</a></li>
+                </ul>
+                <div class="search" [ngClass]="{ 'd-none': !showSearchForm }">
+                    <form class="d-flex" role="search"   method="get"  >
+                        <input type="text" class="search-field" placeholder="Type &amp; Hit Enter.." value=""
+                        name="s" />
+
+                    <span class="search-submit"  (click)="toggleSearchForm()"><img    src="http://172.17.60.201/assets/images/icon/search-close.svg" /></span>
+                    </form>
+                  </div>
+                 
+            </div>
+        </nav>
+    </div>
+</header>

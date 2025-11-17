@@ -1,0 +1,79 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<div class="main-heading text-center mt-5">
+  <h1>
+    {{this.JournalTitle}}
+  </h1>
+</div>
+
+<div class="row mt-2 mb-4 d-flex justify-content-center p-5">
+  <div class="card">
+    <div class="card-body">
+      <div class="row d-flex justify-content-around">
+        <label class="col-3 fw-bolder">User Name
+        </label>
+        <label class="col-3 text-danger fw-bolder  ">{{this.candidateName}} </label>
+
+        <label class="col-3 fw-bolder">Email Id</label>
+        <label class="col-3 text-danger fw-bolder ">
+          {{this.userId?.length>0 ? this.userId: 'NA' }}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+    <div class="main-heading text-center">
+      <div class="row">
+        <h1 class="text-center"> Manuscript Submitted </h1>
+      </div>
+    </div>
+  </div>
+  <div class="vh-150 d-flex p-2 align-items-center justify-content-center p-5 tableHeight">
+    <div class="container-fluid table-bordered table-responsive ">
+      <div class="row accordionColor " *ngIf="this.ManuscriptData?.length>0; else NoData">
+        <div class="table-responsive">
+          <table class="table table-bordered  table-hover">
+            <thead >
+              <tr >
+                <th class="text-center"> Sr.No</th>
+                <th class="text-center" *ngFor="let col of ManuscriptdisplayedColumns">{{ displayedManuscriptColumnHeaders[col] }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of paginatedManuscriptData; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td *ngFor="let col of ManuscriptdisplayedColumns" class="text-center">
+                  <ng-container [ngSwitch]="col">
+
+                    <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm " (click)="onSelectFileManuscriptX(row[col])">
+                      <!-- View File -->
+                      <i class="bi bi-file-earmark-text "></i>
+                    </button>
+
+                    <span *ngSwitchDefault>{{ row[col] }}</span>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-controls">
+            <button (click)="previousPageManuscript()" [disabled]="currentPageManuscript === 1">Previous</button>
+            <span> Page {{ currentPageManuscript }} of {{ totalPagesManuscript }} </span>
+            <button (click)="nextPageManuscript()"
+              [disabled]="currentPageManuscript === totalPagesManuscript">Next</button>
+          </div>
+        </div>
+      </div>
+      <ng-template #NoData>
+        <div class="themeClr">
+          <h1 class="fs-2 text-center vh-50 p-3 m-4 "> No Data Found </h1>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</section>

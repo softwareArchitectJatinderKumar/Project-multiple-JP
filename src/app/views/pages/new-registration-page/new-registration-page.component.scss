@@ -1,0 +1,230 @@
+.fullscreen-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.85); // or rgba(0,0,0,0.5) for dark overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+.loader-content {
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+.signupLink{
+  text-decoration: none;
+  color: #0000ee;
+  font-size: larger;
+  font-weight: 500;
+}
+
+.auth-page {
+    .auth-side-wrapper {
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-position: center; /* Center the image */
+      background-repeat: no-repeat; /* Prevent the image from repeating */
+    }
+  }
+  
+  .authSideWrapper {
+    background-image: url('https://www.lpu.in/lpu-assets/images/cif/login-left.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    height: 100vh !important;
+    width: 100% !important;
+}
+.personal
+{
+    height:2.5rem;
+    width:76.875rem;
+    background-color: brown;
+    color:white;
+    /* margin-left:3.123rem; */
+    margin-top:0.625rem;
+}
+.box
+{
+    height:autorem;
+    width:76.875rem;
+    /* margin-left:3.125rem; */
+    border-style: outset;
+    margin-top:0rem;
+   
+}
+h4{
+    /* // margin-left:31.25rem; */
+    padding:0.625rem;
+}
+.field
+{
+    display: inline-flex;
+    margin-left: 12.5rem;
+    margin-top: 1rem;/*1px;*/
+    width:50rem;;
+    height: 5rem;
+}
+label{
+    font-weight: bold;
+    color:brown;
+    /* // width:10rem; */
+}
+.details
+{
+    width:21.875rem;
+    margin-left:2.5rem;
+   
+}
+input{
+    border-style: outset;
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+}
+select{
+    border-style: outset;
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btt
+{
+    width:21rem;
+    margin-top:3.25rem;
+    margin-left: 27.5rem;
+    margin-bottom: 1rem;
+    background-color: #24c02c!important;
+    color:white;
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+   
+}
+// button{
+//     background-color: #fd6c04!important;
+//     color:white;
+//     margin-top: 0rem;
+//     box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+//     margin-left: 0.5rem;
+// }
+// button:hover
+// {
+//     background-color: brown!important;
+//     color:white;
+// }
+.login
+{
+    height:2rem;
+    width:72rem;
+    background-color: brown;
+    color:white;
+    margin-left:1.5rem;
+    margin-top:1rem;
+    padding-bottom: 0.1rem;
+}
+.login>h4{
+    padding:auto;
+}
+.Credential
+{
+ margin-left:17rem;
+ display: inline-flex;
+ width:50rem;
+ padding: 0.5rem;
+
+}
+.Credential input
+{
+    margin-left:8rem;
+    width:50rem;
+    
+   
+}
+.Credential>select
+{
+    margin-left:8rem;
+   
+}
+.Credential label{
+    font-weight: bold;
+    color:brown;
+    width:15rem;
+}
+
+
+.user
+{
+    margin-top:1rem;
+}
+.custom-dropdown {
+    position: relative;
+    width: auto;
+  }
+  
+  .dropdown-box {
+    border: 1px solid #ced4da;
+    padding: 8px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .selected-items {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .selected-role {
+    background:  #fd6c04!important;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-right: 5px;
+  }
+  
+  .remove-role {
+    margin-left: 5px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .dropdown-options {
+    // position: absolute;
+    width: 15rem;
+    border: 1px solid #ced4da;
+    background: white;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .dropdown-options div {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .dropdown-options div:hover {
+    // background: #f8f9fa;
+    background:  #fd6c04!important;
+  }
+  
+  .disabled-option {
+    background: #ddd;
+    pointer-events: none;
+  }
+  
+  .placeholder {
+    color: #6c757d;
+    font-style: italic;
+  }
+  

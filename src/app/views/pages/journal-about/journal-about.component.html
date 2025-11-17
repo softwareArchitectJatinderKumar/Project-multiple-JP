@@ -1,0 +1,90 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<!-- <app-EDEditorHeader></app-EDEditorHeader> -->
+<section>
+    <div *ngIf="bookData?.journalTitle?.length>0  ; else noRecords;">
+        <div class="container about-journal ">
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <img *ngIf="!imageLoadError; else errorMessage" [src]="bookData?.imageUrl"
+                        [alt]="bookData?.journalTitle" [title]="bookData?.journalTitle" width="auto" height="auto"
+                        (error)="imageLoadError = true" />
+                    <ng-template #errorMessage>
+                        <div class="fs-3 text-danger mt-5">Error in Loading Image</div>
+                    </ng-template>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h2>{{bookData?.journalTitle}} </h2>
+                    <ul style="font-weight: 500;">
+                        <li>Volume: <span Class="EditorColor11">{{bookData?.volume == null ? 'NA': bookData.volume }}</span></li>
+                        <li>Year: <span Class="EditorColor11">{{ bookData?.publishDate ? (bookData.publishDate | date:'yyyy') : 'NA' }}</span>
+                        </li>
+                        <!-- <li >Editor in chief: <span Class="EditorColor1">{{bookData?.editorName}}</span></li> -->
+                        <li *ngIf="EditorInChief && EditorInChief.length">
+                            <span>EditorInChief:
+                                <span *ngFor="let editor of EditorInChief; let i = index">
+                                    <span [ngClass]="i % 2 === 0 ? 'EditorColor11' : 'EditorColor11'">
+                                        {{ editor.editorName }}<span *ngIf="i < EditorInChief.length - 1">, </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </li>
+                        <!-- <li *ngIf="ManagingEditor && ManagingEditor.length">
+                            <span>Managing Editors:
+                                <span *ngFor="let editor of ManagingEditor; let i = index">
+                                    <span [ngClass]="i % 2 === 0 ? 'EditorColor11' : 'EditorColor12'">
+                                        {{ editor.editorName }}<span *ngIf="i < ManagingEditor.length - 1">, </span>
+                                    </span>
+                                </span>
+                            </span>
+                        </li> -->
+                    </ul>
+                    <p>{{bookData?.subTitle}} </p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="journal-details">
+                        <ul>
+                            <ng-container *ngFor="let detail of detailsArray">
+                                <li *ngIf="detail.key !== 'Scope'" style="text-align: justify; margin-bottom: 1.7rem;">
+                                    <span class="me-1">{{ detail.key }}:</span>
+                                    <span class="ms-3 text-end ">{{ detail.value }}</span>
+                                </li>
+                            </ng-container>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center pt-5 ">
+                    <h1 class="mb-4">Submit your Manuscript in the Journal</h1>
+                    <!-- <h1 class="mb-4">Publish your article in the Journal</h1> -->
+                    <!-- <a href="#"></a> -->
+                    <a class="popular-genre-btn bg-color-lpu"
+                        (click)="VisitUrl(this.BookId,this.name,'SubmitManuScript')">Upload</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4 accordionColor">
+            <app-journal-details-tab [items]="bookData"></app-journal-details-tab>
+        </div>
+    </div>
+    <div class="container accordionColor ">
+        <ng-template #noRecords>
+            <div class="row blockHeight">
+                <div class="text-center">
+                    <!-- <h4 class="text-center fs-3 text-danger"> Loading Data.. </h4> -->
+                    <span class="text-danger fs-3">Loading </span><br />
+                    <div class="spinner-grow text-danger text-center" style=" width: 14rem; height: 14rem;"
+                        role="status">
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</section>
+
+<!-- <app-journalfooter></app-journalfooter> -->

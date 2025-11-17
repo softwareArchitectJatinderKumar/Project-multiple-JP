@@ -1,0 +1,290 @@
+.blockHeight{
+  height: 100rem;
+}
+.SectionContainer {
+  margin-bottom: 10rem !important;
+  padding: auto;
+}
+.custom-modal {
+  background: rgba(255, 255, 255, 0.95); /* Light transparency */
+  border-radius: 10px; /* Rounded corners for a smooth look */
+  padding: 20px; /* Minimal padding */
+  margin: 5px; /* Minor margin around modal */
+}
+
+.modal-xl {
+  max-width: 95%; /* Modal width covers most of the screen */
+}
+
+.row {
+  margin-bottom: 15px; /* Space between rows */
+}
+
+.mb-3 {
+  margin-bottom: 15px; /* Space between form elements */
+}
+
+.DBlock{  
+  display: block !important;
+}
+.DNone{
+  display: ' ' !important;
+}
+
+.custom-paginator {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.custom-paginator button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+.custom-paginator .active {
+  font-weight: bold;
+  color: white;
+  // background-color: #3f51b5;
+  border-radius: 5px;
+}
+
+.page-info {
+  text-align: center;
+  margin-top: 5px;
+}
+
+
+
+.nav-tabs .nav-link {
+    // color: #495057;
+    font-size: 0.21rem;
+    font-weight: bold;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-right: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #fff;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+  }
+  
+  .nav-tabs .nav-link:hover {
+    background-color: #0056b3;
+    color: #fff;
+  }
+  
+
+.auth-page {
+    .auth-side-wrapper {
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-position: center; /* Center the image */
+      background-repeat: no-repeat; /* Prevent the image from repeating */
+    }
+  }
+  
+.personal
+{
+    height:22.5rem;
+    width:76.875rem;
+    background-color: brown;
+    color:white;
+    /* margin-left:3.123rem; */
+    margin-top:0.625rem;
+}
+.box
+{
+    height:autorem;
+    width:76.875rem;
+    /* margin-left:3.125rem; */
+    border-style: outset;
+    margin-top:0rem;
+   
+}
+h4{
+    // margin-left:31.25rem;
+    padding:0.625rem;
+}
+.field
+{
+    display: inline-flex;
+    margin-left: 12.5rem;
+    margin-top: 1rem;/*1px;*/
+    width:50rem;;
+    height: 5rem;
+}
+label{
+    font-weight: bold;
+    color:brown;
+    text-align: start !important;
+    // width:10rem;
+}
+.details
+{
+    width:21.875rem;
+    margin-left:2.5rem;
+   
+}
+input{
+    border-style: outset;
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+}
+select{
+    border-style: outset;
+    box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+}
+
+.btt
+{
+    width:21rem;
+    margin-top:3.25rem;
+    margin-left: 27.5rem;
+    margin-bottom: 1rem;
+}
+.dashboardButton {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  color: #000;
+  font-weight: 600;
+  margin-top: 0rem;
+  // box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+  margin-left: 0.5rem;
+  border: none;
+}
+
+/* Fix: Apply style when the button is active */
+.dashboardButton.active {
+  background-color: #fd6c04 !important;
+  color: black !important;
+}
+
+// button{
+//     background-color: #fd6c04!important;
+//     color:white;
+//     margin-top: 0rem;
+//     box-shadow: 0px 0px 4px 3px rgba(0, 0, 0, 0.2);
+//     margin-left: 0.5rem;
+// }
+// button:active
+// {
+//     background-color: brown!important;
+//     color:white;
+// }
+// button:hover
+// {
+//     background-color: brown!important;
+//     color:white;
+// }
+.login
+{
+    height:2rem;
+    width:72rem;
+    background-color: brown;
+    color:white;
+    margin-left:1.5rem;
+    margin-top:1rem;
+    padding-bottom: 0.1rem;
+}
+.login>h4{
+    // margin-left:28rem;
+    padding:auto;
+}
+.Credential
+{
+ margin-left:17rem;
+ display: inline-flex;
+ width:50rem;
+ padding: 0.5rem;
+
+}
+.Credential input
+{
+    margin-left:8rem;
+    width:50rem;
+    
+   
+}
+.Credential>select
+{
+    margin-left:8rem;
+   
+}
+.Credential label{
+    font-weight: bold;
+    color:brown;
+    width:15rem;
+}
+
+
+.user
+{
+    margin-top:1rem;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    // width: 400px;
+    margin: 0 auto;
+  }
+  
+//   label {
+//     font-weight: bold;
+//     margin-top: 10px;
+//     margin-bottom: 20px;
+//   }
+  
+  input {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  // button {
+  //   padding: 10px;
+  //   background-color: #28a745;
+  //   color: white;
+  //   border: none;
+  //   border-radius: 4px;
+  //   cursor: pointer;
+  // }
+  
+  // button:disabled {
+  //   background-color: #cccccc;
+  // }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  
+
+
+  // .transparent-table {
+  //   background: transparent !important;
+  // }
+  
+  // .transparent-table th,
+  // .transparent-table td {
+  //   background: transparent !important;
+  //   border: none !important; /* Removes cell borders */
+  //   color: black; /* Optional: Adjust text color for better visibility */
+  // }
+  
+  // .transparent-table button {
+  //   background-color: rgba(0, 0, 0, 0.7) !important; /* Dark transparent buttons */
+  //   color: white !important;
+  //   border: none;
+  // }
+  
+  // .transparent-table button:disabled {
+  //   background-color: rgba(0, 0, 0, 0.3) !important; /* Lighter disabled button */
+  // }
+  

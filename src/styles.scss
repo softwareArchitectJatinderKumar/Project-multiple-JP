@@ -1,0 +1,90 @@
+/* You can add global styles to this file, and also import other style files */
+
+// html, body { height: 100% !important; width: 100% !important;}
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// .slick-next {
+//     right: 25px !important;
+//     z-index: 2121212122;
+//     opacity: 1 !important;
+//     content: url('./assets/images/icon/right-arrow.svg') !important;
+// }
+// .slick-prev {
+//     left: 25px !important;
+//     z-index: 2121212122;
+//     content: url('./assets/images/icon/left-arrow.svg') !important;
+// }
+
+// .slick-prev:after{
+//     background-color: #fff;
+//     justify-content: center;
+//     border-radius: 50% !important;
+//     content: url('./assets/images/icon/left-arrow.svg') !important;
+// }
+// .slick-next:after {
+//     // font-size: 3.3rem !important;
+//     background-color: #fff;
+//     justify-content: center;
+//     border-radius: 50% !important;
+//  content: url('./assets/images/icon/right-arrow.svg') !important;
+    
+// }
+
+// html, body {
+//     height: 100%;
+//     margin: 0;
+//   }
+  
+//   body {
+//     display: flex;
+//     flex-direction: column;
+//     background-color: #FDFFF7 !important;
+//   }
+  
+//   app-root {
+//     display: flex;
+//     flex-direction: column;
+//     min-height: 100vh;
+//   }
+  
+//   main {
+//     flex: 1;
+//   }
+//   .accordionColor{
+//     background-color: #FDFFF7 !important;
+// }
+
+// html, body {
+//   height: 100%;
+//   margin: 0;
+//   width: 100%;           /* Ensure full width, no overflow */
+//   overflow-x: hidden;    /* Prevent horizontal scrolling globally */
+// }
+
+// body {
+//   display: flex;
+//   flex-direction: column;
+//   background-color: #FDFFF7 !important;
+// }
+
+// app-root {
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   width: 100%;           /* Ensure app-root stays within bounds */
+//   overflow-x: hidden;    /* Prevent horizontal scrolling at app level */
+// }
+
+// main {
+//   flex: 1;
+//   width: 100%;           /* Keep main content within viewport */
+//   overflow-x: hidden;    /* Prevent horizontal scrolling in main */
+// }
+
+// .accordionColor {
+//   background-color: #FDFFF7 !important;
+// }
+// app-journalfooter {
+//   width: 100%;
+//   overflow-x: hidden;
+// }

@@ -1,0 +1,80 @@
+<app-topslider></app-topslider>
+<!-- <app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu> -->
+<section>
+  <div class="row w-100 mx-0 auth-page">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 pe-md-0">
+          <div class="auth-side-wrapper" style="height: 40rem; "
+            [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/lpu-assets/images/cif/login-left.png)' }">
+          </div>
+        </div>
+        <div class="col-md-6 p-md-5">
+          <div class="auth-form-wrapper px-4 py-5">
+            <h2 class=" mb-2 col-md-6 m-5 "> <span>Login Page</span></h2>
+            <form [autocomplete]="false" class=" p-4" [formGroup]="formdata" (ngSubmit)="OnSubmit()">
+              <div class="row mt-3">
+                <div class="col-md-3 mb-2"> <label for="UserId" class="form-label">User Id</label> </div>
+                <div class=" mb-2 col-md-6">
+                  <input type="text" formControlName="Email" placeholder="Enter UID" autocomplete="off"
+                    class="form-control" id="UserId">
+                    <div *ngIf="submitted || email?.touched || email?.errors" class="text-danger">
+                      <small *ngIf="email?.errors?.['required']">User Id  is required.</small>
+                    </div>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class=" mb-2  col-md-3"> <label for="secretKey" class="form-label">Secret Key</label> </div>
+                <div class="col-md-6 mb-2">
+                  <input type="password" formControlName="password" class="form-control" placeholder="Enter Password"
+                    autocomplete="off" id="secretKey">
+
+                    <div *ngIf="submitted || passwordText?.touched || passwordText?.errors" class="text-danger">
+                      <small *ngIf="passwordText?.errors?.['required']">Password is required.</small>
+                      <small *ngIf="passwordText?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+                    </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="mb-2 col-md-3">
+                  <label for="UserRole">Login Role</label>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <select 
+                    id="RolesDropdown" 
+                    class="form-select" 
+                    formControlName="UserRoles" 
+                    required>
+                    <option value="" disabled>Select Role</option>
+                    <option *ngFor="let Role of availableRoles" [value]="Role.value">
+                      {{ Role.label }}
+                    </option>
+                  </select>
+                  <div *ngIf="submitted || userRole?.touched || userRole?.errors" class="text-danger">
+                    <small *ngIf="userRole?.errors?.['required']">Role is required.</small>
+                  </div>
+                  <div *ngIf="isForm1Submitted && !UserRole" class="invalid-feedback">
+                    Required: Please select at least one UserRole.
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mt-2">
+                <div class=" mb-2  col-md-3">
+                  <button type="submit" class="btn btn-danger me-2 mb-2 mb-md-0"
+                    [disabled]="formdata.invalid">
+                    Login
+                  </button>
+                </div>
+                
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- <app-journalfooter></app-journalfooter> -->

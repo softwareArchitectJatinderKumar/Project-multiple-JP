@@ -1,0 +1,172 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader></app-EDEditorHeader>
+
+<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
+  <div class="container-fluid ">
+    <div class="row mt-3 mb-3">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card-body m-5 ">
+          <h1 class="text-center themeClr">Add New Volume Issues</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-page-loader" *ngIf="isLoading" aria-label="Loading">
+  <div class="loader-spinner">
+      <span class="material-icons lg-48 spin-icon">autorenew</span>
+  </div>
+</div>
+
+<div class="wizard-container vh-100 ">
+  <div class="container ">
+    <div class="row" *ngIf="currentJournalId">
+      <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="row mt-3 mb-3">
+          <!-- Row 1: Journal Title, Issue Title, Publish Date -->
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Journal Id </label>
+          </div>
+          <div class="col-md-6"> <label type="text" class="fs-6 IdWidth text-danger fw-bolder">
+              {{currentJournalId}}</label>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Journal Title </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fs-6 text-danger fw-bolder"> {{currentJournalTitle}}</label>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Journal Volume No.</label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fs-6 text-danger fw-bolder"> {{currentJournalVolume}}</label>
+            <!-- <label class="form-label fs-6 text-danger fw-bolder ms-3"> {{"Adding Issue for this Volume"}}</label>  -->
+          </div>
+        </div>
+        <div class="row mt-3 g-3">
+ 
+          <div class="row mt-3 g-3">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">
+                Author Name <span class="text-danger ms-3">*</span>
+              </label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Enter author name and press Enter or Comma"
+                [(ngModel)]="authorInput" [ngModelOptions]="{ standalone: true }" name="AuthorNameInput"
+                (keydown)="handleAuthorKeyDown($event)" (focus)="showBadge = true" />
+
+
+              <!-- Info Badge -->
+              <div *ngIf="showBadge" class="mt-1">
+                <span class="badge bg-info text-dark">Multiple authors accepted. Press Enter or Comma.</span>
+              </div>
+
+              <!-- Validation -->
+              <div *ngIf="authors.length === 0 && isForm1Submitted" class="text-danger mt-1">
+                Please enter at least one author.
+              </div>
+
+              <!-- Author Badges -->
+              <div class="mt-2">
+                <span *ngFor="let author of authors; let i = index" class="badge bg-secondary me-1">
+                  {{ author }}
+                  <button type="button" class="btn-close btn-close-white btn-sm ms-1" aria-label="Remove"
+                    (click)="removeAuthor(i)"></button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="row mt-3 g-3">
+          <!-- Row 4:Page Number -->
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="PageNumber" formControlName="PageNumber" class="form-control"
+              placeholder="Enter PageNumber"
+              [ngClass]="{'is-invalid': form1['PageNumber'].invalid && (form1['PageNumber'].touched || isForm1Submitted)}" />
+            <div *ngIf="form1['PageNumber'].invalid && (form1['PageNumber'].touched || isForm1Submitted)"
+              class="text-danger">
+              Please enter a valid PageNumber.
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Publication Title<span class="text-danger ms-3 ">*</span></label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" class="form-control" formControlName="IssueTitle" placeholder="Provide Issue Title "
+              [ngClass]="{'is-invalid': form1['IssueTitle'].invalid && (form1['IssueTitle'].touched || isForm1Submitted)}">
+            <div *ngIf="form1['IssueTitle'].invalid && (form1['IssueTitle'].touched || isForm1Submitted)"
+              class="text-danger">
+              Please enter a valid Issue Title.
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Publish Date</label>
+          </div>
+          <div class="col-md-6">
+            <input type="date" class="form-control" formControlName="PublishDate"
+              [ngClass]="{'is-invalid': form1['PublishDate'].invalid && (form1['PublishDate'].touched || isForm1Submitted)}">
+            <div *ngIf="form1['PublishDate'].invalid && (form1['PublishDate'].touched || isForm1Submitted)"
+              class="text-danger">
+              Please enter a valid PublishDate.
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Issue File (PDF)<span class="text-danger ms-3 ">*</span></label>
+          </div>
+          <div class="col-md-6">
+            <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control" placeholder="Issue File"
+              [ngClass]="{'is-invalid': !IssueFileName && isForm1Submitted}" accept=".pdf, *.7z, *.zip, *.rar, *.doc">
+            <div *ngIf="!IssueFileData || (isForm1Submitted)" class="text-danger">
+              Please Provide a valid File.
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row g-3">
+          <!-- Row 3: Issue Description (takes full width) -->
+          <div class="col-md-3">
+            <label class="form-label fs-5 fw-bolder">Issue Description <span class="text-danger ms-3 ">*</span></label>
+          </div>
+          <div class="col-md-6">
+            <textarea type="text" id="IssueDescription" formControlName="IssueDescription" class="form-control"
+              placeholder="Enter IssueDescription"
+              [ngClass]="{'is-invalid': form1['IssueDescription'].invalid && (form1['IssueDescription'].touched || isForm1Submitted)}"
+              rows="2"></textarea>
+            <div *ngIf="form1['IssueDescription'].invalid && (form1['IssueDescription'].touched || isForm1Submitted)"
+              class="text-danger">
+              Please enter a valid Issue Description.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary" [disabled]="journalForm.invalid || !IssueFileData">Publish
+            Issues</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

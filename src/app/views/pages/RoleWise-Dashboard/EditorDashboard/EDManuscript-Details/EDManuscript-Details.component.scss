@@ -1,0 +1,81 @@
+.tableHeight{
+    margin-bottom: 45rem;
+}
+/* ✅ Add border to entire table */
+.custom-table {
+    border: 2px solid #343a40 !important; /* Dark border */
+    width: 100%;
+  }
+  
+  /* ✅ Dark background with light text for table header */
+  .custom-table thead {
+    background-color: #212529 !important; /* Dark background */
+    color: #ffffff !important; /* Light text */
+    text-align: center;
+  }
+  
+  /* ✅ Add border to table cells */
+  .custom-table th,
+  .custom-table td {
+    border: 1px solid #dee2e6 !important; /* Light grey border */
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* ✅ Ensure row hover effect */
+  .custom-table tbody tr:hover {
+    background-color: #f8f9fa !important; /* Light grey hover */
+  }
+  
+  /* ✅ Ensure styles apply */
+  .custom-table * {
+    box-sizing: border-box;
+  }
+  
+    
+  .dropdown-menu {
+    max-height: 220px;
+    overflow-y: auto;
+    font-size: 0.95rem;
+  }
+  
+  .custom-tall-modal {
+    height: 90vh; /* or any % of viewport height you need */
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .custom-tall-modal .modal-content {
+    flex-grow: 1;
+    height: 100%;
+  }
+  
+  .custom-tall-modal .modal-body {
+    flex-grow: 1;
+    overflow: hidden; /* ensures no scrollbar */
+  }
+  
+
+  /* Custom size for modal (not using Bootstrap modal-xl or scrollable) */
+.custom-modal-size {
+  max-width: 900px;
+  width: 95%;
+  margin: 1.75rem auto;
+}
+
+/* Optional: cap modal height on very tall screens */
+@media (min-height: 1000px) {
+  .custom-modal-size {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+}
+
+/* Optional: full-width buttons and form spacing inside modal */
+.modal-content {
+  padding: 1.5rem;
+}
+.modal-body {
+  padding-top: 0.5rem;
+}

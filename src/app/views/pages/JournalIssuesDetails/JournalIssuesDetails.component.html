@@ -1,0 +1,283 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-EDEditorHeader></app-EDEditorHeader>
+<!-- <app-journal-inner-menu></app-journal-inner-menu> -->
+<!-- <section>
+  <div class="container py-4 blockHeight">
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <div class="main-heading">
+          <h1>{{ this.journalTitle }}</h1>
+        </div>
+        <div class="sub-heading">
+          <h3>All Published Volumes & Issues</h3>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">Loading journal issues...</p>
+    </div>
+
+    <div *ngIf="!isLoading && issues.length === 0" class="alert alert-info text-center py-4">
+      <i class="bi bi-journal-text fs-1"></i>
+      <h2 class="mt-3">No Issues Found</h2>
+      <p>There are no published issues for this journal yet.</p>
+    </div>
+
+    <div class="accordion accordion-flush editorial-accordian" id="issuesAccordion">
+      <ng-container *ngIf="!isLoading && this.groupedIssuesByYear.length > 0; else noIssuesFound">
+        <div class="accordion-item mb-3" *ngFor="let yearGroup of groupedIssuesByYear; let yearIndex = index">
+          <h2 class="accordion-header" [id]="'heading-' + yearIndex">
+            <button class="accordion-button collapsed accordionColor py-3" type="button" data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#collapse-' + yearIndex" aria-expanded="false"
+              [attr.aria-controls]="'collapse-' + yearIndex" (click)="toggleAccordion('year-' + yearIndex)">
+              <span class="fw-bold">Published Year: {{ yearGroup.year }}</span>
+            </button>
+          </h2>
+          <div [id]="'collapse-' + yearIndex" class="accordion-collapse collapse"
+            [class.show]="activeAccordionId === 'year-' + yearIndex" [attr.aria-labelledby]="'heading-' + yearIndex"
+            data-bs-parent="#issuesAccordion">
+            <div class="accordion-body accordionColor pt-3">
+              <div class="row" *ngFor="let issuePair of yearGroup.issues">
+                <div class="col-md-6" *ngFor="let issue of issuePair">
+                  <div class="card mb-4 shadow-sm border-0">
+                    <div class="card-body ">
+                      <h5>
+                        <span class="badge bg-danger me-2">Vol. {{ issue.volume || 'N/A' }}</span>
+                        <span *ngIf="issue.issueTitle; else noTitle">
+                          {{ formatIssueTitle(issue.issueTitle) | titlecase }}
+                      </span> <ng-template #noTitle>Untitled Issue</ng-template>
+                      </h5>
+                      <p class="text-muted mb-1"><strong>Published:</strong> {{ formatDate(issue.publishDate) }}</p>
+                      <p>{{ issue.issueDescription || 'No description available' }}</p>
+
+                      <div class="d-flex align-items-center mt-3">
+                        <i class="bi bi-journal-text fs-4 text-primary me-3"></i>
+                        <div>
+                          <h6 class="mb-1">Author :- <span class="badge bg-danger me-2">{{ issue.authorName }}</span></h6>
+                          <small class="text-muted">Page Number {{ issue.pageNumber }}</small>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center mt-3">
+                        <i class="bi bi-journal-text fs-4 text-primary me-3"></i>
+                        <div>
+                          <h6 class="mb-1">{{ issue.journalTitle }}</h6>
+                          <small class="text-muted">Journal ID: {{ issue.journalId }}</small>
+                        </div>
+                      </div>
+
+                      <div class="text-center mt-3">
+                        <i class="bi bi-file-earmark-pdf fs-1 text-danger cursor-pointer"
+                          (click)="downloadIssue(issue.issueFileName)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noIssuesFound>
+        <p class="fs-4 text-danger text-center my-4">No Record Found!</p>
+      </ng-template>
+    </div>
+  </div>
+</section> -->
+
+<!-- <section>
+  <div class="container py-4 blockHeight">
+
+    
+    <div class="row mb-4">
+      <div class="col-md-12 text-center">
+        <h1 class="main-heading">{{ journalTitle }}</h1>
+        <h3 class="sub-heading text-muted">All Published Volumes & Issues</h3>
+      </div>
+    </div>
+
+   
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+      <p class="mt-3">Loading journal issues...</p>
+    </div>
+
+    
+    <div *ngIf="!isLoading && issues.length === 0" class="alert alert-info text-center py-4">
+      <i class="bi bi-journal-text fs-1"></i>
+      <h2 class="mt-3">No Issues Found</h2>
+      <p>There are no published issues for this journal yet.</p>
+    </div>
+
+ 
+    <div class="accordion accordion-flush editorial-accordian" id="issuesAccordion">
+      <ng-container *ngIf="!isLoading && groupedIssuesByYear.length > 0; else noIssuesFound">
+
+        <div class="accordion-item mb-3" *ngFor="let yearGroup of groupedIssuesByYear; let yearIndex = index">
+          <h2 class="accordion-header" [id]="'heading-' + yearIndex">
+            <button class="accordion-button collapsed accordionColor py-3"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapse-' + yearIndex"
+                    [attr.aria-controls]="'collapse-' + yearIndex"
+                    (click)="toggleAccordion('year-' + yearIndex)">
+              <span class="fw-bold">Published Year: {{ yearGroup.year }}</span>
+            </button>
+          </h2>
+
+          <div [id]="'collapse-' + yearIndex"
+               class="accordion-collapse collapse"
+               [class.show]="activeAccordionId === 'year-' + yearIndex"
+               [attr.aria-labelledby]="'heading-' + yearIndex"
+               data-bs-parent="#issuesAccordion">
+
+            <div class="accordion-body accordionColor pt-3">
+              <div class="row" *ngFor="let issuePair of yearGroup.issues; let rowIndex = index">
+                <div class="col-md-6" *ngFor="let issue of issuePair; let colIndex = index">
+
+                  <div class="card issue-card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+
+         
+                      <h5 class="fw-bold mb-3 issue-title"
+                          role="button"
+                          tabindex="0"
+                          (click)="toggleTitle(yearIndex + '-' + rowIndex + '-' + colIndex)"
+                          [attr.aria-expanded]="isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)">
+                       
+                        {{ formatIssueTitle(issue.issueTitle, isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)) | titlecase }}
+                      </h5>
+                      <div>
+                         <div><span class="badge bg-info me-5 mt-2 mb-3">Vol. {{ issue.volume || 'N/A' }} </span>
+                         <span class="mt-5"><i class="bi bi-calendar-event me-3"></i> <strong class=" me-3 mt-5">Published on:</strong>  <span class="badge bg-info me-5 mt-2 mb-3">{{ formatDate(issue.publishDate) }}</span></span>
+                         <br/> 
+                         <span class="badge bg-info me-5 mt-2 mb-3"> Page Number:</span> <span class="badge  badge bg-info  me-4"> {{ !issue.pageNumber || issue.pageNumber === 'undefined' ? 'NA' : issue.pageNumber }} </span> </div>
+                         
+                      </div>
+                       <div class="d-flex align-items-center mt-3">
+                        <i class="bi bi-person-lines-fill fs-4 text-primary me-3"></i>
+                        <span class="badge bg-info">{{ !issue.authorName || issue.authorName === 'undefined' ? 'NA' : issue.authorName  }}</span>
+                      </div>
+                    
+                      <div class=" mt-4">
+                        <i class="bi bi-file-earmark-pdf fs-1 text-danger cursor-pointer"
+                           (click)="downloadIssue(issue.issueFileName)"
+                           title="Download PDF"></i>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </ng-container>
+
+      <ng-template #noIssuesFound>
+        <p class="fs-4 text-danger text-center my-4">No Record Found!</p>
+      </ng-template>
+    </div>
+  </div>
+</section> -->
+
+
+<section>
+    <div class="container py-4 blockHeight">
+
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <h1 class="main-heading">{{ journalTitle }}</h1>
+                <h3 class="sub-heading text-muted">All Published Volumes & Issues</h3>
+            </div>
+        </div>
+
+        <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+            <p class="mt-3">Loading journal issues...</p>
+        </div>
+        <div *ngIf="!isLoading && issues.length === 0" class="alert alert-info text-center py-4">
+            <i class="bi bi-journal-text fs-1"></i>
+            <h2 class="mt-3">No Issues Found</h2>
+            <p>There are no published issues for this journal yet.</p>
+        </div>
+
+        <div class="accordion accordion-flush editorial-accordian" id="issuesAccordion">
+            <ng-container *ngIf="!isLoading && groupedIssuesByYear.length > 0; else noIssuesFound">
+
+                <div class="accordion-item mb-3" *ngFor="let yearGroup of groupedIssuesByYear; let yearIndex = index">
+                    <h2 class="accordion-header" [id]="'heading-' + yearIndex">
+                        <button class="accordion-button collapsed accordionColor py-3" type="button" data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#collapse-' + yearIndex" [attr.aria-controls]="'collapse-' + yearIndex"
+                            (click)="toggleAccordion('year-' + yearIndex)">
+                            <span class="fw-bold">Published Year: {{ yearGroup.year }}</span>
+                        </button>
+                    </h2>
+
+                    <div [id]="'collapse-' + yearIndex" class="accordion-collapse collapse"
+                        [class.show]="activeAccordionId === 'year-' + yearIndex" [attr.aria-labelledby]="'heading-' + yearIndex"
+                        data-bs-parent="#issuesAccordion">
+
+                        <div class="accordion-body accordionColor pt-3">
+                            <div class="row mt-3 " *ngFor="let issuePair of yearGroup.issues; let rowIndex = index">
+                                <div class="col-md-6 mt-3" *ngFor="let issue of issuePair; let colIndex = index">
+
+                                    <div class="card issue-card shadow-sm border-0 mb-4">
+                                        <div class="card-body">
+
+                                            <h5 class="fw-bold mb-3 issue-title-link" role="button" tabindex="0"
+                                                (click)="toggleTitle(yearIndex + '-' + rowIndex + '-' + colIndex)"
+                                                [attr.aria-expanded]="isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)">
+
+                                                {{ formatIssueTitle(issue.issueTitle, isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)) | titlecase }}
+                                            </h5>
+
+                                            <div class="issue-metadata-container text-muted mb-3">
+                                                <span class="me-3 metadata-item">
+                                                    <strong class="text-dark me-3">Volume:</strong>  <span class="text-danger fw-bolder ms-3">{{ issue.volume || 'N/A' }}</span>
+                                                </span>
+                                                <span class="me-3 metadata-item">
+                                                    <strong class="text-dark me-3">Published:</strong> {{ formatDate(issue.publishDate) }}
+                                                </span>
+                                                <span class="metadata-item">
+                                                    <strong class="text-dark me-3">Pages:</strong> {{ !issue.pageNumber || issue.pageNumber === 'undefined' ? 'NA' : issue.pageNumber }}
+                                                </span>
+                                            </div>
+
+                                            <div class="author-list-container mt-3">
+                                                <!-- <i class="bi bi-person-lines-fill me-2 author-icon"></i> -->
+                                                <strong class="text-dark me-4">Author(s): </strong> 
+                                                <span class="author-name-tag">{{ !issue.authorName || issue.authorName === 'undefined' ? 'N/A' : issue.authorName }}</span>
+                                                
+                                                </div>
+
+                                            <div class="mt-4">
+                                                <i class="bi bi-file-earmark-pdf fs-3 text-danger cursor-pointer"
+                                                    (click)="downloadIssue(issue.issueFileName)" title="Download PDF"> </i>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </ng-container>
+
+            <ng-template #noIssuesFound>
+                <p class="fs-4 text-danger text-center my-4">No Record Found!</p>
+            </ng-template>
+        </div>
+    </div>
+</section>

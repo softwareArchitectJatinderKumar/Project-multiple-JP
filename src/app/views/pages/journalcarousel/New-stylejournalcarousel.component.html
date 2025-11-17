@@ -1,0 +1,91 @@
+<div class="box">
+    <ngx-slick-carousel class="carousel" #slickModel="slick-carousel" [config]="slideConfig">
+        <!-- <div class="book slide" ngxSlickItem *ngFor="let slide of slides">
+          <div class="booka">
+            <div class="cover" style="background-color:rgb(214, 214, 214);">
+              <div class="containera">
+                <p > {{slide.journalTitle}} </p>
+                <div class="about">
+                  <div class="pic ">-->
+                    <!-- <img [src]="slide.imageUrl"/> -->
+                      <!--<img [src]="imageSrc(i)" (load)="onImageLoad(i)" (error)="onImageError(i)" />
+                    <div *ngIf="isLoading[i]" class="image-placeholder">Loading...</div> 
+                  </div>
+                  <div class="text">
+                    <h4 >  {{slide.subTitle}}</h4>
+                    <button class="btn" (click)="navigateToUrl(slide.id)">See The Journal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="book slide" ngxSlickItem *ngFor="let slide of slides; let i = index">
+          <div class="booka">
+            <div class="cover" [ngStyle]="{'background-color': getBackgroundColor(i)}">
+              <div class="containera">
+                <p>{{slide.journalTitle}}</p>
+                <div class="about">
+                  <div class="pic">
+                    <img [src]="slide.imageUrl"
+                         [ngClass]="{'hidden': imageLoadError[i]}" 
+                         (error)="handleImageError(i)" 
+                         (load)="handleImageLoad(i)" />
+       
+                    <p *ngIf="imageLoadError[i]" class="error-message text-center">Error Loading image</p>
+                  </div>
+                  <div class="text">
+                    <h4>{{slide.subTitle}}</h4>
+                    <button class="btn" (click)="navigateToUrl(slide.id)">See The Journal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        
+        <div class="book slide" ngxSlickItem *ngFor="let slide of slides; let i = index">
+          <div class="booka">
+            <div class="cover" [ngStyle]="{'background-color': getBackgroundColor(i)}">
+              <!-- <h4>{{slide.journalTitle}}</h4> -->
+              <!-- <h4>{{ slide.journalTitle.slice(0, 30) }}{{ slide.journalTitle.length > 30 ? '...' : '' }}</h4> -->
+              <h4>{{ slide.journalTitle}}</h4>
+
+              <div class="containera">
+                <div class="about row">
+                  <div class="pic col-md-4">
+                    <img [src]="slide.imageUrl"
+                         [ngClass]="{'hidden': imageLoadError[i]}" 
+                         (error)="handleImageError(i)" 
+                         (load)="checkImageLoad($event, i)" />
+                    <p *ngIf="imageLoadError[i]" class="error-message">Error loading image</p>
+                  </div>
+                  <div class="col-md-8">
+                    <!-- <p>{{slide.subTitle.slice(0, 50) }}{{ slide.journalTitle.length > 45 ? '...' : '' }}</p> -->
+
+                    <p *ngIf="getWordCount(slide.journalTitle) > 15">
+                      <span *ngIf="!slide.journalTitle">
+                        {{ slide.journalTitle | slice:0:50 }}... <br />
+                        <button mat-button (click)="slide.journalTitle = true">View Details</button>
+                      </span>
+                      <span *ngIf="slide.journalTitle ">
+                        {{ slide.journalTitle }}<br />
+                        <button mat-button (click)="slide.journalTitle = false">Hide Details</button>
+                      </span>
+                    </p>
+                    <p *ngIf="getWordCount(slide.journalTitle) <= 15">
+                      {{ slide.journalTitle }}
+                    </p>
+                    <button class="btn" (click)="navigateToUrl(slide.id)">See The Journal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+    </ngx-slick-carousel>
+    <div class="custom-prev-arrow " (click)="slickModel.slickPrev()"><img src="assets/images/icon/left-arrow.svg"></div>
+    <div class="custom-next-arrow" (click)="slickModel.slickNext()"><img src="assets/images/icon/right-arrow.svg"></div>
+</div>

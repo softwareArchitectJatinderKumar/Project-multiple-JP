@@ -1,0 +1,501 @@
+<!-- <app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu> -->
+
+<section>
+  <div class="row mt-2 d-flex justify-content-center p-3">
+    <div class="col-md-6 grid-margin stretch-card ">
+      <div class="card">
+        <div class="card-body">
+          <div class="row d-flex justify-content-around">
+            <label class="col-md-6 form-label " style="font-weight: 700;">User Name
+            </label>
+            <label class="col-md-6 form-label text-dark  "
+              style="text-align: right; font-weight: 700;">{{this.candidateName}} </label>
+          </div>
+          <div class="row d-flex justify-content-around">
+            <label class="col-md-6 form-label " style="font-weight: 700;">Supervisor Name
+            </label>
+            <label class="col-md-6 form-label text-dark  "
+              style="text-align: right; font-weight: 700;">{{this.supervisorName?.length>4 ? this.supervisorName : 'N/A'
+              }} </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row d-flex justify-content-around">
+            <label class="col-md-5 form-label  " style="font-weight: 700;">Department
+              Name</label>
+            <label class="col-md-7 form-label text-dark " style="text-align: right;font-weight: 700;">
+              {{this.departmentName}}
+            </label>
+          </div>
+          <div class="row d-flex justify-content-around">
+            <label class="col-md-5 form-label  " style="font-weight: 700;">Email Id</label>
+            <label class="col-md-7 form-label text-dark " style="text-align: right;font-weight: 700;">
+              {{this.userId.length>0 ? this.userId: 'NA' }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row mt-2 d-flex justify-content-center p-3">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row d-flex justify-content-around">
+            <div class="col-md-6 text-end ">
+              <label class="form-label fs-3">Apply Action as :- </label>
+            </div>
+            <div class="col-md-2 text-start">
+              <select class="form-select " [(ngModel)]="selectedAction" (ngModelChange)="TakeActionAs()"
+                name="recommendation" required>
+                <option value="" disabled selected>Select Action</option>
+                <option *ngFor="let action of UserRolesArray" [value]="action.label">{{ action.label }}</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Guest User or Other User  -->
+<section >
+  <div class="row " *ngIf="isGuest" [ngClass]="isGuest?'DBlock':'DNone'">
+  <div class="row mt-2 d-flex justify-content-center p-3">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="row d-flex justify-content-center">
+             <div class="text-center ">
+              <label class="form-label fs-1 p-2 text-center"> 
+                <!-- Since Your are not Author or Editor or Reviwer -->
+                  Forbidden Access!
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+<!--  For Author  -->
+
+<section>
+  <div class="row d-flex p-3 align-items-center justify-content-center " *ngIf="isAuthor" [ngClass]="isAuthor?'DBlock':'DNone'">
+    <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="text-center">
+          <h2 class="text-center fs-1 text-danger mb-5"> Author Section </h2>
+        </div>
+        <div class="container-fluid ">
+          <div class="row  mb-2">
+            <h1 class="mb-5 mt-4 text-center">Submit Manuscript</h1>
+          </div>
+          <div class="row  mb-2">
+            <div class="col-md-2 ">
+              <label class="form-label">Volume:</label>
+            </div>
+            <div class="col-md-4 text-start ">
+              <span class="text-dark">{{ bookData?.volume == null ? 'NA' : bookData.volume }}</span>
+            </div>
+            <div class="col-md-2">
+              <label class=" form-label">Year:</label>
+            </div>
+            <div class="col-md-4">
+              <span class="text-dark">{{ bookData?.publishDate == null ? 'NA' : bookData.publishDate }}</span>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-md-2">
+              <label class="form-label">Editor in Chief:</label>
+            </div>
+            <div class="col-md-4 text-start">
+              <span class="text-dark">{{ bookData?.editorName }}</span>
+            </div>
+            <div class="col-md-2">
+              <label for="journalId">Journal ID:</label>
+            </div>
+            <div class="col-md-4">
+              <span class="text-dark">{{ JournalId }}</span>
+            </div>
+          </div>
+
+          <form [formGroup]="scriptUploadForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-2">
+                <label for="journalTitle">Journal Title:</label>
+              </div>
+              <div class="col-md-4 text-start">
+                <span class="text-dark ">{{ JournalTitle }}</span>
+              </div>
+              <div class="col-md-2">
+                <label for="JournalSubTitle">Journal SubTitle:</label>
+              </div>
+              <div class="col-md-4">
+                <span class="text-dark ">{{ JournalSubTitle }}</span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2">
+                <label for="ManuScriptType" >Manuscript Type:</label>
+              </div>
+              <div class="col-md-4">
+                <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
+                  <option value="Select" selected>Select Manuscript Type</option>
+                  <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                    {{ dropDown.ManuScriptType }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-2 ">
+                <label for="SubmissionType" class="form-label">Submission Type:</label>
+              </div>
+              <div class="col-md-4">
+                <select class="form-select" formControlName="SubmissionType" style="width: auto;"
+                  (change)="onSubmissionTypeChange($event)">
+                  <option value="Select">Select Submission Type</option>
+                  <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                    {{ dropDown.SubmissionType }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Conditionally display Sub Item Type based on Submission Type -->
+              <div *ngIf="submissionType === 'Manuscript'" class="col-md-12">
+                <div class="col-md-2 ">
+                  <label for="SubItemType" class="form-label">Sub Item Type:</label>
+                  <div class="col-md-4">
+                    <select class="form-select" formControlName="SubItemType" style="width: auto;">
+                      <option value="Select">Select Sub Item Type</option>
+                      <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                        {{ dropDown.SubItemType }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row ">
+                <div class="col-md-2">
+                  <label for="file" class="form-label">Upload File:</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                    style="width: auto;" (change)="onFileSelected($event)" accept="*.*" />
+                </div>
+                <div class="col-md-6 text-start text-danger"> If file size > 20 MB kindly send additional file
+                  to Editor In Chief</div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach More
+                    Document</button>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="container-fluid ">
+          <!-- Cart Items Section -->
+          <div class="mt-5" *ngIf="cartItems.length > 0">
+            <h5>Manuscript Details for Submission</h5>
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Script Type</th>
+                  <th>Submission Type</th>
+                  <th>SubItem </th>
+                  <th>File Added </th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of cartItems; let i = index">
+                  <td>{{ item.ManuScriptType }}</td>
+                  <td>{{ item.SubmissionType }}</td>
+                  <td>{{ (item.SubItemType=='Select' || item.SubItemType=='') ? 'NA':item.SubItemType }}</td>
+                  <td>{{ getFileName(item.file) }}</td>
+                  <td>
+                    <button class="btn btn-danger" (click)="removeFromCart(i)">Remove</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="text-center">
+                    <button (click)="generateZip()">Generate ZIP</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5"> <button class="btn btn-dark" (click)="uploadFile()">SAVE ALL </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!--  For Reviewer -->
+<section>
+  <div class="row " *ngIf="isReviewer" [ngClass]="isReviewer?'DBlock':'DNone'">
+    <div class="text-center">
+      <h2 class="text-center fs-1 text-danger mb-5"> Reviewer Section </h2>
+    </div>
+    <div class="container-fluid table-bordered table-responsive ">
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card accordionColor ">
+            <div class="card-body accordionColor " *ngIf="this.booksData?.length>0; else NoData">
+              <div class="table-responsive">
+                <table class="table  table-hover">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of displayedColumns">{{ columnHeaders[col] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of paginatedData">
+                      <td *ngFor="let col of displayedColumns">
+                        <ng-container [ngSwitch]="col">
+                          <button *ngSwitchCase="'fileUrl'" class="btn btn-dark" (click)="onSelectFileX(row[col])">
+                            View File
+                          </button>
+
+                          <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction2(row[col])"
+                            data-bs-toggle="modal" data-bs-target="#ReviewerModal">
+                            Take Action
+                          </button>
+
+                          <span *ngSwitchDefault>{{ row[col] }}</span>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="pagination-controls">
+                  <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+                  <span> Page {{ currentPage }} of {{ totalPages }} </span>
+                  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+                </div>
+              </div>
+            </div>
+            <ng-template #NoData>
+              <div class="themeClr">
+                <h1 class="fs-2 text-center vh-50 p-3 m-4 "> No Data Found </h1>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- <div class="vh-150 d-flex p-2 align-items-center justify-content-center p-5" style="height: 50rem;">
+  <ng-template #noRecords>
+    <div class="row">
+      <div class="text-center">
+        <h4 class="text-center fs-3 text-danger"> No Records </h4>
+
+      </div>
+    </div>
+  </ng-template>
+</div> -->
+  <!--  For Editor  -->
+<section>
+  <div *ngIf="isEditor" class="row  d-flex p-2 align-items-center justify-content-center " [ngClass]="isEditor?'DBlock':'DNone'"> 
+    <div class="text-center">
+      <h2 class="text-center fs-1 text-danger mb-5"> Editor Section </h2>
+    </div>
+    <div class="container-fluid table-bordered table-responsive ">
+      <div class="row">
+        <div class="col-md-12 stretch-card">
+          <div class="card accordionColor ">
+            <div class="card-body accordionColor " *ngIf="this.booksData?.length>0; else NoData">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of displayedColumns">{{ columnHeaders[col] }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of paginatedData">
+                      <td *ngFor="let col of displayedColumns">
+                        <ng-container [ngSwitch]="col">
+                          <!-- File URL Case -->
+                          <button *ngSwitchCase="'fileUrl'" class="btn btn-dark" (click)="onSelectFileX(row[col])">
+                            View File
+                          </button>
+
+                          <!-- Take Action Button -->
+                          <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row[col])"
+                            data-bs-toggle="modal" data-bs-target="#assignReviewerModal">
+                            Take Action
+                          </button>
+
+                          <!-- Default Case -->
+                          <span *ngSwitchDefault>{{ row[col] }}</span>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-controls">
+                  <button (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+                  <span> Page {{ currentPage }} of {{ totalPages }} </span>
+                  <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+                </div>
+              </div>
+            </div>
+            <ng-template #NoData>
+              <div class="themeClr">
+                <h1 class="fs-2 text-center vh-50 p-3 m-4 "> No Data Found </h1>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- Editors  Modal -->
+
+  <div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="assignReviewer()">
+            <div class="mb-3">
+              <label class="form-label">Journal ID:</label>
+              <input type="text" class="form-control" [(ngModel)]="selectedJournalId" name="journalId" readonly />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Select Reviewer:</label>
+              <select class="form-select" [(ngModel)]="selectedReviewerId" name="reviewerId" required>
+                <option *ngFor="let reviewer of reviewerList" [value]="reviewer.id">{{ reviewer.name }}</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-success">Assign Reviewer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- Reviewers Modal -->
+  <div class="modal fade" id="ReviewerModal" tabindex="-1" aria-labelledby="ReviewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ReviewerModalLabel">Reviewer Form</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="submitReviewerForm()">
+            <!-- Reviewer Recommendation Term Dropdown -->
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Reviewer Recommendation Term:</label>
+              </div>
+              <div class="col-md-3 mb-3">
+                <select class="form-select" [(ngModel)]="reviewForm.recommendation" name="recommendation" required>
+                  <option value="Minor Revisions">Minor Revisions</option>
+                  <option value="Major Revisions">Major Revisions</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Overall Reviewer Manuscript Rating:</label>
+              </div>
+              <div class="col-md-3 mb-3">
+                <input type="number" class="form-control" [(ngModel)]="reviewForm.rating" name="rating" />
+              </div>
+            </div>
+            <!--  Feedback form   -->
+            <div class="row">
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Transfer Authorization Response:</label>
+              </div>
+              <div class="col-md-3 mb-3">
+                <select class="form-select" [(ngModel)]="reviewForm.transferAuthorization" name="transferAuthorization"
+                  required>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Comments to Editor:</label>
+              </div>
+              <div class="col-md-3 mb-3">
+                <textarea class="form-control" [(ngModel)]="reviewForm.commentsToEditor" name="commentsToEditor"
+                  rows="3"></textarea>
+              </div>
+            </div>
+
+            <!-- Reviewer Questions -->
+            <div class="row">
+              <div class="col-md-4 mb-3" *ngFor="let question of reviewForm.questions; let i = index">
+                <label class="form-label">{{ question.text }}</label>
+                <div *ngFor="let option of question.options">
+                  <input type="radio" [name]="'question' + i" [value]="option" [(ngModel)]="question.answer" required />
+                  {{ option }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Comments to Author:</label>
+              <textarea class="form-control" [(ngModel)]="reviewForm.commentsToAuthor" name="commentsToAuthor"
+                rows="4"></textarea>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-success">Submit Review</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+ 

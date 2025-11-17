@@ -1,0 +1,98 @@
+header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+header .navbar-brand {
+  padding: 0;
+}
+
+.navbar .navbar-brand img {
+  width: 200px;
+}
+
+.navbar-nav .nav-item .nav-link {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 20px;
+  border-left: 1px solid;
+  line-height: 13px;
+}
+
+.navbar-nav .nav-item:not(:last-child) .nav-link {
+  margin-right: 20px;
+  border-left: 0;
+}
+
+.srch-icon svg {
+  margin-right: 5px;
+}
+
+/* *Search CSS Start*/
+.search form {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+  padding: 14px;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search form input {
+  width: 96%;
+  border: 0;
+  background: transparent;
+  font-size: 30px;
+  padding: 5px;
+  line-height: 0;
+  font-weight: 700;
+}
+
+.search .search-submit {
+  float: right;
+  margin-top: 13px;
+  background: transparent;
+  border: 0;
+}
+
+.search form input:focus-visible {
+  outline: 0;
+}
+
+.search form input::before {
+  content: "";
+}
+
+.search form input:-internal-autofill-selected {
+  background: transparent;
+}
+
+.search .search-submit img {
+  width: 15px;
+}
+
+
+
+
+/* *Search CSS End*/
+@media all and (max-width: 1180px) {
+  .navbar-nav .nav-item .nav-link {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar-nav .srch-icon {
+    display: none;
+  }
+
+  .navbar-nav .nav-item:not(:last-child) .nav-link {
+    margin-right: 0;
+    padding: 15px;
+    border-bottom: 1px solid #efefef;
+  }
+}

@@ -1,0 +1,19 @@
+<div id="HomeComponent" *ngIf="this.ServerConnection==1; else ErrorConnection">
+    <!-- <app-topslider> </app-topslider>
+    <app-journalmenubar></app-journalmenubar>
+    <app-journalcarousel></app-journalcarousel>    
+    <app-journal-popular-by-genre></app-journal-popular-by-genre>
+    <app-journalauthor></app-journalauthor> -->
+    <!-- <app-journalfooter></app-journalfooter> -->
+</div>
+<ng-template #ErrorConnection>
+    <div id="ServerError">
+        <div class="col-sm-12" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="d-flex justify-content-center align-item-center">
+                <span class="text-danger fs-3">Loading </span><br />
+                <div class="spinner-grow text-danger tex-center" style=" width: 14rem; height: 14rem;" role="status">
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,171 @@
+<app-topslider></app-topslider>
+<app-journalmenubar></app-journalmenubar>
+<app-journal-inner-menu></app-journal-inner-menu>
+<div class="row w-100 mx-0 auth-page wrapper mt-5">
+  <div class="col-md-12 col-xl-12 mx-auto">
+    <div class="row">
+      <div class="col-md-6 pe-md-0  d-none d-lg-block">
+        <img src="/assets/images/login-left.png" />
+        <!-- <img src="https://www.lpu.in/journals/assets/images/login-left.png" /> -->
+      </div>
+      <div class="col-md-6 ps-md-0">
+        <div class="auth-form-wrapper px-4 py-5 p-5">
+          <h2 class="nobleui-logo d-block mb-2"> User <span>Registration Page</span></h2>
+
+          <form [formGroup]="JournalUserAccountForm" (ngSubmit)="Onsubmit()" class="forms-sample">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="CandidateName">Name</label>
+                <input type="text" id="CandidateName" formControlName="CandidateName" class="form-control"
+                  placeholder="Enter Your Name"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1['CandidateName'].errors}">
+                <div
+                  *ngIf="JournalUserAccountForm.get('CandidateName')?.invalid && JournalUserAccountForm.get('CandidateName')?.touched"
+                  class="text-danger">
+                  Please enter a valid CandidateName.
+                </div>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="EmailId">Email</label>
+                <input type="email" id="EmailId" formControlName="EmailId" class="form-control"
+                  placeholder="Enter Email" [ngClass]="{'is-invalid': isForm1Submitted && form1['EmailId'].errors}">
+                <div
+                  *ngIf="JournalUserAccountForm.get('EmailId')?.invalid && JournalUserAccountForm.get('EmailId')?.touched"
+                  class="text-danger">
+                  Please enter a valid EmailId.
+                </div>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="InstituteName">Organization</label>
+                <input type="text" id="InstituteName" formControlName="InstituteName" class="form-control"
+                  placeholder="Enter Organization Name"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1['InstituteName'].errors}">
+                <div
+                  *ngIf="JournalUserAccountForm.get('InstituteName')?.invalid && JournalUserAccountForm.get('InstituteName')?.touched"
+                  class="text-danger">
+                  Please enter a valid Organization.
+                </div>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="DepartmentName">Department</label>
+                <input type="text" id="DepartmentName" formControlName="DepartmentName" class="form-control"
+                  placeholder="Enter Department Name"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1['DepartmentName'].errors}">
+                <div
+                  *ngIf="JournalUserAccountForm.get('DepartmentName')?.invalid && JournalUserAccountForm.get('DepartmentName')?.touched"
+                  class="text-danger">
+                  Please enter a valid DepartmentName.
+                </div>
+
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="Designation">Designation</label>
+                <input type="text" id="Designation" formControlName="Designation" class="form-control"
+                  placeholder="Designation" [ngClass]="{'is-invalid': isForm1Submitted && form1['Designation'].errors}">
+                <div
+                  *ngIf="JournalUserAccountForm.get('Designation')?.invalid && JournalUserAccountForm.get('Designation')?.touched"
+                  class="text-danger">
+                  Please enter a valid Designation.
+                </div>
+
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="MobileNumber">Mobile With Country Code</label>
+                <div class="input-group">
+                  <div class="col-md-2 me-3"><input type="text" id="CountryCode" formControlName="CountryCode" class="form-control" placeholder="+1" [ngClass]="{'is-invalid': isForm1Submitted && form1['CountryCode'].errors}">
+                    <div *ngIf="JournalUserAccountForm.get('CountryCode')?.invalid && JournalUserAccountForm.get('CountryCode')?.touched"
+                    class="text-danger"></div>
+                  </div>
+                  <div class="col-md-9"><input type="number" id="MobileNumber" formControlName="MobileNumber" class="form-control"
+                    placeholder="Enter Mobile No."
+                    [ngClass]="{'is-invalid': isForm1Submitted && form1['MobileNumber'].errors}"></div>
+                </div>
+                <div *ngIf="JournalUserAccountForm.get('MobileNumber')?.invalid && JournalUserAccountForm.get('MobileNumber')?.touched"
+                  class="text-danger">
+                  Please enter a valid mobile number (with country code).
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="UserRole">Login Role</label>
+                <div class="dropdown-box" (click)="toggleDropdown($event)" tabindex="0">
+                  <div class="selected-items" >
+                    <span *ngIf="selectedRoles.length === 0" class="selected-role">Select Login Role</span>
+                    <span *ngFor="let role of selectedRoles" class="selected-role">
+                      {{ getRoleLabel(role) }}
+                      <span class="remove-role" (click)="removeRole($event, role)">x</span>
+                    </span>
+                  </div>
+                  <div class="dropdown-icon">&#9662;</div>
+                </div>
+
+                <div class="dropdown-options" *ngIf="dropdownOpen" >
+                  <div *ngFor="let role of availableRoles" (click)="addRole($event, role.value)"
+                    [class.selected]="isSelected(role.value)" [ngClass]="{'disabled-option': isSelected(role.value)}">
+                    {{ role.label }}
+                  </div>
+                </div>
+
+                <div *ngIf="isForm1Submitted && JournalUserAccountForm.get('UserRole')?.invalid"
+                  class="invalid-feedback">
+                  Required: Please select at least one UserRole.
+                </div>
+              </div>
+
+
+              <div class="col-md-12 mb-3">
+                <label for="Address">Address</label>
+                <textarea id="Address" formControlName="Address" class="form-control" required
+                  placeholder="Enter Address"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1['Address'].errors}"></textarea>
+
+                <div
+                  *ngIf="JournalUserAccountForm.get('Address')?.invalid && JournalUserAccountForm.get('Address')?.touched"
+                  class="text-danger">
+                  Please enter a valid Address.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="Password">Password</label>
+                <input type="password" id="Password" formControlName="Password" class="form-control"
+                  placeholder="Enter Password" [ngClass]="{'is-invalid': isForm1Submitted && form1['Password'].errors}">
+                <div *ngIf="isForm1Submitted && form1['Password'].errors?.['required']" class="invalid-feedback">
+                  Required</div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="ConfirmPassword">Confirm Password</label>
+                <input type="password" id="ConfirmPassword" formControlName="ConfirmPassword" class="form-control"
+                  placeholder="Confirm Password"
+                  [ngClass]="{'is-invalid': isForm1Submitted && form1['ConfirmPassword'].errors}">
+                <div *ngIf="isForm1Submitted && form1['ConfirmPassword'].errors?.['required']" class="invalid-feedback">
+                  Required</div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <button type="submit" class="btn btn-primary">Signup</button>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <button type="button" (click)="OnReset()" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <a (click)="VisitUrl(BookId, name, 'ExternalLogin')" class="  mb-2 mb-md-0">Existing user? Sign
+                    in</a>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

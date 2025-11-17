@@ -1,0 +1,201 @@
+// General layout
+.form-step {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.form-step.active {
+  display: block;
+}
+
+// Header and card styles
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background-color: #fff;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #34495e;
+}
+
+// Form field spacing
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+// Input & textarea styling
+input.form-control,
+textarea.form-control,
+select.form-select {
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.75rem;
+  transition: border-color 0.3s;
+  background-color: #fdfdfd;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+// Validation styles
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+// Buttons
+button.btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+
+  &.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+
+    &:hover {
+      background-color: #0069d9;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+
+    &:hover {
+      background-color: #218838;
+      transform: translateY(-1px);
+    }
+  }
+
+  &.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+
+  &.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+}
+
+// Stepper navigation
+.step-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  .step {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #dee2e6;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 1rem;
+
+    &.active {
+      background: #007bff;
+      color: #fff;
+    }
+  }
+}
+
+// Editor preview (if needed)
+.editor-preview {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border: 1px dashed #ccc;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  margin-top: 0.5rem;
+}
+
+// /* Example of custom styles */
+
+
+// .custom-btn-NewJournal {
+//   margin: 20px;
+// }
+
+// .custom-btn-AllJournals {
+//     margin-left: 20px;
+// }
+
+// #nav-tab .btn.active {
+//   background-color: black;
+//   color: white;
+// }
+
+// .container {
+    
+//     margin: auto;
+//     padding-top: 20px;
+//     margin-top:2rem;
+//     margin-bottom:4rem;
+//   }
+  
+//   .form-label {
+//     font-weight: bold;
+   
+//   }
+  
+//   .mb-2 {
+//     margin-bottom: 0.5rem;
+//   }
+//   input,select{
+//     border-style: outset;
+    
+//   }
+//   button{
+//     color:white;
+    
+//   }
+
+//   quill-editor .ql-container .ql-editor {
+//     max-height: 150px !important;
+//     min-height: 150px !important;
+// }
+// .table > :not(caption) > * > *{
+//   background-color: #FD6C04 !important;
+// }
