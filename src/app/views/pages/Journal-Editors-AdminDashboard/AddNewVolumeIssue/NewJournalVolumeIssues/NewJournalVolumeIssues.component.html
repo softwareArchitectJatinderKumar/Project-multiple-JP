@@ -1,5 +1,169 @@
 <app-topslider></app-topslider>
 <app-EditorHeader></app-EditorHeader>
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mt-4 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h1 class="text-center theme-clr mb-4">Add New Publications/ Volume</h1>
+
+            <div class="row align-items-center justify-content-center mb-5">
+              <div class="col-md-8">
+                <div class="row align-items-center">
+                  <div class="col-md-4 mb-3">
+                    <label for="journalSelect" class="form-label fs-5 fw-bolder">Select Journal <span class="text-danger">*</span></label>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <select id="journalSelect" class="form-select" [(ngModel)]="selectedJournalId" name="journalId"
+                      required (change)="setJournalDetails()" [ngModelOptions]="{standalone: true}">
+                      <option [ngValue]="null" disabled>Select Journal</option>
+                      <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
+                        {{ journalLists.journalTitle }} (ID: {{ journalLists.journalId }})
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="selectedJournalId">
+      <div class="col-12">
+        <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" class="p-4 card shadow-sm">
+          
+          <h4 class="mb-4 fw-bold text-primary border-bottom pb-2">Current Journal Details</h4>
+
+          <div class="row mb-3">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal ID:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.journalId || 'N/A'}}</span></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal Title:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.journalTitle || 'N/A'}}</span></div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal Volume No.:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.volume || 'N/A'}}</span></div>
+          </div>
+
+          <h4 class="mb-4 fw-bold text-primary border-bottom pb-2">New Issue Details</h4>
+
+          <div class="row mt-3 mb-3 align-items-start">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Author Name <span class="text-danger ms-3">*</span></label>
+            </div>
+            <div class="col-md-9">
+              <input type="text" class="form-control" placeholder="Enter author name and press Enter or Comma (,)"
+                [(ngModel)]="authorInput" [ngModelOptions]="{ standalone: true }"
+                (keydown)="handleAuthorKeyDown($event)" (focus)="showBadge = true" (blur)="showBadge = false" />
+
+              <div *ngIf="authors.length === 0 && isFormSubmitted" class="text-danger mt-1 small">
+                Please enter at least one author.
+              </div>
+
+              <div class="mt-2 author-badges-container">
+                <span *ngFor="let author of authors; let i = index" class="badge bg-secondary me-2 p-2">
+                  {{ author }}
+                  <button type="button" class="btn-close btn-close-white btn-sm ms-2" aria-label="Remove"
+                    (click)="removeAuthor(i)"></button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Publication Title<span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" [formControl]="$any(f['IssueTitle'])" placeholder="Provide Issue Title "
+                [class.is-invalid]="$any(f['IssueTitle']).invalid && ($any(f['IssueTitle']).touched || isFormSubmitted)">
+              <div *ngIf="$any(f['IssueTitle']).invalid && ($any(f['IssueTitle']).touched || isFormSubmitted)" class="invalid-feedback d-block">
+                Please enter a valid Publication Title (Max 250 characters).
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" [formControl]="$any(f['PageNumber'])" class="form-control" placeholder="e.g., 1-10 or 5"
+                [class.is-invalid]="$any(f['PageNumber']).invalid && ($any(f['PageNumber']).touched || isFormSubmitted)" />
+              <div *ngIf="$any(f['PageNumber']).invalid && ($any(f['PageNumber']).touched || isFormSubmitted)" class="invalid-feedback d-block">
+                Please enter a valid Page Number (e.g., numbers, hyphens allowed).
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Publish Date<span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="date" class="form-control" [formControl]="$any(f['PublishDate'])"
+                [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)">
+              <div *ngIf="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)" class="invalid-feedback d-block">
+                Please enter a valid Publish Date.
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-3 mb-3 align-items-start">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue Description <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <textarea [formControl]="$any(f['IssueDescription'])" class="form-control" placeholder="Enter Issue Description"
+                [class.is-invalid]="$any(f['IssueDescription']).invalid && ($any(f['IssueDescription']).touched || isFormSubmitted)"
+                rows="3"></textarea>
+              <div *ngIf="$any(f['IssueDescription']).invalid && ($any(f['IssueDescription']).touched || isFormSubmitted)" class="invalid-feedback d-block">
+                Please enter a valid Issue Description (Max 500 characters).
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue File <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
+                [class.is-invalid]="!IssueFileData && isFormSubmitted" 
+                accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
+              <div *ngIf="!IssueFileData && isFormSubmitted" class="text-danger mt-1 small">
+                Please provide a valid file (PDF/DOC/ZIP, Max 3MB).
+              </div>
+              <p *ngIf="IssueFileName" class="text-success mt-1 small">File Selected: {{ IssueFileName }}</p>
+            </div>
+          </div>
+
+          <div class="mt-5 text-center">
+            <button type="submit" class="btn btn-lg btn-primary" 
+              [disabled]="journalForm.invalid || !IssueFileData || authors.length === 0 || isLoading">
+              <i class="fas fa-upload me-2"></i>Publish Issues
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-page-loader" *ngIf="isLoading" aria-label="Loading">
+  <div class="loader-spinner">
+    <span class="material-icons lg-48 spin-icon">autorenew</span>
+  </div>
+</div>
+
+<!-- <app-topslider></app-topslider>
+<app-EditorHeader></app-EditorHeader>
 <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
   <div class="container-fluid ">
     <div class="row mt-3 mb-3">
@@ -37,7 +201,7 @@
     <div class="row" *ngIf="JournalTitle.length > 0">
       <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
         <div class="row mt-3 mb-3">
-          <!-- Row 1: Journal Title, Issue Title, Publish Date -->
+          
           <div class="col-md-3">
             <label class="form-label fs-5 fw-bolder">Journal Id </label>
           </div>
@@ -59,7 +223,7 @@
           </div>
           <div class="col-md-6">
             <label class="form-label fs-6 text-danger fw-bolder"> {{currentJournalVolume}}</label>
-            <!-- <label class="form-label fs-6 text-danger fw-bolder ms-3"> {{"Adding Issue for this Volume"}}</label>  -->
+            
           </div>
         </div>
         <div class="row mt-3 g-3">
@@ -76,17 +240,17 @@
                 (keydown)="handleAuthorKeyDown($event)" (focus)="showBadge = true" />
 
 
-              <!-- Info Badge -->
+           
               <div *ngIf="showBadge" class="mt-1">
                 <span class="badge bg-info text-dark">Multiple authors accepted. Press Enter or Comma.</span>
               </div>
 
-              <!-- Validation -->
+              
               <div *ngIf="authors.length === 0 && isForm1Submitted" class="text-danger mt-1">
                 Please enter at least one author.
               </div>
 
-              <!-- Author Badges -->
+            
               <div class="mt-2">
                 <span *ngFor="let author of authors; let i = index" class="badge bg-secondary me-1">
                   {{ author }}
@@ -100,7 +264,7 @@
 
         </div>
         <div class="row mt-3 g-3">
-          <!-- Row 4:Page Number -->
+        
           <div class="col-md-3">
             <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
           </div>
@@ -156,7 +320,7 @@
 
 
         <div class="row g-3">
-          <!-- Row 3: Issue Description (takes full width) -->
+         
           <div class="col-md-3">
             <label class="form-label fs-5 fw-bolder">Issue Description <span class="text-danger ms-3 ">*</span></label>
           </div>
@@ -181,4 +345,4 @@
 
     </div>
   </div>
-</div>
+</div> -->

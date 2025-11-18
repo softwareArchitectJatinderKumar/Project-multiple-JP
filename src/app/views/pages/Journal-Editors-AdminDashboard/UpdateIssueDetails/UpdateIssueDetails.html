@@ -58,7 +58,7 @@
                                     <tr *ngFor="let row of paginatedJournalIssuesData">
                                         <td *ngFor="let col of displayedEditorColumns">
                                             <ng-container [ngSwitch]="col">
-                                                <button *ngSwitchCase="'issueFileName'" class="btn btn-dark btn-sm"
+                                                <button *ngSwitchCase="'IssueFileName'" class="btn btn-dark btn-sm"
                                                     (click)="onSelectFileEditorX(row[col])">
                                                     <i class="bi bi-file-earmark-text"></i> View File
                                                 </button>

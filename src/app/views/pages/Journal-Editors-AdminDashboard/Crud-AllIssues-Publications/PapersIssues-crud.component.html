@@ -1,0 +1,308 @@
+<app-topslider></app-topslider>
+<app-EditorHeader></app-EditorHeader>
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 mt-4 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body p-5">
+            <h1 class="text-center theme-clr mb-4">Add New Publications/ Volume</h1>
+
+            <div class="row align-items-center justify-content-center mb-5">
+              <div class="col-md-8">
+                <div class="row align-items-center">
+                  <div class="col-md-4 mb-3">
+                    <label for="journalSelect" class="form-label fs-5 fw-bolder">Select Journal <span
+                        class="text-danger">*</span></label>
+                  </div>
+                  <div class="col-md-8 mb-3">
+                    <select id="journalSelect" class="form-select" [(ngModel)]="selectedJournalId" name="journalId"
+                      required (change)="setJournalDetails()" [ngModelOptions]="{standalone: true}">
+                      <option [ngValue]="null" disabled>Select Journal</option>
+                      <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
+                        {{ journalLists.journalTitle }} (ID: {{ journalLists.journalId }})
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="selectedJournalId">
+      <div class="col-12">
+        <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" class="p-4 card shadow-sm mb-5">
+
+          <h4 class="mb-4 fw-bold text-primary border-bottom pb-2">Current Journal Details</h4>
+
+          <div class="row mb-3">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal ID:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.id || 'N/A'}}</span></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal Title:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.journalTitle ||
+                'N/A'}}</span></div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-4"><label class="form-label fw-bold">Journal Volume No.:</label></div>
+            <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.volume || 'N/A'}}</span>
+            </div>
+          </div>
+
+          <h4 class="mb-4 fw-bold text-primary border-bottom pb-2">{{ isUpdateMode ? 'Update Issue Details (ID: ' +
+            currentIssueId + ')' : 'New Issue Details' }}</h4>
+
+          <div class="row mt-3 mb-3 align-items-start">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Author Name <span class="text-danger ms-3">*</span></label>
+            </div>
+            <div class="col-md-9">
+              <input type="text" class="form-control" placeholder="Enter author name and press Enter or Comma (,)"
+                [(ngModel)]="authorInput" [ngModelOptions]="{ standalone: true }"
+                (keydown)="handleAuthorKeyDown($event)" />
+
+              <div *ngIf="authors.length === 0 && isFormSubmitted" class="text-danger mt-1 small">
+                Please enter at least one author.
+              </div>
+
+              <div class="mt-2 author-badges-container">
+                <span *ngFor="let author of authors; let i = index" class="badge bg-secondary me-2 p-2">
+                  {{ author }}
+                  <button type="button" class="btn-close btn-close-white btn-sm ms-2" aria-label="Remove"
+                    (click)="removeAuthor(i)"></button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Publication Title<span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" [formControl]="$any(f['IssueTitle'])"
+                placeholder="Provide Issue Title "
+                [class.is-invalid]="$any(f['IssueTitle']).invalid && ($any(f['IssueTitle']).touched || isFormSubmitted)">
+              <div *ngIf="$any(f['IssueTitle']).invalid && ($any(f['IssueTitle']).touched || isFormSubmitted)"
+                class="invalid-feedback d-block">
+                Please enter a valid Publication Title (Max 250 characters).
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" [formControl]="$any(f['PageNumber'])" class="form-control"
+                placeholder="e.g., 1-10 or 5"
+                [class.is-invalid]="$any(f['PageNumber']).invalid && ($any(f['PageNumber']).touched || isFormSubmitted)" />
+              <div *ngIf="$any(f['PageNumber']).invalid && ($any(f['PageNumber']).touched || isFormSubmitted)"
+                class="invalid-feedback d-block">
+                Please enter a valid Page Number (e.g., numbers, hyphens allowed).
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Publish Date<span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="date" class="form-control"
+       [formControl]="$any(f['PublishDate'])"
+       [readonly]="isUpdateMode"
+       [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)">
+
+              <!-- <input type="date" class="form-control" [formControl]="$any(f['PublishDate'])"
+                [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)"
+                [attr.disabled]="isUpdateMode ? true : null"> -->
+              <div *ngIf="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)"
+                class="invalid-feedback d-block">
+                Please enter a valid Publish Date.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row mt-3 mb-3 align-items-start">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue Description <span
+                  class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <textarea [formControl]="$any(f['IssueDescription'])" class="form-control"
+                placeholder="Enter Issue Description"
+                [class.is-invalid]="$any(f['IssueDescription']).invalid && ($any(f['IssueDescription']).touched || isFormSubmitted)"
+                rows="3"></textarea>
+              <div
+                *ngIf="$any(f['IssueDescription']).invalid && ($any(f['IssueDescription']).touched || isFormSubmitted)"
+                class="invalid-feedback d-block">
+                Please enter a valid Issue Description (Max 500 characters).
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue File <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
+                [class.is-invalid]="!IssueFileData && !isUpdateMode && isFormSubmitted" 
+                accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
+              
+              <div *ngIf="!IssueFileData && !isUpdateMode && isFormSubmitted" class="text-danger mt-1 small">
+                Please provide a valid file (PDF/DOC/ZIP, Max 3MB).
+              </div>
+              <p *ngIf="IssueFileName" class="text-success mt-1 small">New File Selected: {{ IssueFileName }}</p>
+              <p *ngIf="currentFilePath && isUpdateMode && !IssueFileName" class="text-info mt-1 small">Existing File: **{{ currentFilePath }}**</p>
+            </div>
+          </div> -->
+          <div class="row mt-3 mb-3 align-items-center">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue File <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-6">
+              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
+                [class.is-invalid]="!IssueFileData && !isUpdateMode && isFormSubmitted"
+                accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
+
+              <div *ngIf="!IssueFileData && !isUpdateMode && isFormSubmitted" class="text-danger mt-1 small">
+                Please provide a valid file (PDF/DOC/ZIP, Max 3MB).
+              </div>
+              <p *ngIf="IssueFileName" class="text-success mt-1 small">New File Selected: **{{ IssueFileName }}**</p>
+
+              <p *ngIf="currentFilePath && isUpdateMode" class="mt-2">
+                <span class="text-info small me-3">Existing File: **{{ currentFilePath }}**</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onViewFile(currentFilePath)">
+                  <i class="fas fa-eye me-1"></i> View File
+                </button>
+              </p>
+            </div>
+          </div>
+          <div class="mt-5 text-center">
+            <button type="submit" class="btn btn-lg me-3" [ngClass]="isUpdateMode ? 'btn-danger' : 'btn-warning'"
+              [disabled]="journalForm.invalid || isLoading || authors.length === 0">
+              <i class="fas me-2" [ngClass]="isUpdateMode ? 'fa-pen-to-square' : 'fa-upload'"></i>
+              {{ isUpdateMode ? 'Update Issue' : 'Publish New Issue' }}
+            </button>
+
+            <button type="button" class="btn btn-lg btn-secondary" *ngIf="isUpdateMode" (click)="resetForm()">
+              <i class="fas fa-xmark me-2"></i>Cancel Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row mt-5" *ngIf="selectedJournalId">
+      <div class="col-12">
+        <div class="card shadow-sm p-4">
+
+          <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+              <h4 class="mb-0 fw-bold text-success border-bottom pb-2">Existing Published Issues</h4>
+            </div>
+            <div class="col-md-6 text-end">
+              <input type="text" class="form-control" placeholder="Search by Title, Author, Pages..."
+                [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Issue Title</th>
+                  <th>Authors</th>
+                  <th>Pages</th>
+                  <th>Published Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let issue of paginatedIssuesData; let i = index">
+                  <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                  <td>{{ issue.IssueTitle }}</td>
+                  <td>{{ issue.AuthorName ? issue.AuthorName.length > 40 ? issue.AuthorName.slice(0, 40) + '...' : issue.AuthorName : '' }}
+                  </td>
+                  
+                  
+                  
+                  <td>{{ issue.PageNumber }}</td>
+                  <td>{{ issue.PublishDate }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-info me-2" (click)="onEdit(issue)" [disabled]="isLoading">
+                      <i class="fas fa-pen-to-square"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="onDelete(issue)" [disabled]="isLoading">
+                      <i class="fas fa-trash-can"></i> Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="paginatedIssuesData.length === 0">
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-3">
+                    {{ totalItems > 0 ? 'No results found for "' + searchTerm + '".' : 'No issues published for this
+                    journal yet.' }}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div *ngIf="totalPages > 1 || totalItems > 0"
+            class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+
+            <div>
+              <span class="text-muted me-2">Show: </span>
+              <select [(ngModel)]="pageSize" (ngModelChange)="onSearchChange()" [ngModelOptions]="{standalone: true}"
+                class="form-select form-select-sm d-inline-block w-auto">
+                <option [ngValue]="5">5</option>
+                <option [ngValue]="10">10</option>
+                <option [ngValue]="25">25</option>
+                <option [ngValue]="50">50</option>
+              </select>
+              <span class="text-muted ms-1">entries</span>
+            </div>
+
+            <div class="text-center">
+              <button class="btn btn-sm btn-outline-primary me-2" [disabled]="currentPage <= 1"
+                (click)="goToPage(currentPage - 1)">
+                <i class="fas fa-chevron-left"></i> Previous
+              </button>
+              <span class="mx-3 text-primary fw-bold">Page {{ currentPage }} of {{ totalPages || 1 }}</span>
+              <button class="btn btn-sm btn-outline-primary" [disabled]="currentPage >= totalPages"
+                (click)="goToPage(currentPage + 1)">
+                Next <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+
+            <div class="text-end text-muted small">
+              Showing {{ (currentPage - 1) * pageSize + 1 }}
+              to {{ (currentPage - 1) * pageSize + paginatedIssuesData.length }}
+              of {{ totalItems }} entries
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="full-page-loader" *ngIf="isLoading" aria-label="Loading">
+  <div class="loader-spinner">
+    <span class="material-icons lg-48 spin-icon">autorenew</span>
+  </div>
+</div>

@@ -537,6 +537,7 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
         'Authorization': `Bearer ${this.authToken}`
       })
     };
+    // return this.http.get<any>(`${LOCAL_API_URL}api/LpuJournal/GetJournalPublicationsDetails?JournalId=` + JournalId, httpOptions);
     return this.http.get<any>(`${LOCAL_API_URL}api/LpuJournal/GetJournalIssuesDetails?JournalId=` + JournalId, httpOptions);
   }
 
@@ -605,4 +606,28 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
       // LOCAL_API_URL + 'api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, { headers }
     );
   }
+
+  JournalPublicationsCrudOperation(UpdateData: FormData, Action:any): Observable<any> {
+    let authToken = this.storageService.getUser();
+    let headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + authToken)
+    return this.http.post(
+      this.baseUrl + 'api/LpuJournal/JournalPublicationsDetailsCrudOperation', UpdateData, { headers }
+      // LOCAL_API_URL + 'api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, { headers }
+    );
+  }
+
+
+    GetJournalIssueDetails(JournalDetails: any): Observable<any> {
+       let authToken = this.storageService.getUser();
+    let headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + authToken)
+    return this.http.post(
+      this.baseUrl + 'api/LpuJournal/GetJournalPublicationsDetails', JournalDetails, { headers }
+      // LOCAL_API_URL + 'api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, { headers }
+    );
+    // return this.http.get<any>(`${LOCAL_API_URL}api/LpuJournal/GetJournalPublicationsDetails` + JournalDetails, httpOptions);
+    // return this.http.get<any>(`${LOCAL_API_URL}api/LpuJournal/GetJournalIssuesDetails?JournalId=` + JournalId, httpOptions);
+  }
+
 }

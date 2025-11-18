@@ -102,6 +102,9 @@ import { AddNewIssuePageComponent } from './views/pages/RoleWise-Dashboard/Edito
 import { EditorCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Crud-Editor-Details/editor-crud.component';
 import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
+import { EditorCrudModule } from './views/pages/Journal-Editors-AdminDashboard/Crud-Editor-Details/editor-crud.module';
+import { PapersIssuesCrudModule } from './views/pages/Journal-Editors-AdminDashboard/Crud-AllIssues-Publications/PapersIssues-crud.module';
+import { PapersIssuesCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Crud-AllIssues-Publications/PapersIssues-crud.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +181,8 @@ import { MatOptionModule } from "@angular/material/core";
     EDAllJournalVolumesComponent,
     UpdateIssueDetailsComponent,
     AddNewIssuePageComponent,
-    EditorCrudComponent
+    EditorCrudComponent,
+    PapersIssuesCrudComponent
     
   ],
   imports: [
@@ -217,7 +221,9 @@ import { MatOptionModule } from "@angular/material/core";
     EDReviewersRemarksDetailsModule,
     submitManuScriptComponentModule,
     MatCardModule,
-    MatOptionModule
+    MatOptionModule,
+    EditorCrudModule,
+    PapersIssuesCrudModule
 ],
   providers: [],
   bootstrap: [AppComponent]

@@ -207,6 +207,10 @@ const routes: Routes = [
         path:"ManageEditorDetails",
         loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/Crud-Editor-Details/editor-crud.module').then(m=>m.EditorCrudModule)
       },
+      {
+        path:"ManagePublications",
+        loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/Crud-AllIssues-Publications/PapersIssues-crud.module').then(m=>m.PapersIssuesCrudModule)
+      },
 
 
       // Reviewers Dashboard 

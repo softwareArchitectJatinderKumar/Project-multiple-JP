@@ -58,20 +58,20 @@ export class UpdateIssueDetailsComponent implements OnInit {
 
     // Your existing columns
     displayedEditorColumns: string[] = [
-        'volume',
-        'issueTitle',
-        'authorName',
-        'pageNumber',
-        'issueFileName', // Added file name for clarity/reusability
+        'Volume',
+        'IssueTitle',
+        'AuthorName',
+        'PageNumber',
+        'IssueFileName', // Added file name for clarity/reusability
         'Action' // Replaced 'id' with 'Action' as it holds the button
     ];
 
     displayedEditorColumnHeaders: { [key: string]: string } = {
-        volume: 'Journal Volume',
-        issueTitle: 'Issue Title',
-        authorName: 'Author Name',
-        pageNumber: 'Page Number',
-        issueFileName: 'Issue File',
+        Volume: 'Journal Volume',
+        IssueTitle: 'Issue Title',
+        AuthorName: 'Author Name',
+        PageNumber: 'Page Number',
+        IssueFileName: 'Issue File',
         Action: 'Action'
     };
     // ... existing constructor ...
@@ -116,7 +116,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         this.isLoading = false;
         this.selectedIssueData = rowData;
         this.IssueIdToUpdate = rowData.issueId;
-        console.log(JSON.stringify(rowData))
+        // console.log(JSON.stringify(rowData))
 
         // 1. Pre-fill Authors (comma-separated string to array)
         this.authors = rowData.authorName ? rowData.authorName.split(',').map(a => a.trim()).filter(a => a.length > 0) : [];
@@ -222,7 +222,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
             .subscribe({
                 next: (data) => {
                     let errorCode = data.item1[0]['id'];
-                    console.log(JSON.stringify(errorCode))
+                    // console.log(JSON.stringify(errorCode))
                     if (errorCode > 0) {
                         Swal.fire({ title: 'Issue updated successfully!', icon: 'success' }).then(() => this.setJournalId()); // Reload issues for current journal
                     } else if (errorCode == -1) {
@@ -330,7 +330,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
             next: (dataX: any) => {
                 this.JournalIssuesData = dataX.item1 || [];
-                 console.log("IssueData"+JSON.stringify(this.JournalIssuesData))
+                //  console.log("IssueData"+JSON.stringify(this.JournalIssuesData))
                 this.calculateTotalPagesEditor();
                 this.updatePaginatedDataEditor();
                 this.delayHideLoader('journal');
