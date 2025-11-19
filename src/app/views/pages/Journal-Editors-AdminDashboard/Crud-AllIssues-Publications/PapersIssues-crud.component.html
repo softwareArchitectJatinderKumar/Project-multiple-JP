@@ -1,6 +1,5 @@
 <app-topslider></app-topslider>
 <app-EditorHeader></app-EditorHeader>
-
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -8,7 +7,6 @@
         <div class="card shadow-sm">
           <div class="card-body p-5">
             <h1 class="text-center theme-clr mb-4">Add New Publications/ Volume</h1>
-
             <div class="row align-items-center justify-content-center mb-5">
               <div class="col-md-8">
                 <div class="row align-items-center">
@@ -36,9 +34,7 @@
     <div class="row" *ngIf="selectedJournalId">
       <div class="col-12">
         <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" class="p-4 card shadow-sm mb-5">
-
           <h4 class="mb-4 fw-bold text-primary border-bottom pb-2">Current Journal Details</h4>
-
           <div class="row mb-3">
             <div class="col-md-4"><label class="form-label fw-bold">Journal ID:</label></div>
             <div class="col-md-8"><span class="text-danger fw-bolder">{{currentJournalDetails.id || 'N/A'}}</span></div>
@@ -115,21 +111,14 @@
               <label class="form-label fs-5 fw-bolder">Publish Date<span class="text-danger ms-3 ">*</span></label>
             </div>
             <div class="col-md-6">
-              <input type="date" class="form-control"
-       [formControl]="$any(f['PublishDate'])"
-       [readonly]="isUpdateMode"
-       [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)">
-
-              <!-- <input type="date" class="form-control" [formControl]="$any(f['PublishDate'])"
-                [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)"
-                [attr.disabled]="isUpdateMode ? true : null"> -->
+              <input type="date" class="form-control" [formControl]="$any(f['PublishDate'])" [readonly]="isUpdateMode"
+                [class.is-invalid]="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)">
               <div *ngIf="$any(f['PublishDate']).invalid && ($any(f['PublishDate']).touched || isFormSubmitted)"
                 class="invalid-feedback d-block">
                 Please enter a valid Publish Date.
               </div>
             </div>
           </div>
-
 
           <div class="row mt-3 mb-3 align-items-start">
             <div class="col-md-3">
@@ -148,37 +137,17 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="row mt-3 mb-3 align-items-center">
-            <div class="col-md-3">
-              <label class="form-label fs-5 fw-bolder">Issue File <span class="text-danger ms-3 ">*</span></label>
-            </div>
-            <div class="col-md-6">
-              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
-                [class.is-invalid]="!IssueFileData && !isUpdateMode && isFormSubmitted" 
-                accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
-              
-              <div *ngIf="!IssueFileData && !isUpdateMode && isFormSubmitted" class="text-danger mt-1 small">
-                Please provide a valid file (PDF/DOC/ZIP, Max 3MB).
-              </div>
-              <p *ngIf="IssueFileName" class="text-success mt-1 small">New File Selected: {{ IssueFileName }}</p>
-              <p *ngIf="currentFilePath && isUpdateMode && !IssueFileName" class="text-info mt-1 small">Existing File: **{{ currentFilePath }}**</p>
-            </div>
-          </div> -->
           <div class="row mt-3 mb-3 align-items-center">
             <div class="col-md-3">
               <label class="form-label fs-5 fw-bolder">Issue File <span class="text-danger ms-3 ">*</span></label>
             </div>
             <div class="col-md-6">
-              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
-                [class.is-invalid]="!IssueFileData && !isUpdateMode && isFormSubmitted"
-                accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
+              <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control" [class.is-invalid]="!IssueFileData && !isUpdateMode && isFormSubmitted" accept=".pdf,.7z,.zip,.rar,.doc,.docx" />
 
               <div *ngIf="!IssueFileData && !isUpdateMode && isFormSubmitted" class="text-danger mt-1 small">
                 Please provide a valid file (PDF/DOC/ZIP, Max 3MB).
               </div>
               <p *ngIf="IssueFileName" class="text-success mt-1 small">New File Selected: **{{ IssueFileName }}**</p>
-
               <p *ngIf="currentFilePath && isUpdateMode" class="mt-2">
                 <span class="text-info small me-3">Existing File: **{{ currentFilePath }}**</span>
                 <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onViewFile(currentFilePath)">
@@ -232,11 +201,12 @@
                 <tr *ngFor="let issue of paginatedIssuesData; let i = index">
                   <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
                   <td>{{ issue.IssueTitle }}</td>
-                  <td>{{ issue.AuthorName ? issue.AuthorName.length > 40 ? issue.AuthorName.slice(0, 40) + '...' : issue.AuthorName : '' }}
+                  <td>{{ issue.AuthorName ? issue.AuthorName.length > 40 ? issue.AuthorName.slice(0, 40) + '...' :
+                    issue.AuthorName : '' }}
                   </td>
-                  
-                  
-                  
+
+
+
                   <td>{{ issue.PageNumber }}</td>
                   <td>{{ issue.PublishDate }}</td>
                   <td>

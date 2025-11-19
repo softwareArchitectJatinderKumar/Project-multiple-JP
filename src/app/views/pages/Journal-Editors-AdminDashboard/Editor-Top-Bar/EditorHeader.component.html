@@ -10,9 +10,6 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul *ngIf="show" class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <!-- <li class="nav-item"><a class="nav-link " routerLink="/">Home</a></li> -->
-                    <!-- <li class="nav-item"><a class="nav-link " (click)="VisitPage('AllJournals')"> Journals </a></li> -->
-                    <!--  -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Volumes
@@ -50,21 +47,9 @@
                             
                             <li><a class="dropdown-item" (click)="VisitPage('EditorDashboard')">All Manuscripts </a></li>
                             <li><a class="dropdown-item" (click)="VisitPage('ReviewersRemarks')">All Reviewer's Remarks </a></li>
-                            <!-- <li><a class="dropdown-item" (click)="VisitPage('UpdateJournalsDetails')">Assign Managing Editor </a></li> -->
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Editor Details
-                        </a>
-                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'AllUsersDetails')">Editors </a></li>                             
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'AllUsersDetails')">Authors </a></li>                             
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'AllUsersDetails')">Reviewers </a></li>                             
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'AllUsersDetails')">Managing Editors </a></li>                             
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'AllUsersDetails')">View all </a></li>
-                        </ul>
-                    </li>
+                  
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             User Details
@@ -82,14 +67,12 @@
                             Account Setting
                         </a>
                         <ul class="dropdown-menu dropDownWidth" aria-labelledby="AccountDropdown">
-                            <!-- <li><a class="dropdown-item" (click)="VisitPage('UpdateKey')">Change Password </a></li> -->
                             <li><a class="dropdown-item" (click)="Logout()">Logout </a> </li>                             
                         </ul>
                     </li>
                 </ul>
             </div>
 
-            <!-- Logo -->
             <a class="navbar-brand mx-0" routerLink="/">
                 <img src="assets/images/logo/logo.svg" height="80rem" width="80rem"/>
             </a>
@@ -123,4 +106,3 @@
     </div>
 </div>
   
-  <!-- <router-outlet></router-outlet> -->
