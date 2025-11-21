@@ -73,8 +73,8 @@
                 </ul>
             </div>
 
-            <a class="navbar-brand mx-0" routerLink="/">
-                <img src="assets/images/logo/logo.svg" height="80rem" width="80rem"/>
+            <a class="navbar-brand mx-0" routerLink="/" class="d-xl-block d-sm-none"> 
+                <img src="assets/images/logo/logo.svg" height="120 rem" width="120 rem" />
             </a>
         </nav>
     </div>
@@ -83,21 +83,23 @@
     <div class="card">
     <div class="card-body">
         <div class="row d-flex justify-content-center">
-            <div class="col-2">
+            <div class="d-none d-md-table-cell col-2">
                 <label class=" form-label fw-bolder">User Name
                 </label>
             </div>
-            <div class="col-2">
+            <div class="d-none d-md-table-cell col-2">
                 <label class=" form-label fw-bolder">{{this.candidateName}}
                 </label>
             </div>
-            <div class="col-4 text-center">
-                <label class="text-success  fs-3 fw-bolder "> Lpu e-Journal Editors Dashboard </label>
+            <div class="col-md-4 col-sm-12 text-center ">
+                <!-- <span class="text-success fs-md-2 fs-xl-1 fs-sm-4 fw-bolder "> Lpu e-Journal Editors Dashboard </span> -->
+                <span class="text-success responsive-title">Lpu e-Journal Editors Dashboard</span>
+
             </div>
-            <div class="col-2 text-end">
+            <div class="d-none d-md-table-cell col-2 text-end" >
                 <label class=" form-label fw-bolder">Department Name</label>
             </div>
-            <div class="col-2">
+            <div class="d-none d-md-table-cell col-2">
                 <label class="form-label text-dark fw-bolder text-end"> {{this.departmentName}} </label>
             </div>
         </div>

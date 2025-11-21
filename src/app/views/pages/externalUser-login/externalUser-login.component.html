@@ -12,24 +12,23 @@
   </div>
 </div>
   <div *ngIf="isLoading" class="fullscreen-loader">
-      <div class="loader-content">
-        <span class="text-danger fs-3">Processing...</span><br />
-        <div class="spinner-grow text-danger" style="width: 16rem; height: 16rem;" role="status"></div>
+    <!-- <div class="custom-spinner-overlay"  >
+      <div class="custom-spinner-content text-center">
+        <img src="assets/images/spinner.gif" alt="Loading..." />
       </div>
+    </div> -->
+    <div class="loader-content">
+      <span class="text-danger fs-2 mb-4">Processing...</span><br />
+      <div class="spinner-grow text-dark" style="width: 16rem; height: 16rem;" role="status"></div>
     </div>
+  </div>
 <div *ngIf="!loadingIndicator; else ErrorConnection" class="row w-100 mx-0 auth-page wrapper mt-5">
-  <div class="col-md-12 col-xl-12 mx-auto">
-  
-
-    
+  <div class="col-md-12 col-xl-12 mx-auto">    
     <div class="container-fluid" *ngIf="!isLoading">
-      <div class="row">
-    
+      <div class="row">    
         <div class="col-md-6 pe-md-0 d-none d-lg-block" 
              [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/journals/assets/images/login-left.png)', 'background-repeat': 'no-repeat', 'background-size': 'contain', 'background-position': 'center'}">
-        </div>
-
-    
+        </div>    
         <div class="col-md-12 col-lg-6">
           <div class="auth-form-wrapper px-4 py-5 p-5">
             <div class="text-center mb-5 main-heading">

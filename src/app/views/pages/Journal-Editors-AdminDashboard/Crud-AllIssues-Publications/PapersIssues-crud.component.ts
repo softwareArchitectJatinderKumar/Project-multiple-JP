@@ -44,7 +44,7 @@ const MAX_FILE_SIZE_BYTES = 3 * 1024 * 1024; // 3MB limit
 })
 export class PapersIssuesCrudComponent implements OnInit {
 
-
+ServerUrl: any;
   // --- Form & State ---
   journalForm!: FormGroup;
   isLoading: boolean = false;
@@ -77,6 +77,7 @@ export class PapersIssuesCrudComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.ServerUrl='https://files.lpu.in/umsweb/Journal/';
     this.initForm();
     this.loadJournals();
   }
@@ -521,10 +522,15 @@ export class PapersIssuesCrudComponent implements OnInit {
     this.filterAndPaginate();
   }
 
+    onSelectFileEditorX(fileUrl: string) {
+    window.open('https://files.lpu.in/umsweb/Journal/' + fileUrl, '_blank');
+  }
+
+
   onViewFile(filePath: string | null): void {
     if (filePath) {
-      // Replace 'YOUR_SERVER_BASE_URL' with the actual base URL where your files are hosted
-      const fileUrl = `YOUR_SERVER_BASE_URL/${filePath}`;
+      
+      const fileUrl = `${this.ServerUrl}/${filePath}`;
       window.open(fileUrl, '_blank');
     } else {
       Swal.fire({ title: 'No File', text: 'No file path available for this issue.', icon: 'info' });
