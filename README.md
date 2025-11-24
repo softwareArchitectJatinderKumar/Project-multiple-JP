@@ -25,3 +25,49 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+<!-- git config --global --add safe.directory E:/2025/Projects/CIF -->
+
+<!-- https://github.com/softwareArchitectJatinderKumar/Project-New-F.git  
+
+
+Here are the essential Git commands to link a local project folder to a remote GitHub (or GitLab/Bitbucket) repository.
+
+✅ 1. Initialize Git in your project
+
+If your local folder is not yet a Git repository:
+
+git init
+
+✅ 2. Add all project files to Git
+git add .
+
+✅ 3. Commit the files
+git commit -m "Initial commit"
+
+✅ 4. Add the remote repository URL
+
+Replace with your repo URL:
+
+HTTPS
+git remote add origin https://github.com/USERNAME/REPO_NAME.git
+
+SSH
+git remote add origin git@github.com:USERNAME/REPO_NAME.git
+
+✅ 5. Push code to the remote repository
+First push (set upstream):
+git push -u origin main
+
+
+If your branch is master:
+
+git push -u origin master
+
+📝 Check Remote Linked Successfully
+git remote -v
+
+🔄 If remote already exists and you want to change it
+git remote remove origin
+git remote add origin https://github.com/USERNAME/REPO_NAME.git
+-->

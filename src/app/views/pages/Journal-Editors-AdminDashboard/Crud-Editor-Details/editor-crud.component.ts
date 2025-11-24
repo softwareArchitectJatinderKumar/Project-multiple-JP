@@ -176,7 +176,7 @@ export class EditorCrudComponent implements OnInit {
     formData.append('Email', formValue.Email ?? '');
     formData.append('EditorAddress', formValue.EditorAddress ?? '');
     formData.append('EditorType', formValue.EditorType ?? '');
-    console.log(JSON.stringify(formData))
+    // console.log(JSON.stringify(formData))
     let apiCall$;
     if (this.isEditMode) {
       // include EditorId if available

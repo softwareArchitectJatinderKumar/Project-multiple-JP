@@ -584,7 +584,7 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
     let headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + authToken)
     return this.http.post(
-      this.baseUrl + 'api/LpuJournal/UpdateEditorDetails', UpdateData, { headers }
+      this.baseUrl+  'api/LpuJournal/UpdateEditorDetails', UpdateData, { headers }
       // LOCAL_API_URL + 'api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, { headers }
     );
   }
