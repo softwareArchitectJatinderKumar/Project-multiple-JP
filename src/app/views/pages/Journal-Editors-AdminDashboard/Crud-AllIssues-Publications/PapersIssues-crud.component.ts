@@ -335,8 +335,8 @@ ServerUrl: any;
     formData.append('PageNo', formValue.PageNumber);
     // 2. Other form fields for content update
 
-    console.log("Uploading Publication with data:");
-    formData.forEach((value, key) => console.log(`${key}: ${value}`));
+    // console.log("Uploading Publication with data:");
+    // formData.forEach((value, key) => console.log(`${key}: ${value}`));
     this.journalWebApiService.JournalPublicationsCrudOperation(formData, "Update").pipe(
       tap(() => {
         Swal.fire({ title: 'Success', text: `Issue ID ${this.currentIssueId} updated successfully.`, icon: 'success' });
