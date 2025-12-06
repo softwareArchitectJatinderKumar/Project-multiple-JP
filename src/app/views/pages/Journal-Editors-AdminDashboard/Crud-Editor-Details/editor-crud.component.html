@@ -44,15 +44,207 @@
 
         <div class="row mb-3">
           <div class="col-md-4">
-            <label class="form-label">Journal ID</label>
+            <label class="form-label">Journal Id</label>
             <input type="text" formControlName="JournalId" class="form-control" [disabled]="true" />
           </div>
 
           <div class="col-md-4">
             <label class="form-label">Editor Name</label>
             <input type="text" formControlName="EditorName" class="form-control" placeholder="Enter Editor Name" />
-            <small class="text-danger"
-              *ngIf="editorForm.get('EditorName')?.invalid && editorForm.get('EditorName')?.touched">
+            <small class="text-danger" *ngIf="editorForm.get('EditorName')?.invalid && editorForm.get('EditorName')?.touched">
+              Editor Name is required.
+            </small>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Designation</label>
+            <input type="text" formControlName="Designation" class="form-control" placeholder="Enter Designation" />
+            <small class="text-danger" *ngIf="editorForm.get('Designation')?.invalid && editorForm.get('Designation')?.touched">
+              Designation is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Email</label>
+            <input type="email" formControlName="Email" class="form-control" placeholder="Enter Email" />
+            <small class="text-danger" *ngIf="editorForm.get('Email')?.invalid && editorForm.get('Email')?.touched">
+              A valid email is required.
+            </small>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Editor Address</label>
+            <input type="text" formControlName="EditorAddress" class="form-control" placeholder="Enter Address" />
+            <small class="text-danger" *ngIf="editorForm.get('EditorAddress')?.invalid && editorForm.get('EditorAddress')?.touched">
+              Editor Address is required.
+            </small>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Editor Type</label>
+            <select formControlName="EditorType" class="form-select">
+              <option value="">-- Select Editor Type --</option>
+              <option *ngFor="let type of editorTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
+            <small class="text-danger" *ngIf="editorForm.get('EditorType')?.invalid && editorForm.get('EditorType')?.touched">
+              Editor Type is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="text-center form-actions">
+          <button class="btn btn-primary me-3" type="submit" [disabled]="editorForm.invalid">
+            <i class="fas fa-save me-1"></i>
+            {{ isEditMode ? 'Update Editor' : 'Add Editor' }}
+          </button>
+
+          <button class="btn btn-secondary" type="button" (click)="resetForm()">
+            <i class="fas fa-undo me-1"></i>
+            {{ isEditMode ? 'Cancel Edit' : 'Reset' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <div *ngIf="showEditorForm()">
+
+      <hr class="my-5" />
+
+      <div class="editors-grid-area card-content" *ngIf="editorsList.length > 0">
+
+        <h5 class="text-center grid-title mb-4">
+          Editors List for: {{ currentJournalTitle }}
+        </h5>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+          <input type="text" class="form-control w-25" placeholder="Search editors..." [(ngModel)]="searchText"
+            (ngModelChange)="pageNumber = 1">
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover table-striped editor-table">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Editor Name</th>
+                <th>Designation</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Editor Type</th>
+                <th style="width: 150px;">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let editor of paginatedEditors(); let i = index">
+                <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+
+                <td>{{ editor.EditorName }}</td>
+                <td>{{ editor.Designation }}</td>
+                <td>{{ editor.Email }}</td>
+                <td>{{ editor.EditorAddress }}</td>
+                <td>{{ editor.EditorType }}</td>
+
+                <td class="text-center">
+
+                  <button class="btn btn-sm btn-edit me-2" (click)="editEditor(editor)">
+                    <i class="bi bi-pen"></i>
+                  </button>
+
+                  <button class="btn btn-sm btn-delete" (click)="deleteEditor(editor)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3 gap-3">
+          <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
+            Prev
+          </button>
+
+          <span class="d-flex align-items-center text-muted">
+            Page {{ pageNumber }} of {{ totalPages() }}
+          </span>
+
+          <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages()">
+            Next
+          </button>
+        </div>
+
+      </div>
+
+      <div *ngIf="!editorsList.length" class="no-editors-message text-center p-4 text-muted">
+        No editors found for the selected journal.
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!-- <app-topslider></app-topslider>
+<app-EditorHeader></app-EditorHeader>
+
+<div class="crud-container">
+  <div class="card-wrapper">
+
+    <div class="card-header">
+      <h1 class="text-center theme-title">Editor Management </h1>
+    </div>
+
+    <div class="journal-selection-area">
+      <div class="row align-items-center">
+        <div class="col-md-4">
+          <label class="form-label fw-bolder">Select Journal</label>
+        </div>
+
+        <div class="col-md-8">
+          <select id="journalDropdown" class="form-select journal-select" [(ngModel)]="JournalTitle" name="JournalTitle"
+            required (change)="setJournalId()">
+
+            <option value="" disabled>-- Select a Journal --</option>
+            <option *ngFor="let journal of journalListsData" [value]="journal.id">
+              {{ journal.journalTitle }}
+            </option>
+
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="full-page-loader" *ngIf="isLoading">
+      <div class="loader-spinner">
+        <span class="material-icons lg-48 spin-icon">autorenew</span>
+      </div>
+    </div>
+
+    <div *ngIf="showEditorForm()" class="editor-form-area card-content">
+
+      <h4 class="text-center form-title mb-4">
+        {{ isEditMode ? 'Edit Existing Editor' : 'Add New Editor' }}
+      </h4>
+
+      <form [formGroup]="editorForm" (ngSubmit)="onSubmit()" class="editor-form">
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Journal Id</label>
+            <input type="text" formControlName="JournalId" class="form-control" [disabled]="true" />
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Editor Name</label>
+            <input type="text" formControlName="EditorName" class="form-control" placeholder="Enter Editor Name" />
+            <small class="text-danger"  *ngIf="editorForm.get('EditorName')?.invalid && editorForm.get('EditorName')?.touched">
               Editor Name is required.
             </small>
           </div>
@@ -124,7 +316,7 @@
             </select>
           </div> -->
 
-        </div>
+ <!--       </div>
 
         <div class="table-responsive">
           <table class="table table-hover table-striped editor-table">
@@ -189,4 +381,4 @@
     </div>
 
   </div>
-</div>
+</div> -->

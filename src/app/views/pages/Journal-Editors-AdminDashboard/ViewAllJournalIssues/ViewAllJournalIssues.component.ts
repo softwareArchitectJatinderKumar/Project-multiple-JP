@@ -549,7 +549,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
 //   isLoading: boolean = false;
 //   loadJournals() {
 //     this.isLoading = true;
-//     const minLoadingTime = 2500; // 2.5 seconds
+//     const minLoadingTime = 1500; // 2.5 seconds
 //     const startTime = Date.now();
 //     this.journalWebApiService.GetAllBooksDetails()
 //       .pipe(
@@ -579,7 +579,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
 
 //   GetAllIssues(JournalId: any) {
 //     this.isLoading = true;
-//     const minLoadingTime = 2500; // 2.5 seconds
+//     const minLoadingTime = 1500; // 2.5 seconds
 //     const startTime = Date.now();
 //     this.journalWebApiService.GetJournalIssues(JournalId) .pipe(
 //       finalize(() => {

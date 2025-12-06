@@ -71,7 +71,7 @@ export class EDNewJournalVolumeComponent implements OnInit {
   }
   loadJournals() {
     this.isLoading = true;
-    const minLoadingTime = 2500; // 2.5 seconds
+    const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
     this.journalWebApiService.GetAllBooksDetails().pipe(
       finalize(() => {
@@ -176,7 +176,7 @@ export class EDNewJournalVolumeComponent implements OnInit {
 
     if (this.journalForm.invalid) return;
     this.isLoading = true;
-    const minLoadingTime = 2500; // 2.5 seconds
+    const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
     const formData = new FormData();
     const formValue = this.journalForm.value;

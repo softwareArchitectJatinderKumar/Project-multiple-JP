@@ -515,7 +515,7 @@ export class SubmitManuScriptComponent implements OnInit {
       next: (dataX: any) => {
         this.dataSource = dataX.item1;
         this.reviewerList = dataX.item1;
-       console.log("ALL Reviewerlist" + JSON.stringify(this.reviewerList))
+      //  console.log("ALL Reviewerlist" + JSON.stringify(this.reviewerList))
       },
       error: (error: any) => {
         this.dataShowing = false;
@@ -904,12 +904,12 @@ export class SubmitManuScriptComponent implements OnInit {
       const reviewerFormData = new FormData();
       reviewerFormData.append('JournalTitle', this.JournalTitle);
       reviewerFormData.append('JournalId', this.selectedJournalId);
-      reviewerFormData.append('AssignedTo', this.externalReviewer.email);
+      reviewerFormData.append('MultipleAssignedTo', this.externalReviewer.email);
       reviewerFormData.append('RecordId', this.RecordId);
       reviewerFormData.append('CandidateName', this.externalReviewer.name);
-      reviewerFormData.append('User Email', this.externalReviewer.email);
+      reviewerFormData.append('UserEmail', this.externalReviewer.email);
       reviewerFormData.append('MobileNumber', this.externalReviewer.contact);
-      reviewerFormData.append('User Type', '2');
+      reviewerFormData.append('UserType', '2');
       reviewerFormData.append('PasswordText', this.externalReviewer.contact);
       reviewerFormData.append('SubmittedBy', this.AssignedById);
       reviewerFormData.append('AuthorEmailId', this.AuthorEmailId);

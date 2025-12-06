@@ -166,7 +166,7 @@ export class NewRegistrationPageComponent implements OnInit {
 
   Onsubmit(): void {
     this.isLoading = true;
-    const minLoadingTime = 2500; // 2.5 seconds
+    const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
     this.isForm1Submitted = true;
     if (this.JournalUserAccountForm.invalid) {

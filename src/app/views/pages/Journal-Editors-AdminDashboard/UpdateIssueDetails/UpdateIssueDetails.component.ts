@@ -116,7 +116,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         this.isLoading = false;
         this.selectedIssueData = rowData;
         this.IssueIdToUpdate = rowData.issueId;
-        console.log(JSON.stringify(rowData))
+        // console.log(JSON.stringify(rowData))
 
         // 1. Pre-fill Authors (comma-separated string to array)
         this.authors = rowData.authorName ? rowData.authorName.split(',').map(a => a.trim()).filter(a => a.length > 0) : [];
@@ -175,7 +175,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         }
 
         this.isLoading = true;
-        const minLoadingTime = 2500;
+        const minLoadingTime = 1500;
         const startTime = Date.now();
         const formData = new FormData();
         const formValue = this.editIssueForm.value;
@@ -200,8 +200,8 @@ export class UpdateIssueDetailsComponent implements OnInit {
             formData.append('IssueFileData', '');
         }
 
-        console.log('Submitting Update Form Data:');
-        formData.forEach((value, key) => console.log(key + ':', value));
+        // console.log('Submitting Update Form Data:');
+        // formData.forEach((value, key) => console.log(key + ':', value));
 
         // Assuming you have an Update API service method
         this.journalWebApiService.UpdateIssueDetails(formData) // Replace with your actual service method
@@ -222,7 +222,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
             .subscribe({
                 next: (data) => {
                     let errorCode = data.item1[0]['id'];
-                    console.log(JSON.stringify(errorCode))
+                    // console.log(JSON.stringify(errorCode))
                     if (errorCode > 0) {
                         Swal.fire({ title: 'Issue updated successfully!', icon: 'success' }).then(() => this.setJournalId()); // Reload issues for current journal
                     } else if (errorCode == -1) {
@@ -330,7 +330,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
             next: (dataX: any) => {
                 this.JournalIssuesData = dataX.item1 || [];
-                 console.log("IssueData"+JSON.stringify(this.JournalIssuesData))
+                //  console.log("IssueData"+JSON.stringify(this.JournalIssuesData))
                 this.calculateTotalPagesEditor();
                 this.updatePaginatedDataEditor();
                 this.delayHideLoader('journal');
@@ -794,7 +794,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
 //     onSubmit(): void {
 //         if (this.journalForm.invalid) return;
 //         this.isLoading = true;
-//         const minLoadingTime = 2500; // 2.5 seconds
+//         const minLoadingTime = 1500; // 2.5 seconds
 //         const startTime = Date.now();
 //         const formData = new FormData();
 //         const formValue = this.journalForm.value;

@@ -1,163 +1,3 @@
-// import { HttpClient } from '@angular/common/http';
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { Router, ActivatedRoute } from '@angular/router';
-// import { AuthService } from 'src/app/_services/auth.service';
-// import { StorageService } from 'src/app/_services/storage.service';
-// import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
-// import Swal from 'sweetalert2';
-
-// @Component({
-//   selector: 'app-NewJournalVolumeIssues',
-//   templateUrl: './NewJournalVolumeIssues.component.html',
-//   styleUrls: ['./NewJournalVolumeIssues.component.css']
-// })
-// export class NewJournalVolumeIssuesComponent implements OnInit {
-//   journalForm!: FormGroup;
-//   selectedFile: File | null = null;
-//   journalListsData: any[] = [];
-//   isFormSubmitted: boolean = false;
-//   IssueFileData: any = '';
-//   IssueFileName: string = '';
-
-//   constructor(
-//     private fb: FormBuilder,
-//     private http: HttpClient,
-//     private router: Router,
-//     private journalWebApiService: LpujournalbookService
-//   ) {}
-
-//   ngOnInit(): void {
-//     // this.setJournalId();
-//     // this.initializeForm();
-//     this.loadJournals();
-//   }
-
-//   private initializeForm(): void {
-//     this.journalForm = this.fb.group({
-//       JournalTitle: ['', Validators.required],
-//       IssueDescription: ['', Validators.required],
-//       PublishDate: ['', Validators.required],
-//       IssueTitle: ['', Validators.required],
-//       IssueDate: ['', Validators.required],
-//       IssueFile: [null, Validators.required]
-//     });
-//   }
-//   isForm1Submitted: boolean = false; isSubmitted = false;
-
-//   get form1() {
-//     return this.journalForm.controls;
-//   }
-//   private loadJournals(): void {
-//     this.journalWebApiService.GetAllBooksDetails().subscribe({
-//       next: (dataX: any) => {
-//         this.journalListsData = dataX.item1;
-//       },
-//       error: (error: any) => {
-//         console.error('Error fetching journals', error);
-//       }
-//     });
-//   }
-
-//   JournalTitle: any; currentJournalId: any;
-//   currentJournalTitle: any;
-//   setJournalId() {
-//     // Find the journal object based on the selected ID
-//     let idx = this.journalListsData.find(
-//       journal => journal.id == this.JournalTitle
-//     );
-//     this.currentJournalId = idx.id;
-//     this.currentJournalTitle = idx.journalTitle;
-//     this.initializeForm();
-//   }
-//   // onFileSelected(event: any): void {
-//   //   this.selectedFile = event.target.files[0] || null;
-//   // }
-//   onFileSelected(event: Event): void {
-//     const target = event.target as HTMLInputElement;
-//     this.selectedFile = target.files ? target.files[0] : null;
-//   }
-
-//   onFileSelectedIssueFile(event: Event): void {
-//     const target = event.target as HTMLInputElement;
-//     const file: File | null = target.files ? target.files[0] : null;
-
-//     if (file) {
-//       if (file.size > 3148576) { // 3MB limit
-//         Swal.fire({
-//           title: 'File size exceeds 3MB. Please upload a smaller file.',
-//           icon: 'warning'
-//         });
-//         target.value = '';
-//         return;
-//       }
-
-//       const validFileName = this.validateFileName(file.name);
-//       const modifiedFile = new File([file], validFileName, { type: file.type });
-//       this.IssueFileData = modifiedFile;
-
-//       const reader = new FileReader();
-//       reader.readAsDataURL(modifiedFile);
-//       reader.onload = () => {
-//         const result = reader.result as string;
-//         this.IssueFileData = result.split(',')[1]; // Base64 data
-//         this.IssueFileName = validFileName;
-//       };
-//     }
-//   }
-
-//   private validateFileName(fileName: string): string {
-//     const fileNameRegex = /^[a-zA-Z0-9._-]+$/;
-//     return fileNameRegex.test(fileName) ? fileName : fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
-//   }
-
-//   onSubmit(): void {
-//     if (this.journalForm.invalid) {
-//       this.isFormSubmitted = true;
-//       return;
-//     }
-
-//     const formData = this.createFormData();
-//     this.http.post('/api/Journal/InsertJournalWithFile', formData).subscribe({
-//       next: () => {
-//         Swal.fire('Success', 'Journal + Issue saved successfully!', 'success');
-//         this.resetForm();
-//       },
-//       error: err => {
-//         console.error(err);
-//         Swal.fire('Error', 'Failed to submit.', 'error');
-//       }
-//     });
-//   }
-
-//   private createFormData(): FormData {
-//     const formData = new FormData();
-//     const values = this.journalForm.value;
-
-//     for (const key in values) {
-//       if (values.hasOwnProperty(key)) {
-//         formData.append(key, values[key]);
-//       }
-//     }
-
-//     formData.append('CreatedBy', 'editor1');  
-//     formData.append('IpAddress', '127.0.0.1'); 
-//     if (this.selectedFile) {
-//       formData.append('File', this.selectedFile);
-//     }
-
-//     return formData;
-//   }
-
-//   private resetForm(): void {
-//     this.journalForm.reset();
-//     this.selectedFile = null;
-//     this.IssueFileData = '';
-//     this.IssueFileName = '';
-//     this.isFormSubmitted = false;
-//   }
-// }
-
 import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -223,7 +63,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
 
   loadJournals() {
     this.isLoading = true;
-    const minLoadingTime = 2500; // 2.5 seconds
+    const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
     this.journalWebApiService.GetAllBooksDetails().pipe(
       finalize(() => {
@@ -333,7 +173,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   onSubmit(): void {
     if (this.journalForm.invalid) return;
     this.isLoading = true;
-    const minLoadingTime = 2500; // 2.5 seconds
+    const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
     const formData = new FormData();
     const formValue = this.journalForm.value;
@@ -356,10 +196,10 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     formData.append('IssueFileData', this.IssueFileData);
     formData.append('IssueDescription', formValue.IssueDescription);
 
-    console.log('Submitting Form Data:');
-    formData.forEach((value, key) => {
-      console.log(key + ':', value);
-    });
+    // console.log('Submitting Form Data:');
+    // formData.forEach((value, key) => {
+    //   console.log(key + ':', value);
+    // });
 
     this.journalWebApiService.AddNewIssuesDetails(formData)
       .pipe(
@@ -404,13 +244,9 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       });
 
   }
-
-
-
   authorInput: string = '';
   authors: string[] = [];
   showBadge: boolean = false;
-
   handleAuthorKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter' || event.key === ',') {
       event.preventDefault();
@@ -431,7 +267,3 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     this.authors.splice(index, 1);
   }
 }
-
-
-
-

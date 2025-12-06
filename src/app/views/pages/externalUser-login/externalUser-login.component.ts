@@ -131,7 +131,7 @@ export class ExternalUserLoginComponent implements OnInit {
 
   AuthoriseUserNewWay(Id: any, Key: any): void {
     this.isLoading = true;
-    const minLoadingTime = 112500;
+    const minLoadingTime = 1500;
     const startTime = Date.now();
     let loginError: string | null = null;
 

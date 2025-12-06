@@ -17,40 +17,6 @@
   <div class="container-fluid ">
     <div class="row">
       <div class="col-md-12" *ngIf="EditorData.length > 0; else NoData">
-        <!-- <div class="table-responsive ">
-          <table class="table table-bordered table-striped table-hover">
-            <thead>
-              <tr>
-                <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of paginatedEditorData">
-                <td *ngFor="let col of displayedEditorColumns">
-                  <ng-container [ngSwitch]="col">
-                    <button *ngSwitchCase="'fileUrl'" class="btn btn-dark" (click)="onSelectFileEditorX(row[col])">
-                      
-                      <i class="bi bi-file-earmark-text"></i>
-                    </button>
-                    <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
-                      data-bs-toggle="modal" data-bs-target="#assignReviewerModal">
-                     
-                      <i class="bi bi-exclamation-circle"></i>
-                    </button>
-                    <span *ngSwitchDefault>{{ row[col] }}</span>
-                  </ng-container>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="pagination-controls">
-            <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
-            <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
-            <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
-          </div>
-        </div> -->
-
         <div class="table-responsive">
           <table class="table table-bordered">
             <thead>

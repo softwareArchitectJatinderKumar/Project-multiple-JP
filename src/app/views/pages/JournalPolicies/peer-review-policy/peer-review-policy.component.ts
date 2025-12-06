@@ -23,7 +23,7 @@ export class PeerReviewPolicyComponent implements OnInit {
         // this.name = name;
         this.name = name.replace(/-/g, ' ');
       } else {       
-        console.log("error Somthing went wrong");
+        //console.log("error Somthing went wrong");
        this.router.navigate(['/Home']);
       }
   }
