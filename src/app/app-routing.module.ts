@@ -179,8 +179,13 @@ const routes: Routes = [
 
 // Editors Dashboard 
       {
+        path: "ManuscriptCrudDashboard",
+        loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/Manuscript-Crud.module').then(m=>m.ManuscriptCrudModule)
+      },
+      {
         path: "EditorDashboard",
         loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Details/Manuscript-Details.module').then(m=>m.ManuscriptDetailsModule)
+        // loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/manuscript-crud.module').then(m=>m.ManuscriptCrudModule)
       },
       {
         path: "ReviewersRemarks",

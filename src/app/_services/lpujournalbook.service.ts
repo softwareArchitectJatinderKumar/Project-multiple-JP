@@ -2,10 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
-// const AUTH_API = 'https://localhost:7125/';//'https://projectsapi.lpu.in/';
-// const LOCAL_API_URL = 'https://localhost:7125/';//'https://localhost:7125/';
-const AUTH_API = 'https://projectsapi.lpu.in/';//'https://projectsapi.lpu.in/';
-const LOCAL_API_URL = 'https://projectsapi.lpu.in/';//'https://localhost:7125/'; 
+const AUTH_API = 'https://localhost:7125/';//'https://projectsapi.lpu.in/';
+const LOCAL_API_URL = 'https://localhost:7125/';//'https://localhost:7125/';
+// const AUTH_API = 'https://projectsapi.lpu.in/';//'https://projectsapi.lpu.in/';
+// const LOCAL_API_URL = 'https://projectsapi.lpu.in/';//'https://localhost:7125/'; 
 
 @Injectable({
   providedIn: 'root'
@@ -603,6 +603,16 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
     return this.http.post(
       this.baseUrl + 'api/LpuJournal/DeleteEditorDetails', UpdateData, { headers }
       // LOCAL_API_URL + 'api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, { headers }
+    );
+  }
+
+  // NEW METHOD for Manuscript CRUD Operations
+  ManuscriptCrudOperations(formData: FormData): Observable<any> {
+     let authToken = this.storageService.getUser();
+    let headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + authToken)
+    return this.http.post(
+      this.baseUrl + 'api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, { headers }
     );
   }
 }
