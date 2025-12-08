@@ -56,8 +56,12 @@
             <tr>
               <th>#</th>
               <th>Title</th>
+              <th>Manuscript Type</th>
+              <th>Submission Type</th>
+              <th>Manuscript Subtitle</th>
               <th>Author</th>
-              <th>Author Email</th>
+              <th>Submitted By</th>
+              <th>Submitted On</th>
               <th>Assigned Reviewer(s)</th>
               <th>File</th>
               <th style="width: 150px;">Actions</th>
@@ -67,11 +71,15 @@
           <tbody>
             <tr *ngFor="let record of paginatedManuscripts(); let i = index">
               <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-              <td>{{ record.ManuscriptTitle }}</td>
-              <td>{{ record.EditorInChief }}</td>
-              <td>{{ record.UserId }}</td>
+              <td>{{ record.ManuscriptTitle }}</td>              
+              <td>{{ record.MenuScriptType }}</td>
+              <td>{{ record.SubmissionType }}</td>
+              <td>{{ record.ManuscriptSubtitle }}</td>             
+              <td>{{ record.EditorInchief }}</td>
+              <td>{{ record.SubmitedBy }}</td>
+              <td>{{ record.SubmissionDate }}</td>
               <td>{{ record.AssignedToReviewer || 'None Assigned' }}</td>
-              <td>
+               <td>
                 <button class="btn btn-sm btn-link p-0" (click)="onDownloadFile(record.FileUrl)">
                   <i class="bi bi-file-earmark-arrow-down"></i> Download
                 </button>

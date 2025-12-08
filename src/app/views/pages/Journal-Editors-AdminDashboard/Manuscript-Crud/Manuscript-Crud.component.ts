@@ -1,7 +1,7 @@
 declare var bootstrap: any;
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -9,18 +9,21 @@ import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service'
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
-import { forkJoin } from 'rxjs'; 
+import { forkJoin } from 'rxjs';
 
 interface ManuscriptRecord {
   Id: number;
   JournalId: number;
   MenuScriptType: string;
   SubmissionType: string;
-  EditorInChief: string;
-  UserId: string;
-  ManuscriptTitle: string;
   FileUrl: string;
+  EditorInchief: string;
+  UserId: string;
+  SubmitedBy:string;
+  SubmissionDate:string;
+  ManuscriptSubtitle:string;
   AssignedToReviewer: string;
+  ManuscriptTitle: string;
   IsActive: number;
 }
 
@@ -37,9 +40,9 @@ export class ManuscriptCrudComponent implements OnInit {
   userId: any; serverUrl: any; supervisorName: any; departmentName: any;
   candidateName: any;
   journalListsData: any[] = [];
-  
+
   // --- Reviewer Selection Variables ---
-  reviewerType: string = 'internal'; 
+  reviewerType: string = 'internal';
   internalReviewersList: any[] = [];
   externalReviewersList: any[] = [];
   tempExternalUser = { name: '', email: '', contact: '' };
@@ -55,7 +58,7 @@ export class ManuscriptCrudComponent implements OnInit {
   pageSize: number = 10;
   currentJournalId: any;
   currentJournalTitle: any;
-  
+
   // --- Editor Data (Keeping these variables as they are used elsewhere in the component) ---
   EditorDataColumns: any;
   loadingTimeout: any[] = [];
@@ -66,18 +69,37 @@ export class ManuscriptCrudComponent implements OnInit {
   totalPagesEditor: number = 1;
 
   displayedEditorColumns: string[] = [
-    'journalTitle', 'manuScript', 'editorInChief', 'emailId', 'userName', 'submissionType', 'fileUrl', 'journalId'
+  'manuscriptTitle' ,
+  'journalTitle',
+  'menuScriptType',
+  'submissionType' ,
+  'fileUrl' ,
+  'editorInchief' ,
+  'submitedBy' ,
+  'submissionDate' ,
+  'manuscriptSubtitle' ,
+  'assignedToReviewer' ,
+
+    //  'manuScript', 'editorInChief', 'emailId', 'submitedBy', 'submissionType', 'fileUrl', 'journalId'
   ];
 
   displayedEditorColumnHeaders: { [key: string]: string } = {
-    journalTitle: 'Journal Title', manuScript: 'Manuscript', editorInChief: 'Author Name',
-    emailId: 'Submitted User Email', userName: 'Submitted By', submissionType: 'Submission Type',
-    fileUrl: 'File Download', journalId: 'Assign Reviewer'
+  manuscriptTitle: 'Manuscript Title' ,
+  journalTitle: 'Journal ',
+  menuScriptType: 'Manu Script',
+  submissionType: 'Submission Type' ,
+fileUrl :' File Download' ,
+editorInchief :'Editor In Chief' ,
+submitedBy : 'Submitted By' ,
+submissionDate : 'Submission Date' ,
+manuscriptSubtitle :'Manuscript Subtitle' ,
+assignedToReviewer : 'Assigned To Reviewer' ,
+     
   };
 
   // --- CRUD Form & Modal State ---
-  editForm: FormGroup; 
-  deleteForm: FormGroup; 
+  editForm: FormGroup;
+  deleteForm: FormGroup;
   selectedRecord: ManuscriptRecord | null = null;
   updatedBy: string = '';
   dataLoaded: boolean = false;
@@ -107,7 +129,7 @@ export class ManuscriptCrudComponent implements OnInit {
       Remarks: ['', Validators.required]
     });
   }
-  
+
   setUpdatedBy(): void {
     const authData = this.cookieService.get('authData');
     if (authData) {
@@ -191,7 +213,7 @@ export class ManuscriptCrudComponent implements OnInit {
 
     this.journalWebApiService.ManuscriptCrudOperations(formData).subscribe({
       next: (response: any) => {
-        this.manuscriptsList = response.item1  || []; 
+        this.manuscriptsList = response.item1  || [];
         this.isLoading = false;
       },
       error: (error: any) => {
@@ -202,7 +224,7 @@ export class ManuscriptCrudComponent implements OnInit {
       }
     });
   }
- 
+
 
   // --- Helper to construct FormData for CRUD operations ---
   private createCrudFormData(action: string, record: ManuscriptRecord, extraParams?: { [key: string]: string }): FormData {
@@ -214,9 +236,9 @@ export class ManuscriptCrudComponent implements OnInit {
     // Base properties from the original record (will be overridden if present in extraParams)
     formData.append('JournalTitle', this.currentJournalTitle || '');
     // Note: Using 'MenuscriptType' for backend compatibility
-    formData.append('MenuscriptType', record.MenuScriptType || ''); 
+    formData.append('MenuscriptType', record.MenuScriptType || '');
     formData.append('SubmissionType', record.SubmissionType || '');
-    formData.append('EditorInChief', record.EditorInChief || '');
+    formData.append('EditorInChief', record.EditorInchief || '');
     formData.append('UserId', record.UserId || '');
     formData.append('ManuscriptTitle', record.ManuscriptTitle || '');
 
@@ -238,14 +260,14 @@ export class ManuscriptCrudComponent implements OnInit {
     if (this.editForm.invalid || !this.selectedRecord) { return; }
 
     const formValues = this.editForm.value;
-    
+
     // Pass ALL editable fields to override the values from selectedRecord
     const formData = this.createCrudFormData('Update', this.selectedRecord, {
       ManuscriptTitle: formValues.ManuscriptTitle,
       AssignedToReviewer: formValues.AssignedToReviewer,
       // Map form key (MenuScriptType) to backend key (MenuscriptType)
-      MenuscriptType: formValues.MenuScriptType, 
-      EditorInChief: formValues.EditorInChief, 
+      MenuscriptType: formValues.MenuScriptType,
+      EditorInChief: formValues.EditorInChief,
     });
 
     this.journalWebApiService.ManuscriptCrudOperations(formData).subscribe({
@@ -293,11 +315,11 @@ export class ManuscriptCrudComponent implements OnInit {
   openEditModal(record: ManuscriptRecord): void {
     this.selectedRecord = record;
     // CRITICAL: Patch all four editable fields
-    this.editForm.patchValue({ 
-      ManuscriptTitle: record.ManuscriptTitle, 
+    this.editForm.patchValue({
+      ManuscriptTitle: record.ManuscriptTitle,
       AssignedToReviewer: record.AssignedToReviewer || '',
       MenuScriptType: record.MenuScriptType, // NEW
-      EditorInChief: record.EditorInChief // NEW
+      EditorInChief: record.EditorInchief // NEW
     });
 
     const modalElement = document.getElementById('editManuscriptModal');
@@ -322,7 +344,7 @@ export class ManuscriptCrudComponent implements OnInit {
     const filterText = this.searchText.toLowerCase();
     return this.manuscriptsList.filter(m =>
       m.ManuscriptTitle?.toLowerCase().includes(filterText) ||
-      m.EditorInChief?.toLowerCase().includes(filterText) ||
+      m.EditorInchief?.toLowerCase().includes(filterText) ||
       m.UserId?.toLowerCase().includes(filterText)
     );
   }
@@ -354,14 +376,14 @@ export class ManuscriptCrudComponent implements OnInit {
       window.open('https://files.lpu.in/umsweb/Journal/' + fileUrl, '_blank');
     }
   }
-  
+
   // --- Reviewer-Related Methods (Kept for component functionality) ---
   onTakeAction(rowData: any) {
     this.selectedJournalId = rowData['journalId'];
-    this.AssignedById = rowData['emailId']; 
+    this.AssignedById = rowData['emailId'];
     this.RecordId = rowData['id'];
     this.ManuscriptType = rowData['manuScript'];
-    this.submissionType = rowData['submissionType']; 
+    this.submissionType = rowData['submissionType'];
 
     // Reset Modal Data
     this.reviewerType = 'internal';
@@ -395,7 +417,7 @@ export class ManuscriptCrudComponent implements OnInit {
     this.internalReviewersList.splice(index, 1);
   }
 
-  
+
   // --- Logic for External Reviewers ---
   addExternalReviewer() {
     if (!this.tempExternalUser.name || !this.tempExternalUser.email || !this.tempExternalUser.contact) {
@@ -417,12 +439,12 @@ export class ManuscriptCrudComponent implements OnInit {
     this.tempExternalUser = { name: '', email: '', contact: '' };
   }
 
-  
+
   removeExternalReviewer(index: number) {
     this.externalReviewersList.splice(index, 1);
   }
 
-  
+
   assignReviewer() {
     // 1. INTERNAL USER FLOW
     if (this.reviewerType === 'internal') {
@@ -514,7 +536,7 @@ export class ManuscriptCrudComponent implements OnInit {
   }
 
 
-  
+
   loadReviewers(id: any) {
     this.journalWebApiService.GetReviewerDetailsForEditors(id).subscribe({
       next: (dataX: any) => {
@@ -530,7 +552,7 @@ export class ManuscriptCrudComponent implements OnInit {
       }
     });
   }
-  
+
   loadJournals() {
     this.journalWebApiService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
@@ -554,7 +576,7 @@ export class ManuscriptCrudComponent implements OnInit {
 // import { DatePipe } from '@angular/common';
 // import { Component, OnInit } from '@angular/core';
 // // 👇 CRITICAL FIX: Import Validators
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms'; 
+// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // import { Router, ActivatedRoute } from '@angular/router';
 // import { AuthService } from 'src/app/_services/auth.service';
 // import { StorageService } from 'src/app/_services/storage.service';
@@ -562,7 +584,7 @@ export class ManuscriptCrudComponent implements OnInit {
 // import Swal from 'sweetalert2';
 // import { LoginSessionService } from 'src/app/_services/login-session.service';
 // import { CookieService } from 'ngx-cookie-service';
-// import { forkJoin } from 'rxjs'; 
+// import { forkJoin } from 'rxjs';
 
 // interface ManuscriptRecord {
 //   Id: number;
@@ -592,7 +614,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //   candidateName: any;
 
 //   // New Variables for Reviewer Selection Logic
-//   reviewerType: string = 'internal'; 
+//   reviewerType: string = 'internal';
 //   internalReviewersList: any[] = [];
 //   externalReviewersList: any[] = [];
 //   tempExternalUser = {
@@ -609,24 +631,24 @@ export class ManuscriptCrudComponent implements OnInit {
 //   ];
 //   Journals: any;
 //   LoginStatus: boolean | undefined;
-  
+
 //   // Grid State (Pagination & Search)
 //   manuscriptsList: ManuscriptRecord[] = [];
 //   isLoading: boolean = false;
 //   searchText: string = '';
 //   pageNumber: number = 1;
 //   pageSize: number = 10;
-  
+
 //   // User/Auth State
 //   updatedBy: string = '';
-  
+
 //   // CRUD Form & Modal State
 //   editForm!: FormGroup; // Defined here
 //   deleteForm!: FormGroup; // Defined here
 //   selectedRecord: ManuscriptRecord | null = null;
 //   currentJournalId: any;
 //   currentJournalTitle: any;
-  
+
 //   EditorDataColumns: any;
 //   loadingTimeout: any[] = [];
 //   EditorData: any[] = [];
@@ -649,7 +671,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //   RecordId: any; SubmittedbyUserId: any; ManuscriptType: any; submissionType: any;
 //   reviewerList: any[] = [];
 //   journalListsData: any[] = [];
-  
+
 //   dataLoaded: boolean = false;
 
 
@@ -672,7 +694,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //       Remarks: ['', Validators.required]
 //     });
 //   }
-  
+
 //   initForms(): void {
 //     this.editForm = this.fb.group({
 //       ManuscriptTitle: ['', Validators.required],
@@ -683,7 +705,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //       Remarks: ['', Validators.required]
 //     });
 //   }
-  
+
 //   // 👇 CRITICAL FIX: Add the missing logic to set the 'UpdatedBy' user
 //   setUpdatedBy(): void {
 //     const authData = this.cookieService.get('authData');
@@ -722,9 +744,9 @@ export class ManuscriptCrudComponent implements OnInit {
 //     let loginStatus = this.checkUserLogin();
 
 
- 
+
 //     // 👇 CRITICAL FIX: Call form initialization methods here
-  
+
 //     if (loginStatus == true) {
 //       this.initForms();
 //       this.loadJournals();
@@ -772,7 +794,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //     this.journalWebApiService.ManuscriptCrudOperations(formData).subscribe({
 //       next: (response: any) => {
 //         // Assuming you only want active manuscripts
-//         this.manuscriptsList = response.item1  || []; 
+//         this.manuscriptsList = response.item1  || [];
 //         this.isLoading = false;
 //       },
 //       error: (error: any) => {
@@ -783,7 +805,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //       }
 //     });
 //   }
- 
+
 
 //   // --- Helper to construct FormData for CRUD operations ---
 //   private createCrudFormData(action: string, record: ManuscriptRecord, extraParams?: { [key: string]: string }): FormData {
@@ -924,7 +946,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //       window.open('https://files.lpu.in/umsweb/Journal/' + fileUrl, '_blank');
 //     }
 //   }
-  
+
 //   // (Your reviewer-related methods follow here)
 //     onTakeAction(rowData: any) {
 //     this.selectedJournalId = rowData['journalId'];
@@ -965,7 +987,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //     this.internalReviewersList.splice(index, 1);
 //   }
 
-  
+
 //   // --- Logic for External Reviewers ---
 //   addExternalReviewer() {
 //     if (!this.tempExternalUser.name || !this.tempExternalUser.email || !this.tempExternalUser.contact) {
@@ -987,12 +1009,12 @@ export class ManuscriptCrudComponent implements OnInit {
 //     this.tempExternalUser = { name: '', email: '', contact: '' };
 //   }
 
-  
+
 //   removeExternalReviewer(index: number) {
 //     this.externalReviewersList.splice(index, 1);
 //   }
 
-  
+
 //   assignReviewer() {
 //     // 1. INTERNAL USER FLOW
 //     if (this.reviewerType === 'internal') {
@@ -1119,7 +1141,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //   }
 
 
-  
+
 //   loadReviewers(id: any) {
 //     this.journalWebApiService.GetReviewerDetailsForEditors(id).subscribe({
 //       next: (dataX: any) => {
@@ -1135,7 +1157,7 @@ export class ManuscriptCrudComponent implements OnInit {
 //       }
 //     });
 //   }
-  
+
 //   loadJournals() {
 //     this.journalWebApiService.GetAllBooksDetails().subscribe({
 //       next: (dataX: any) => {
