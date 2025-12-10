@@ -350,16 +350,29 @@ export class ManuscriptDetailsComponent implements OnInit {
       // Create an array of Observables
       const requests = this.externalReviewersList.map((ext, index) => {
         const formData = new FormData();
-        formData.append('JournalId', this.selectedJournalId);
-        formData.append('CandidateName', ext.name);
-        formData.append('UserEmail', ext.email);
-        formData.append('MobileNumber', ext.contact);
-        formData.append('RecordId', this.RecordId);
-        formData.append('JournalTitle', this.currentJournalTitle);
-        formData.append('Manuscript', this.ManuscriptType);
-        formData.append('SubmissionType', this.submissionType);
-        formData.append('AuthorEmailId', this.AssignedById);
+        // formData.append('JournalId', this.selectedJournalId);
+        // formData.append('CandidateName', ext.name);
+        // formData.append('UserEmail', ext.email);
+        // formData.append('MobileNumber', ext.contact);
+        // formData.append('RecordId', this.RecordId);
+        // formData.append('JournalTitle', this.currentJournalTitle);
+        // formData.append('Manuscript', this.ManuscriptType);
+        // formData.append('SubmissionType', this.submissionType);
+        // formData.append('AuthorEmailId', this.AssignedById);
 
+
+
+           formData.append('JournalTitle', this.JournalTitle);
+      formData.append('JournalId', this.selectedJournalId);
+      formData.append('MultipleAssignedTo', ext.email);
+      formData.append('RecordId', this.RecordId);
+      formData.append('CandidateName', ext.name);
+      formData.append('UserEmail', ext.email);
+      formData.append('MobileNumber', ext.contact);
+      formData.append('UserType', '2');
+      formData.append('PasswordText', ext.contact);
+      formData.append('SubmittedBy', this.AssignedById);
+      formData.append('AuthorEmailId', this.AssignedById);
         // --- LOGGING FOR DEBUGGING ---
         console.log(`--- Submitting External Reviewer #${index + 1} ---`);
         console.log('API: AssignExternalReviewerForJournal');
