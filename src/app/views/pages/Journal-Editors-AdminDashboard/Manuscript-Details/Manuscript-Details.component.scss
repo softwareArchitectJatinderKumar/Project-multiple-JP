@@ -32,3 +32,43 @@
     box-sizing: border-box;
   }
   
+/* Manuscript-Details.component.scss */
+
+.table-responsive table {
+    width: 100%;
+    table-layout: fixed; // Important: Forces the table to respect the defined widths
+    
+    th, td {
+        // Essential properties for wrapping long strings in a fixed layout:
+        word-wrap: break-word; 
+        overflow-wrap: break-word;
+        word-break: break-all; 
+
+        vertical-align: top;
+        padding: 8px;
+    }
+}
+
+// Optional: Define consistent widths for better control. 
+// These widths should total 100%. Adjust based on your 8-column layout.
+.table-responsive thead th:nth-child(1), // Journal Title
+.table-responsive tbody td:nth-child(1) {
+    width: 12%; 
+}
+.table-responsive thead th:nth-child(4), // Submitted User Email
+.table-responsive tbody td:nth-child(4) {
+    width: 15%; 
+}
+.table-responsive thead th:nth-child(7), // File Download (needs less space)
+.table-responsive tbody td:nth-child(7) {
+    width: 10%; 
+}
+.table-responsive thead th:nth-child(8), // Reviewer Status (Emails)
+.table-responsive tbody td:nth-child(8) {
+    width: 15%; 
+}
+.table-responsive thead th:last-child, // Action column
+.table-responsive tbody td:last-child {
+    width: 10%; 
+}
+// You must ensure the sum of all column widths equals 100%.

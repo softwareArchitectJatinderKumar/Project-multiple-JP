@@ -61,7 +61,7 @@ interface TableColumn {
 
 @Component({
   selector: 'app-submitManuScript-page',
-  templateUrl: './submitManuScript.component.html',
+  templateUrl: './submitManuScript1.component.html',
   standalone: false,
   styleUrls: ['./submitManuScript.component.scss']
 })
@@ -909,12 +909,11 @@ export class SubmitManuScriptComponent implements OnInit {
 
   reviewerType: 'internal' | 'external' = 'internal';
   // selectedReviewerId: string = '';
-  // externalReviewer = {
-  //   name: '',
-  //   email: '',
-  //   contact: ''
-  // };
-  externalReviewer: ExternalReviewer = { name: '', email: '', contact: '' };
+  externalReviewer = {
+    name: '',
+    email: '',
+    contact: ''
+  };
 
   resetSelectedReviewers() {
     this.selectedReviewerIds = [];
@@ -977,7 +976,7 @@ export class SubmitManuScriptComponent implements OnInit {
   // Manuscript Data Grid
   EditorData: Manuscript[] = [];
   currentPageEditorY: number = 1;
-  pageSizeEditorY: number = 10;
+  pageSizeEditorY: number = 2;
   paginatedEditorDataY: Manuscript[] = [];
   totalPagesEditorY: number = 1;
 
@@ -996,8 +995,6 @@ export class SubmitManuScriptComponent implements OnInit {
 
   // New External Reviewer Form State
   showNewExternalReviewerForm: boolean = false;
-  
-  
   tempExternalUser: ExternalReviewer = {
     name: '',
     email: '',
@@ -1047,26 +1044,26 @@ export class SubmitManuScriptComponent implements OnInit {
   }
 
   calculateTotalPagesEditorY() {
-    this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1;
-    this.currentPageEditor = 1;
+    this.totalPagesEditorY = Math.ceil(this.EditorData.length / this.pageSizeEditorY) || 1;
+    this.currentPageEditorY = 1;
   }
 
   updatePaginatedDataEditorY() {
-    const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
-    const endIndex = Math.min(startIndex + this.pageSizeEditor, this.EditorData.length);
-    this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
+    const startIndex = (this.currentPageEditorY - 1) * this.pageSizeEditorY;
+    const endIndex = Math.min(startIndex + this.pageSizeEditorY, this.EditorData.length);
+    this.paginatedEditorDataY = this.EditorData.slice(startIndex, endIndex);
   }
 
   nextPageEditorY() {
-    if (this.currentPageEditor < this.totalPagesEditor) {
-      this.currentPageEditor++;
+    if (this.currentPageEditorY < this.totalPagesEditorY) {
+      this.currentPageEditorY++;
       this.updatePaginatedDataEditor();
     }
   }
 
   previousPageEditorY() {
-    if (this.currentPageEditor > 1) {
-      this.currentPageEditor--;
+    if (this.currentPageEditorY > 1) {
+      this.currentPageEditorY--;
       this.updatePaginatedDataEditor();
     }
   }
@@ -1147,7 +1144,7 @@ export class SubmitManuScriptComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('JournalTitle', manuscript.journalTitle);
-    formData.append('JournalId', this.currentJournalId?.toString() || '');
+    formData.append('JournalId', this.BookId);
     formData.append('CandidateName', name);
     formData.append('UserEmail', email);
     formData.append('MobileNumber', contact);
@@ -1687,7 +1684,7 @@ export class SubmitManuScriptComponent implements OnInit {
   }
 
   currentPageEditor: number = 1;
-  pageSizeEditor: number = 5;
+  pageSizeEditor: number = 10;
   paginatedEditorData: any[] = [];
   totalPagesEditor: number = 1;
 

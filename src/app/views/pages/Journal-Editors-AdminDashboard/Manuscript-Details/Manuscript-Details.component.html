@@ -2,333 +2,542 @@
 <app-EditorHeader></app-EditorHeader>
 
 <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
-  <div class="container-fluid ">
-    <div class="row">
-
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card-body m-5 ">
-          <h1 class="text-center themeClr"> All Manuscript Details </h1>
-        </div>
-        <div class="container-fluid d-flex justify-content-center">
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label fs-3">Select Journal for Action </label>
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card-body m-5 ">
+                    <h1 class="text-center themeClr">All Manuscript Details</h1>
+                </div>
+                <div class="container-fluid d-flex justify-content-center">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fs-3">Select Journal for Action</label>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <select id="journalDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId"
+                                required (change)="setJournalId()">
+                                <option value="" disabled>Select Journal</option>
+                                <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
+                                    {{ journalLists.journalTitle }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
-                (change)="setJournalId()">
-                <option value="" disabled>Select Journal</option>
-                <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
-                  {{ journalLists.journalTitle }}
-                </option>
-              </select>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 <div class="d-flex p-2 align-items-center justify-content-center ">
-  <div class="container-fluid">
-    <div class="row" *ngIf="EditorData.length > 0; else NoData">
-      <div class="col-md-12 stretch-card">
-        <div class="card ">
-          <div class="card-body ">
-            <div class="table-responsive tableHeight">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let row of paginatedEditorData">
-                    <td *ngFor="let col of displayedEditorColumns">
-                      <ng-container [ngSwitch]="col">
-                        <button *ngSwitchCase="'fileUrl'" class="btn btn-dark" (click)="onSelectFileEditorX(row[col])">
-                          <i class="bi bi-file-earmark-text"></i>
-                        </button>
-                        <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
-                          data-bs-toggle="modal" data-bs-target="#assignReviewerModal">
-                          <i class="bi bi-exclamation-circle"></i>
-                        </button>
-                        <span *ngSwitchDefault>{{ row[col] }}</span>
-                      </ng-container>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+    <div class="container-fluid">
+        <div class="row" *ngIf="EditorData.length > 0; else NoData">
+            <div class="col-md-12 stretch-card">
+                <div class="card ">
+                    <div class="card-body ">
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th *ngFor="let col of editorTableColumns">{{ col.header }}</th>
+                                    </tr>
+                                </thead>
 
-              <div class="pagination-controls">
-                <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
-                <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
-                <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
-              </div>
+                                <tbody>
+                                    <tr *ngFor="let row of paginatedEditorData">
+                                        
+                                        <td *ngFor="let col of editorTableColumns">
+                                            
+                                            <ng-container *ngIf="getReviewerStatus(row) as statusInfo">
+                                                <ng-container [ngSwitch]="col.type">
+                                                    
+                                                    <span *ngSwitchCase="'data'">
+                                                        {{ row[col.key] }}
+                                                    </span>
+                                                    
+                                                    <ng-container *ngSwitchCase="'file'">
+                                                        <button class="btn btn-dark btn-sm"
+                                                            (click)="onSelectFileEditorX(row[col.key])">
+                                                            <i class="bi bi-file-earmark-text"></i> Download
+                                                        </button>
+                                                    </ng-container>
+
+                                                    <span *ngSwitchCase="'status'">
+                                                        <span [class.text-success]="statusInfo.assigned" 
+                                                              [class.text-danger]="!statusInfo.assigned" 
+                                                              class="fw-bold small wrap-email-text">
+                                                            {{ statusInfo.display }} 
+                                                        </span>
+                                                    </span>
+
+                                                    <ng-container *ngSwitchCase="'action'">
+                                                        <button class="btn btn-sm"
+                                                            [ngClass]="{'btn-success': statusInfo.assigned, 'btn-primary': !statusInfo.assigned}"
+                                                            (click)="onTakeAction(row)" 
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#assignReviewerModal">
+                                                            <i class="bi" [ngClass]="{'bi-pencil-square': statusInfo.assigned, 'bi-exclamation-circle': !statusInfo.assigned}"></i>
+                                                            {{ statusInfo.assigned ? 'Change' : 'Assign' }}
+                                                        </button>
+                                                    </ng-container>
+
+                                                </ng-container>
+                                            </ng-container>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                        </div>
+                        
+                        <div class="pagination-controls text-center mt-3">
+                            <button class="btn btn-sm btn-outline-secondary me-2" (click)="previousPageEditor()"
+                                [disabled]="currentPageEditor === 1">Previous</button>
+                            <span class="mx-2">Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
+                            <button class="btn btn-sm btn-outline-secondary" (click)="nextPageEditor()"
+                                [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+        <ng-template #NoData>
+            <div class="themeClr vh-50">
+                <h1 class="fs-2 text-center p-3 m-4 text-danger "> No Manuscript Found </h1>
+            </div>
+        </ng-template>
+
     </div>
-    <ng-template #NoData>
-      <div class="themeClr tableHeight">
-        <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger "> No Manuscript Found </h1>
-      </div>
-    </ng-template>
-
-  </div>
-
 </div>
+ 
 
 <div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg"> <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="assignReviewer()">
-          
-          <div class="mb-3">
-            <label class="form-label">Journal :</label>
-            <input type="text" class="form-control" [(ngModel)]="currentJournalTitle" name="JournalTitless" readonly />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-bold">Select Reviewer Type:</label>
-            <div class="d-flex gap-4">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="reviewerType" id="internalRadio" value="internal" [(ngModel)]="reviewerType">
-                <label class="form-check-label" for="internalRadio">Internal User</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="reviewerType" id="externalRadio" value="external" [(ngModel)]="reviewerType">
-                <label class="form-check-label" for="externalRadio">External User</label>
-              </div>
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
+            <div class="modal-body">
+                <form (ngSubmit)="assignReviewer()"> 
 
-          <hr>
+                    <div class="mb-3">
+                        <label class="form-label">Journal :</label>
+                        <input type="text" class="form-control" [ngModel]="currentJournalTitle" name="JournalTitless"
+                            readonly />
+                    </div>
 
-          <div *ngIf="reviewerType === 'internal'">
-            <label class="form-label">Select Internal Reviewer (Max 3):</label>
-            <div class="input-group mb-3">
-              <select id="reviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId" name="reviewerId">
-                <option value="" disabled>Select Reviewer</option>
-                <option *ngFor="let reviewer of reviewerList" [value]="reviewer.emailId">
-                  {{ reviewer.candidateName }} ({{ reviewer.emailId }})
-                </option>
-              </select>
-              <button type="button" class="btn btn-outline-primary" (click)="addInternalReviewer()">
-                <i class="bi bi-plus-circle"></i> Add
-              </button>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Reviewer Type:</label>
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="reviewerType" id="internalRadio"
+                                    value="internal" [(ngModel)]="reviewerType">
+                                <label class="form-check-label" for="internalRadio">Internal User</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="reviewerType" id="externalRadio"
+                                    value="external" [(ngModel)]="reviewerType">
+                                <label class="form-check-label" for="externalRadio">External User</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div *ngIf="reviewerType === 'internal'">
+                        <label class="form-label">Select Internal Reviewer (Max {{ MAX_INTERNAL_REVIEWERS }}):</label>
+                        <div class="input-group mb-3">
+                            <select id="internalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
+                                name="internalReviewerId">
+                                <option value="" disabled>Select Reviewer</option>
+                                <option *ngFor="let reviewer of internalReviewerList" [value]="reviewer.emailId">
+                                    {{ reviewer.candidateName }} ({{ reviewer.emailId }})
+                                </option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary"
+                                [disabled]="internalReviewersList.length >= MAX_INTERNAL_REVIEWERS"
+                                (click)="addReviewerFromDropdown()">
+                                <i class="bi bi-plus-circle"></i> Add
+                            </button>
+                        </div>
+
+                        <div *ngIf="internalReviewersList.length > 0">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let reviewer of internalReviewersList; let i = index">
+                                        <td>{{ reviewer.candidateName }}</td>
+                                        <td>{{ reviewer.emailId }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                (click)="removeInternalReviewer(i)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div *ngIf="reviewerType === 'external'">
+                        <label class="form-label">External Reviewer Details (Max {{ MAX_EXTERNAL_REVIEWERS }}):</label>
+                        
+                        <div class="input-group mb-3">
+                            <select id="externalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
+                                name="externalReviewerId">
+                                <option value="" disabled>Select Existing Reviewer</option>
+                                <option *ngFor="let reviewer of externalReviewerList" [value]="reviewer.emailId">
+                                    {{ reviewer.candidateName }} ({{ reviewer.emailId }})
+                                </option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary"
+                                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS"
+                                (click)="addReviewerFromDropdown()">
+                                <i class="bi bi-plus-circle"></i> Add
+                            </button>
+                        </div>
+                        
+                        <div class="mb-3 text-end">
+                            <button type="button" class="btn btn-warning btn-sm"
+                                (click)="toggleNewExternalReviewerForm()"
+                                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS">
+                                Did not find reviewer in list, Add New
+                            </button>
+                        </div>
+
+                        <div *ngIf="showNewExternalReviewerForm" class="card p-3 mb-3 border-primary">
+                            <h6 class="card-title text-primary">Add New External Reviewer Account (Requires Page Reload)</h6>
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" placeholder="Name"
+                                        [(ngModel)]="tempExternalUser.name" name="extName">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" placeholder="Email"
+                                        [(ngModel)]="tempExternalUser.email" name="extEmail">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Contact No</label>
+                                    <input type="text" class="form-control" placeholder="Contact No"
+                                        [(ngModel)]="tempExternalUser.contact" name="extContact">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-success w-100"
+                                        (click)="addNewExternalReviewerFromForm()"> 
+                                        <i class="bi bi-check"></i> Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="externalReviewersList.length > 0">
+                            <table class="table table-sm table-striped mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ext of externalReviewersList; let i = index">
+                                        <td>{{ ext.name }}</td>
+                                        <td>{{ ext.email }}</td>
+                                        <td>{{ ext.contact }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                (click)="removeExternalReviewer(i)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success"
+                            [disabled]="(reviewerType === 'internal' && internalReviewersList.length === 0) || (reviewerType === 'external' && externalReviewersList.length === 0)">
+                            Assign Reviewers
+                        </button>
+                    </div>
+                </form>
+
             </div>
-
-            <div *ngIf="internalReviewersList.length > 0">
-              <table class="table table-sm table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let reviewer of internalReviewersList; let i = index">
-                    <td>{{ reviewer.candidateName }}</td>
-                    <td>{{ reviewer.emailId }}</td>
-                    <td>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeInternalReviewer(i)">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="reviewerType === 'external'">
-            <label class="form-label">External Reviewer Details (Max 3):</label>
-            <div class="card p-3 mb-3 bg-light">
-              <div class="row g-2">
-                <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="Name" [(ngModel)]="tempExternalUser.name" name="extName">
-                </div>
-                <div class="col-md-4">
-                  <input type="email" class="form-control" placeholder="Email" [(ngModel)]="tempExternalUser.email" name="extEmail">
-                </div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="Contact No" [(ngModel)]="tempExternalUser.contact" name="extContact">
-                </div>
-                <div class="col-md-1">
-                  <button type="button" class="btn btn-primary w-100" (click)="addExternalReviewer()">
-                    <i class="bi bi-plus"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="externalReviewersList.length > 0">
-              <table class="table table-sm table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let ext of externalReviewersList; let i = index">
-                    <td>{{ ext.name }}</td>
-                    <td>{{ ext.email }}</td>
-                    <td>{{ ext.contact }}</td>
-                    <td>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeExternalReviewer(i)">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="modal-footer mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success" 
-              [disabled]="(reviewerType === 'internal' && internalReviewersList.length === 0) || (reviewerType === 'external' && externalReviewersList.length === 0)">
-              Assign Reviewers
-            </button>
-          </div>
-        </form>
-
-      </div>
+        </div>
     </div>
-  </div>
 </div>
+
+
+
 <!-- <app-topslider></app-topslider>
 <app-EditorHeader></app-EditorHeader>
 
 <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
-  <div class="container-fluid ">
-    <div class="row">
+    <div class="container-fluid ">
+        <div class="row">
 
-      <div class="col-md-12 grid-margin stretch-card">
-         
-        <div class="card-body m-5 ">
-          <h1 class="text-center themeClr"> All Manuscript Details </h1>
-        </div>
-        <div class="container-fluid d-flex justify-content-center">
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label fs-3">Select Journal for Action </label>
-            </div>
-              <div class="col-md-4 mb-3">
-                <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
-                  (change)="setJournalId()">
-                  <option value="" disabled>Select Journal</option>
-                  <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
-                    {{ journalLists.journalTitle }}
-                  </option>
-                </select>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  <div class="d-flex p-2 align-items-center justify-content-center ">
-    <div class="container-fluid">
-      <div class="row" *ngIf="EditorData.length > 0; else NoData">
-        <div class="col-md-12 stretch-card">
-          <div class="card ">
-            <div class="card-body ">
-              <div class="table-responsive tableHeight">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let row of paginatedEditorData">
-                      <td *ngFor="let col of displayedEditorColumns">
-                        <ng-container [ngSwitch]="col">
-                          <button *ngSwitchCase="'fileUrl'" class="btn btn-dark"
-                            (click)="onSelectFileEditorX(row[col])">                            
-                            <i class="bi bi-file-earmark-text"></i>
-                          </button>
-                          <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
-                            data-bs-toggle="modal" data-bs-target="#assignReviewerModal">                             
-                            <i class="bi bi-exclamation-circle"></i>
-                          </button>
-                          <span *ngSwitchDefault>{{ row[col] }}</span>
-                        </ng-container>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <div class="pagination-controls">
-                  <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
-                  <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
-                  <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card-body m-5 ">
+                    <h1 class="text-center themeClr">All Manuscript Details</h1>
                 </div>
-              </div>
+                <div class="container-fluid d-flex justify-content-center">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fs-3">Select Journal for Action</label>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <select id="journalDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId"
+                                required (change)="setJournalId()">
+                                <option value="" disabled>Select Journal</option>
+                                <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
+                                    {{ journalLists.journalTitle }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <ng-template #NoData>
-        <div class="themeClr tableHeight">
-          <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger "> No Manuscript Found </h1>
+    </div>
+</div>
+<div class="d-flex p-2 align-items-center justify-content-center ">
+    <div class="container-fluid">
+        <div class="row" *ngIf="EditorData.length > 0; else NoData">
+            <div class="col-md-12 stretch-card">
+                <div class="card ">
+                    <div class="card-body ">
+                        <div class="table-responsive tableHeight">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of paginatedEditorData">
+                                        <td *ngFor="let col of displayedEditorColumns">
+                                            <ng-container [ngSwitch]="col">
+                                                <button *ngSwitchCase="'fileUrl'" class="btn btn-dark btn-sm"
+                                                    (click)="onSelectFileEditorX(row[col])">
+                                                    <i class="bi bi-file-earmark-text"></i> Download
+                                                </button>
+                                                <button *ngSwitchCase="'journalId'" class="btn btn-primary btn-sm"
+                                                    (click)="onTakeAction(row)" data-bs-toggle="modal"
+                                                    data-bs-target="#assignReviewerModal">
+                                                    <i class="bi bi-exclamation-circle"></i> Assign
+                                                </button>
+                                                <span *ngSwitchDefault>{{ row[col] }}</span>
+                                            </ng-container>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="pagination-controls text-center mt-3">
+                                <button class="btn btn-sm btn-outline-secondary me-2" (click)="previousPageEditor()"
+                                    [disabled]="currentPageEditor === 1">Previous</button>
+                                <span class="mx-2">Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
+                                <button class="btn btn-sm btn-outline-secondary" (click)="nextPageEditor()"
+                                    [disabled]="currentPageEditor === totalPagesEditor">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </ng-template>
+        <ng-template #NoData>
+            <div class="themeClr tableHeight">
+                <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger "> No Manuscript Found </h1>
+            </div>
+        </ng-template>
 
     </div>
 
-  </div>
+</div>
 
-  <div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
+<div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="assignReviewer()">
+
+                    <div class="mb-3">
+                        <label class="form-label">Journal :</label>
+                        <input type="text" class="form-control" [ngModel]="currentJournalTitle" name="JournalTitless"
+                            readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Reviewer Type:</label>
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="reviewerType" id="internalRadio"
+                                    value="internal" [(ngModel)]="reviewerType">
+                                <label class="form-check-label" for="internalRadio">Internal User</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="reviewerType" id="externalRadio"
+                                    value="external" [(ngModel)]="reviewerType">
+                                <label class="form-check-label" for="externalRadio">External User</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div *ngIf="reviewerType === 'internal'">
+                        <label class="form-label">Select Internal Reviewer (Max {{ MAX_INTERNAL_REVIEWERS }}):</label>
+                        <div class="input-group mb-3">
+                            <select id="internalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
+                                name="internalReviewerId">
+                                <option value="" disabled>Select Reviewer</option>
+                                <option *ngFor="let reviewer of internalReviewerList" [value]="reviewer.emailId">
+                                    {{ reviewer.candidateName }} ({{ reviewer.emailId }})
+                                </option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary"
+                                [disabled]="internalReviewersList.length >= MAX_INTERNAL_REVIEWERS"
+                                (click)="addReviewerFromDropdown()">
+                                <i class="bi bi-plus-circle"></i> Add
+                            </button>
+                        </div>
+
+                        <div *ngIf="internalReviewersList.length > 0">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let reviewer of internalReviewersList; let i = index">
+                                        <td>{{ reviewer.candidateName }}</td>
+                                        <td>{{ reviewer.emailId }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                (click)="removeInternalReviewer(i)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div *ngIf="reviewerType === 'external'">
+                        <label class="form-label">External Reviewer Details (Max {{ MAX_EXTERNAL_REVIEWERS }}):</label>
+                        
+                        <div class="input-group mb-3">
+                            <select id="externalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
+                                name="externalReviewerId">
+                                <option value="" disabled>Select Existing Reviewer</option>
+                                <option *ngFor="let reviewer of externalReviewerList" [value]="reviewer.emailId">
+                                    {{ reviewer.candidateName }} ({{ reviewer.emailId }})
+                                </option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary"
+                                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS"
+                                (click)="addReviewerFromDropdown()">
+                                <i class="bi bi-plus-circle"></i> Add
+                            </button>
+                        </div>
+                        
+                        <div class="mb-3 text-end">
+                            <button type="button" class="btn btn-warning btn-sm"
+                                (click)="toggleNewExternalReviewerForm()"
+                                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS">
+                                Did not find reviewer in list, Add New
+                            </button>
+                        </div>
+
+                        <div *ngIf="showNewExternalReviewerForm" class="card p-3 mb-3 border-primary">
+                            <h6 class="card-title text-primary">Add New External Reviewer</h6>
+                            <div class="row g-2">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" placeholder="Name"
+                                        [(ngModel)]="tempExternalUser.name" name="extName">
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="email" class="form-control" placeholder="Email"
+                                        [(ngModel)]="tempExternalUser.email" name="extEmail">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" placeholder="Contact No"
+                                        [(ngModel)]="tempExternalUser.contact" name="extContact">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn btn-primary w-100"
+                                        (click)="addExternalReviewerFromForm()">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="externalReviewersList.length > 0">
+                            <table class="table table-sm table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ext of externalReviewersList; let i = index">
+                                        <td>{{ ext.name }}</td>
+                                        <td>{{ ext.email }}</td>
+                                        <td>{{ ext.contact }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                (click)="removeExternalReviewer(i)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success"
+                            [disabled]="(reviewerType === 'internal' && internalReviewersList.length === 0) || (reviewerType === 'external' && externalReviewersList.length === 0)">
+                            Assign Reviewers
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </div>
-        <div class="modal-body">
-          <form (ngSubmit)="assignReviewer()">
-            <div class="mb-3 " >
-              <label class="form-label">Journal :</label>
-              <input type="text" class="form-control " [(ngModel)]="currentJournalTitle" name="JournalTitless"
-                readonly />
-            </div>
-
-
-            <div class="mb-3">
-              <label for="reviewerDropdown" class="form-label">Select Reviewer:</label>
-              <select id="reviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId" name="reviewerId"
-                required>
-                <option value="" disabled>Select Reviewer</option>
-                <option *ngFor="let reviewer of reviewerList" [value]="reviewer.emailId">
-                  {{ reviewer.candidateName }}
-                </option>
-              </select>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-success" [disabled]="selectedReviewerId === ''">Assign
-                Reviewer</button>
-            </div>
-          </form>
-
-        </div>
-      </div>
     </div>
-  </div> -->
+</div> -->
