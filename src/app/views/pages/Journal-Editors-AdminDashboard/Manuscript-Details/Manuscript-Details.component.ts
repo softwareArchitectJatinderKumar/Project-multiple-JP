@@ -37,10 +37,11 @@ interface Manuscript {
 
 // NEW DYNAMIC COLUMN INTERFACE
 interface TableColumn {
-    key: keyof Manuscript | 'reviewerStatus' | 'action';
+    // NOTE: 'reviewerStatus' key is used to map to the 'reviewerAssigned' field on the Manuscript object
+    key: keyof Manuscript | 'reviewerStatus' | 'action'; 
     header: string;
-    type: 'data' | 'file' | 'status' | 'action';
-    // New property for controlling visibility/style (e.g., Bootstrap class for hiding on small screens)
+    // Changed type from 'status' to 'reviewerList' to reflect the actual content
+    type: 'data' | 'file' | 'reviewerList' | 'action'; 
     cssClass?: string; 
 }
 // ------------------------------------
@@ -55,7 +56,7 @@ export class ManuscriptDetailsComponent implements OnInit, OnDestroy {
     readonly MAX_INTERNAL_REVIEWERS = 3;
     readonly MAX_EXTERNAL_REVIEWERS = 2; 
     readonly SERVER_URL = 'https://files.lpu.in/umsweb/Journal/';
-    readonly pageSizeOptions: number[] = [5, 10, 25, 50]; // Added for page size dropdown
+    readonly pageSizeOptions: number[] = [5, 10, 25, 50]; 
 
     // --- Component State Variables ---
     dataShowing: boolean = false;
@@ -71,7 +72,6 @@ export class ManuscriptDetailsComponent implements OnInit, OnDestroy {
     // Manuscript Data Grid
     EditorData: Manuscript[] = [];
     currentPageEditor: number = 1;
-    // Changed initial value and will be controlled by dropdown
     pageSizeEditor: number = this.pageSizeOptions[1]; 
     paginatedEditorData: Manuscript[] = [];
     totalPagesEditor: number = 1;
@@ -106,25 +106,37 @@ export class ManuscriptDetailsComponent implements OnInit, OnDestroy {
     candidateName: any;
 
     
-editorTableColumns: TableColumn[] = [
+    editorTableColumns: TableColumn[] = [
         // Responsive changes: Keep key identifying columns visible on all screens, hide less critical ones on small screens.
         { key: 'journalTitle', header: 'Journal Title', type: 'data', cssClass: 'd-none d-md-table-cell' },
         { key: 'manuScript', header: 'Manuscript', type: 'data' }, // Core column
         { key: 'userName', header: 'Submitted By', type: 'data', cssClass: 'd-none d-lg-table-cell' }, // Hide on small, show on large
         { key: 'submissionType', header: 'Submission Type', type: 'data', cssClass: 'd-none d-lg-table-cell' }, // Hide on small, show on large
         { key: 'fileUrl', header: 'File', type: 'file' }, // Core column
-        { key: 'reviewerStatus', header: 'Assigned To', type: 'status' }, // Core column
+        // Renamed type to reviewerList for better clarity in HTML rendering
+        { key: 'reviewerStatus', header: 'Assigned Reviewers', type: 'reviewerList' }, 
         { key: 'action', header: 'Action', type: 'action' } // Core column
     ];
  
-    getReviewerStatus(row: Manuscript): { display: string, assigned: boolean } {
+    /**
+     * FIX: Renamed function and updated logic to process the comma-separated emails 
+     * into a list for clean, responsive display in the HTML.
+     */
+    getAssignmentInfo(row: Manuscript): { displayList: string[], assigned: boolean, status: string } {
         const assignedData = row.reviewerAssigned;
         
         const isAssigned = !!assignedData && assignedData.trim().length > 0;
+        
+        let displayList: string[] = [];
+        if (isAssigned) {
+            // Split the comma-separated string of emails into an array for *ngFor in HTML
+            displayList = assignedData!.split(',').map(email => email.trim()).filter(email => email.length > 0);
+        }
 
         return {
-            display: isAssigned ? assignedData! : 'Pending',
-            assigned: isAssigned
+            displayList: displayList,
+            assigned: isAssigned,
+            status: isAssigned ? 'Assigned' : 'Pending'
         };
     }
 
@@ -280,9 +292,7 @@ editorTableColumns: TableColumn[] = [
     }
 
     calculateTotalPagesEditor() {
-        // Use the current pageSizeEditor for calculation
         this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1; 
-        // Ensure currentPageEditor doesn't exceed totalPagesEditor after a change
         if (this.currentPageEditor > this.totalPagesEditor) {
             this.currentPageEditor = this.totalPagesEditor;
         }
@@ -297,10 +307,9 @@ editorTableColumns: TableColumn[] = [
         this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
     }
     
-    // New function to handle page size change
     onPageSizeChange(newSize: number): void {
         this.pageSizeEditor = newSize;
-        this.calculateTotalPagesEditor(); // Recalculate based on new size
+        this.calculateTotalPagesEditor(); 
         this.updatePaginatedDataEditor();
     }
 
@@ -415,7 +424,7 @@ addReviewerFromDropdown(): void {
             }
         });
 
-        // 1. API Call: Create new account
+        // 1. API Call: Create new account (API call names remain unchanged as requested)
         this.subscriptions.add(
             this.journalWebApiService.AssignExternalReviewerForJournal(formData).subscribe({
                 next: (res: any) => {
@@ -473,7 +482,6 @@ addReviewerFromDropdown(): void {
         const { id, journalTitle, manuScript, submissionType, emailId } = this.selectedManuscript!;
         
         const formData = new FormData();
-        // Use JournalId from component state
         formData.append('JournalId', this.currentJournalId); 
         formData.append('MultipleAssignedTo', finalAssignedTo);
         formData.append('SubmittedBy', emailId); 
@@ -490,6 +498,7 @@ addReviewerFromDropdown(): void {
             }
         });
         
+        // API call names remain unchanged as requested
         this.subscriptions.add(
             this.journalWebApiService.AssignNewReviewerForJournal(formData).subscribe({
                 next: (data) => {
@@ -532,7 +541,6 @@ addReviewerFromDropdown(): void {
         }
     }
 }
-
 // declare var bootstrap: any;
 // import { DatePipe } from '@angular/common';
 // import { Component, OnInit, OnDestroy } from '@angular/core'; 

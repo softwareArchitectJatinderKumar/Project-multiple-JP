@@ -1,3 +1,4 @@
+
 import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 import * as mammoth from 'mammoth';
@@ -16,10 +17,7 @@ import Swal from 'sweetalert2';
 declare var bootstrap: any;
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
-import { forkJoin } from 'rxjs';
-
 import { Subscription } from 'rxjs';
-
 
 // --- INTERFACES FOR TYPE SAFETY ---
 interface Reviewer {
@@ -46,18 +44,16 @@ interface Manuscript {
   [key: string]: any;
 }
 
-
-
-
 // NEW DYNAMIC COLUMN INTERFACE
 interface TableColumn {
-  key: keyof Manuscript | 'reviewerStatus' | 'action';
-  header: string;
-  type: 'data' | 'file' | 'status' | 'action';
-  isSortable?: boolean;
+    // NOTE: 'reviewerStatus' key is used to map to the 'reviewerAssigned' field on the Manuscript object
+    key: keyof Manuscript | 'reviewerStatus' | 'action'; 
+    header: string;
+    // Changed type from 'status' to 'reviewerList' to reflect the actual content
+    type: 'data' | 'file' | 'reviewerList' | 'action'; 
+    cssClass?: string; 
 }
 // ------------------------------------
-
 
 @Component({
   selector: 'app-submitManuScript-page',
@@ -120,6 +116,21 @@ export class SubmitManuScriptComponent implements OnInit {
   ) {
 
   }
+    // Dashboard navigation state for tab UI
+    selectedDashboard: string = '';
+
+    selectDashboard(dashboardId: string) {
+      this.selectedDashboard = dashboardId;
+    }
+
+    openAssignReviewerModal() {
+      // Open the assign reviewer modal (assumes Bootstrap modal)
+      const modalEl = document.getElementById('assignReviewerModal');
+      if (modalEl) {
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modalInstance.show();
+      }
+    }
   scriptUploadForm!: FormGroup; selectedFile: File | null = null; fileError: string | null = null; fromDate: any; booksDataColumns: any;
   toDate: any; pipe = new DatePipe('en-CA'); dataSource: any[] = []; dataX: any; booksData: any; dataShowing: any = false;
 
@@ -211,7 +222,36 @@ export class SubmitManuScriptComponent implements OnInit {
 
   }
 
+  // // Dashboard navigation state for tab UI
+  // selectedDashboard: string = '';
 
+  // selectDashboard(dashboardId: string) {
+  //   this.selectedDashboard = dashboardId;
+  // }
+
+  // openAssignReviewerModal() {
+  //   // Open the assign reviewer modal (assumes Bootstrap modal)
+  //   const modalEl = document.getElementById('assignReviewerModal');
+  //   if (modalEl) {
+  //     const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+  //     modalInstance.show();
+  //   }
+  // }
+  // // Dashboard navigation state for tab UI
+  // selectedDashboard: string = '';
+
+  // selectDashboard(dashboardId: string) {
+  //   this.selectedDashboard = dashboardId;
+  // }
+
+  // openAssignReviewerModal() {
+  //   // Open the assign reviewer modal (assumes Bootstrap modal)
+  //   const modalEl = document.getElementById('assignReviewerModal');
+  //   if (modalEl) {
+  //     const modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+  //     modalInstance.show();
+  //   }
+  // }
   onFileSelected(event: any): void {
     const reader = new FileReader();
     const target = event.target as HTMLInputElement;
@@ -574,6 +614,141 @@ export class SubmitManuScriptComponent implements OnInit {
     this.GetallReviewsData(this.BookId);
   }
 
+  
+  GetJournalDetailsAbout(JournalId: any): void {
+    this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
+      if (response.item1 && response.item1.length > 0) {
+        this.bookData = response.item1[0];
+        this.JournalDetails = this.bookData['journalDetails']
+        this.EditorInChief = this.bookData?.editorName
+        this.AuthorEmailId = this.bookData?.authorEmailId
+        this.JournalSubTitle = this.bookData?.subTitle;
+        this.extractDetails();
+      }
+      else {
+        this.bookData = [];
+        this.LoginFalied();
+      }
+    });
+  }
+
+  loadReviewers(journalId: number): void {
+    this.subscriptions.add(
+      this.journalWebApiService.GetReviewerDetailsForEditors(journalId).subscribe({
+        next: (dataX: any) => {
+          const allReviewers: Reviewer[] = dataX.item1 || [];
+          this.reviewerList = allReviewers;
+
+          this.internalReviewerList = allReviewers.filter(
+            (reviewer: Reviewer) => !reviewer.userType || reviewer.userType.toLowerCase() === "null" || reviewer.userType.toLowerCase() === "internal"
+          );
+
+          this.externalReviewerList = allReviewers.filter(
+            (reviewer: Reviewer) => reviewer.userType && reviewer.userType.toLowerCase() === 'external'
+          );
+
+        },
+        error: (error: any) => {
+          console.error('Error fetching reviewers', error);
+          this.reviewerList = [];
+          this.internalReviewerList = [];
+          this.externalReviewerList = [];
+        },
+      })
+    );
+  }
+
+  
+
+  showData() {
+    this.journalWebApiService.GetAllBooksDetails().subscribe({
+      next: (dataX: any) => {
+        this.dataSource = dataX.item1;
+        this.dataLoaded = true;
+        this.booksData = dataX.item1;
+        if (this.booksData.length > 0) {
+          this.booksDataColumns = Object.keys(this.booksData[0]);
+        }
+        this.dataShowing = true;
+
+      },
+      error: (error: any) => {
+
+        this.dataShowing = false;
+        this.LoginFalied();
+      },
+      complete: () => {
+        this.dataShowing = true;
+      }
+    });
+  }
+
+  
+
+
+
+  getUserRolesforId(): void {
+    const roleMapping: Record<string, string> = {
+      '0': 'Editor',
+      '1': 'Author/ Submit Manuscript',
+      '2': 'Reviewer',
+      '3': 'Publisher'
+    };
+
+    this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+      next: (response) => {
+        if (response?.item1?.length > 0) {
+          this.UserRolesData = response.item1[0];
+
+          let roles = this.UserRolesData?.userRole
+            ? this.UserRolesData.userRole.split(',').map((r: string) => r.trim())
+            : [];
+
+          // Always include '1' (Author) if it's not already present
+          if (!roles.includes('1')) {
+            roles.push('1');
+          }
+
+          this.UserRolesArray = roles.map((role: string) => {
+            const roleKey = role;
+            const label = roleMapping[roleKey] || roleKey;
+
+            return {
+              value: roleKey,
+              label,
+              id: label.replace(/\s+/g, '')
+            };
+          });
+          // Set default selected dashboard to the first one
+          if (this.UserRolesArray.length > 0) {
+            this.selectedDashboard = this.UserRolesArray[0].id;
+          }
+        } else {
+          // If no roles found, default to Author role
+          this.UserRolesArray = [{
+            value: '1',
+            label: roleMapping['1'],
+            id: roleMapping['1'].replace(/\s+/g, '')
+          }];
+          // Set default selected dashboard to Author
+          this.selectedDashboard = this.UserRolesArray[0].id;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching user roles:', err);
+
+        // On error, default to Author role
+        this.UserRolesArray = [{
+          value: '1',
+          label: roleMapping['1'],
+          id: roleMapping['1'].replace(/\s+/g, '')
+        }];
+        // Set default selected dashboard to Author
+        this.selectedDashboard = this.UserRolesArray[0].id;
+        this.LoginFalied();
+      }
+    });
+  }
 
   GetallReviewsData(journalId: any) {
     this.journalWebApiService.GetAllReviewersRemarkss(journalId).subscribe({
@@ -785,147 +960,34 @@ export class SubmitManuScriptComponent implements OnInit {
   //   }
   // }
 
-
-
-  loadReviewers(journalId: number): void {
-    this.subscriptions.add(
-      this.journalWebApiService.GetReviewerDetailsForEditors(journalId).subscribe({
-        next: (dataX: any) => {
-          const allReviewers: Reviewer[] = dataX.item1 || [];
-          this.reviewerList = allReviewers;
-
-          this.internalReviewerList = allReviewers.filter(
-            (reviewer: Reviewer) => !reviewer.userType || reviewer.userType.toLowerCase() === "null" || reviewer.userType.toLowerCase() === "internal"
-          );
-
-          this.externalReviewerList = allReviewers.filter(
-            (reviewer: Reviewer) => reviewer.userType && reviewer.userType.toLowerCase() === 'external'
-          );
-
-        },
-        error: (error: any) => {
-          console.error('Error fetching reviewers', error);
-          this.reviewerList = [];
-          this.internalReviewerList = [];
-          this.externalReviewerList = [];
-        },
-      })
-    );
-  }
-  GetJournalDetailsAbout(JournalId: any): void {
-    this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
-      if (response.item1 && response.item1.length > 0) {
-        this.bookData = response.item1[0];
-        this.JournalDetails = this.bookData['journalDetails']
-        this.EditorInChief = this.bookData?.editorName
-        this.AuthorEmailId = this.bookData?.authorEmailId
-        this.JournalSubTitle = this.bookData?.subTitle;
-        this.extractDetails();
-      }
-      else {
-        this.bookData = [];
-        this.LoginFalied();
-      }
-    });
-  }
-
-
-
-  showData() {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
-      next: (dataX: any) => {
-        this.dataSource = dataX.item1;
-        this.dataLoaded = true;
-        this.booksData = dataX.item1;
-        if (this.booksData.length > 0) {
-          this.booksDataColumns = Object.keys(this.booksData[0]);
-        }
-        this.dataShowing = true;
-
-      },
-      error: (error: any) => {
-
-        this.dataShowing = false;
-        this.LoginFalied();
-      },
-      complete: () => {
-        this.dataShowing = true;
-      }
-    });
-  }
-
-
-  getUserRolesforId(): void {
-    const roleMapping: Record<string, string> = {
-      '0': 'Editor',
-      '1': 'Author/ Submit Manuscript',
-      '2': 'Reviewer',
-      '3': 'Publisher'
-    };
-
-    this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
-      next: (response) => {
-        if (response?.item1?.length > 0) {
-          this.UserRolesData = response.item1[0];
-
-          let roles = this.UserRolesData?.userRole
-            ? this.UserRolesData.userRole.split(',').map((r: string) => r.trim())
-            : [];
-
-          // Always include '1' (Author) if it's not already present
-          if (!roles.includes('1')) {
-            roles.push('1');
-          }
-
-          this.UserRolesArray = roles.map((role: string) => {
-            const roleKey = role;
-            const label = roleMapping[roleKey] || roleKey;
-
-            return {
-              value: roleKey,
-              label,
-              id: label.replace(/\s+/g, '')
-            };
-          });
-        } else {
-          // If no roles found, default to Author role
-          this.UserRolesArray = [{
-            value: '1',
-            label: roleMapping['1'],
-            id: roleMapping['1'].replace(/\s+/g, '')
-          }];
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching user roles:', err);
-
-        // On error, default to Author role
-        this.UserRolesArray = [{
-          value: '1',
-          label: roleMapping['1'],
-          id: roleMapping['1'].replace(/\s+/g, '')
-        }];
-        this.LoginFalied();
-      }
-    });
-  }
-
   // Assign Reviewer Logic
 
 
-  editorTableColumns: TableColumn[] = [
-    { key: 'journalTitle', header: 'Journal Title', type: 'data' },
-    { key: 'manuScript', header: 'Manuscript', type: 'data' },
-    { key: 'editorInChief', header: 'Author Name', type: 'data' },
-    { key: 'emailId', header: 'Submitted User Email', type: 'data' },
-    { key: 'userName', header: 'Submitted By', type: 'data' },
-    { key: 'submissionType', header: 'Submission Type', type: 'data' },
-    { key: 'fileUrl', header: 'Manuscript ', type: 'file' },
-    // Dynamic Status Column
-    { key: 'reviewerStatus', header: 'Reviewer Status', type: 'status' },
-    // Dynamic Action Column (Uses journalId implicitly for row context)
-    { key: 'action', header: 'Action', type: 'action' }
-  ];
+    editorTableColumns: TableColumn[] = [
+        // Responsive changes: Keep key identifying columns visible on all screens, hide less critical ones on small screens.
+        { key: 'journalTitle', header: 'Journal Title', type: 'data', cssClass: 'd-none d-md-table-cell' },
+        { key: 'manuScript', header: 'Manuscript', type: 'data' }, // Core column
+        { key: 'userName', header: 'Submitted By', type: 'data', cssClass: 'd-none d-lg-table-cell' }, // Hide on small, show on large
+        { key: 'submissionType', header: 'Submission Type', type: 'data', cssClass: 'd-none d-lg-table-cell' }, // Hide on small, show on large
+        { key: 'fileUrl', header: 'File', type: 'file' }, // Core column
+        // Renamed type to reviewerList for better clarity in HTML rendering
+        { key: 'reviewerStatus', header: 'Assigned Reviewers', type: 'reviewerList' }, 
+        { key: 'action', header: 'Action', type: 'action' } // Core column
+    ];
+ 
+  // editorTableColumns: TableColumn[] = [
+  //   { key: 'journalTitle', header: 'Journal Title', type: 'data' },
+  //   { key: 'manuScript', header: 'Manuscript', type: 'data' },
+  //   { key: 'editorInChief', header: 'Author Name', type: 'data' },
+  //   { key: 'emailId', header: 'Submitted User Email', type: 'data' },
+  //   { key: 'userName', header: 'Submitted By', type: 'data' },
+  //   { key: 'submissionType', header: 'Submission Type', type: 'data' },
+  //   { key: 'fileUrl', header: 'Manuscript ', type: 'file' },
+  //   // Dynamic Status Column
+  //   { key: 'reviewerStatus', header: 'Reviewer Status', type: 'status' },
+  //   // Dynamic Action Column (Uses journalId implicitly for row context)
+  //   { key: 'action', header: 'Action', type: 'action' }
+  // ];
 
   getReviewerStatus(row: Manuscript): { display: string, assigned: boolean } {
     const assignedData = row.reviewerAssigned;
@@ -1231,31 +1293,90 @@ export class SubmitManuScriptComponent implements OnInit {
     this.tempExternalUser = { name: '', email: '', contact: '' };
     this.showNewExternalReviewerForm = false;
   }
-
-  calculateTotalPagesEditor() {
-    this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1;
-    this.currentPageEditor = 1;
-  }
-
-  updatePaginatedDataEditor() {
-    const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
-    const endIndex = Math.min(startIndex + this.pageSizeEditor, this.EditorData.length);
-    this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
-  }
-
-  nextPageEditor() {
-    if (this.currentPageEditor < this.totalPagesEditor) {
-      this.currentPageEditor++;
-      this.updatePaginatedDataEditor();
+calculateTotalPagesEditor() {
+        this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1; 
+        if (this.currentPageEditor > this.totalPagesEditor) {
+            this.currentPageEditor = this.totalPagesEditor;
+        }
+        if (this.currentPageEditor < 1) {
+            this.currentPageEditor = 1;
+        }
     }
-  }
 
-  previousPageEditor() {
-    if (this.currentPageEditor > 1) {
-      this.currentPageEditor--;
-      this.updatePaginatedDataEditor();
+    updatePaginatedDataEditor() {
+        const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
+        const endIndex = Math.min(startIndex + this.pageSizeEditor, this.EditorData.length);
+        this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
     }
-  }
+    
+    onPageSizeChange(newSize: number): void {
+        this.pageSizeEditor = newSize;
+        this.calculateTotalPagesEditor(); 
+        this.updatePaginatedDataEditor();
+    }
+
+
+    nextPageEditor() {
+        if (this.currentPageEditor < this.totalPagesEditor) {
+            this.currentPageEditor++;
+            this.updatePaginatedDataEditor();
+        }
+    }
+
+    previousPageEditor() {
+        if (this.currentPageEditor > 1) {
+            this.currentPageEditor--;
+            this.updatePaginatedDataEditor();
+        }
+    }
+    
+  readonly pageSizeOptions: number[] = [5, 10, 25, 50]; 
+  /**
+     * FIX: Renamed function and updated logic to process the comma-separated emails 
+     * into a list for clean, responsive display in the HTML.
+     */
+    getAssignmentInfo(row: Manuscript): { displayList: string[], assigned: boolean, status: string } {
+        const assignedData = row.reviewerAssigned;
+        
+        const isAssigned = !!assignedData && assignedData.trim().length > 0;
+        
+        let displayList: string[] = [];
+        if (isAssigned) {
+            // Split the comma-separated string of emails into an array for *ngFor in HTML
+            displayList = assignedData!.split(',').map(email => email.trim()).filter(email => email.length > 0);
+        }
+
+        return {
+            displayList: displayList,
+            assigned: isAssigned,
+            status: isAssigned ? 'Assigned' : 'Pending'
+        };
+    }
+
+  // calculateTotalPagesEditor() {
+  //   this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1;
+  //   this.currentPageEditor = 1;
+  // }
+
+  // updatePaginatedDataEditor() {
+  //   const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
+  //   const endIndex = Math.min(startIndex + this.pageSizeEditor, this.EditorData.length);
+  //   this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
+  // }
+
+  // nextPageEditor() {
+  //   if (this.currentPageEditor < this.totalPagesEditor) {
+  //     this.currentPageEditor++;
+  //     this.updatePaginatedDataEditor();
+  //   }
+  // }
+
+  // previousPageEditor() {
+  //   if (this.currentPageEditor > 1) {
+  //     this.currentPageEditor--;
+  //     this.updatePaginatedDataEditor();
+  //   }
+  // }
 
   onSelectFileEditorX(fileUrl: string): void {
     if (fileUrl) {
