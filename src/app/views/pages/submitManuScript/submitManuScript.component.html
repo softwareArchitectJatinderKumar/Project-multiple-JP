@@ -3,7 +3,6 @@
 <app-journal-inner-menu></app-journal-inner-menu>
 
 <ng-container *ngIf="IsUploading; else dataLoadedBlock">
-  <!-- Loader Template -->
   <div class="text-center">
     <div class="text-center">
       <span class="text-danger fs-3">Loading </span><br />
@@ -15,10 +14,7 @@
 <ng-template #dataLoadedBlock>
   <div class="row" id="ActionPage" *ngIf="isLoginFailed===false; else loginFailed">
     <div class="row d-flex justify-content-center mt-2">
-      <!-- <div class="col-md-10 text-center">
-      <label class=" mt-4 text-dark fs-4"> Journal Title <span class=" ms-3 text-danger ">
-          {{this.JournalTitle}}</span></label>
-    </div> -->
+    
       <div class="main-heading text-center mt-5">
         <h1>
           {{this.JournalTitle}}
@@ -57,15 +53,15 @@
     <div class="tab-content mt-4 blockHeight" id="nav-tabContent">
       <div *ngFor="let action of UserRolesArray; let i = index" class="tab-pane fade" [class.show]="i === 0"
         [class.active]="i === 0" id="{{ action.id }}" role="tabpanel" [attr.aria-labelledby]="action.id + '-tab'">
-
+    
         <ng-container [ngSwitch]="action.label">
-
+    
           <!-- Author Dashboard Author/ Submit Manuscript Dashboard -->
           <div *ngSwitchCase="'Author/ Submit Manuscript'">
-
+    
             <div class="row d-flex p-3 align-items-center justify-content-center ">
               <div class="col-md-12 grid-margin stretch-card">
-
+    
                 <div class="text-center">
                   <h2 class="text-center text-danger mb-2"> {{action.label}} Dashboard </h2>
                 </div>
@@ -96,13 +92,13 @@
                     </div>
                   </div>
                   <!-- <div class="row mb-4">
-                  <div class="col-md-2">
-                    <label class="form-label">Author Email:</label>
-                  </div>
-                  <div class="col-md-4 text-start">
-                    <span class="text-dark">{{ this.AuthorEmailId }}</span>
-                  </div>
-                </div> -->
+                      <div class="col-md-2">
+                        <label class="form-label">Author Email:</label>
+                      </div>
+                      <div class="col-md-4 text-start">
+                        <span class="text-dark">{{ this.AuthorEmailId }}</span>
+                      </div>
+                    </div> -->
                   <div class="row mb-4">
                     <div class="col-md-2">
                       <label for="journalId">Journal ID:</label>
@@ -134,7 +130,7 @@
                         <span class="text-dark">{{ JournalSubTitle }}</span>
                       </div>
                     </div>
-
+    
                     <div class="row mb-4 mt-2">
                       <div class="col-md-2 mt-3">
                         <label for="ManuScriptTitle">Manuscript Title</label>
@@ -148,7 +144,7 @@
                         </div>
                       </div>
                     </div>
-
+    
                     <div class="row mb-4">
                       <div class="col-md-2">
                         <label for="ManuScriptType">Manuscript Type:</label>
@@ -166,7 +162,7 @@
                         </div>
                       </div>
                     </div>
-
+    
                     <div class="row mb-4">
                       <div class="col-md-2">
                         <label for="SubmissionType" class="form-label">Submission Type:</label>
@@ -185,7 +181,7 @@
                         </div>
                       </div>
                     </div>
-
+    
                     <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
                       <div class="col-md-2">
                         <label for="SubItemType" class="form-label">Sub Item Type:</label>
@@ -199,7 +195,7 @@
                         </select>
                       </div>
                     </div>
-
+    
                     <div class="row">
                       <div class="col-md-2">
                         <label for="file" class="form-label">Upload File:</label>
@@ -212,7 +208,7 @@
                         If file size > 20 MB kindly send additional file to Editor In Chief
                       </div>
                     </div>
-
+    
                     <div class="row">
                       <div class="col-md-12 text-center">
                         <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach More
@@ -220,101 +216,101 @@
                       </div>
                     </div>
                   </form>
-
+    
                   <!-- <form [formGroup]="scriptUploadForm" (ngSubmit)="onSubmit()">
-                  <div class="row mb-4 d-none">
-                    <div class="col-md-2">
-                      <label for="journalTitle">Journal Title:</label>
-                    </div>
-                    <div class="col-md-4 text-start">
-                      <span class="text-dark ">{{ JournalTitle }}</span>
-                    </div>
-                    <div class="col-md-2">
-                      <label for="JournalSubTitle">Journal SubTitle:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="text-dark ">{{ JournalSubTitle }}</span>
-                    </div>
-                  </div>
-
-                  <div class="row mb-4 mt-2">
-                    <div class="col-md-2 mt-3">
-                      <label for="ManuScriptTitle">Manuscript Title</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input type="text" class="form-control" formControlName="ManuScriptTitle" style="width: auto;" placeholder="Provide Manuscript Title"/>
-                      <div *ngIf="submitted || ManuScriptTitle?.touched || ManuScriptTitle?.errors" class="text-danger">
-                        <small *ngIf="ManuScriptTitle?.errors?.['required']">ManuScriptTitle  is required.</small>
+                      <div class="row mb-4 d-none">
+                        <div class="col-md-2">
+                          <label for="journalTitle">Journal Title:</label>
+                        </div>
+                        <div class="col-md-4 text-start">
+                          <span class="text-dark ">{{ JournalTitle }}</span>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="JournalSubTitle">Journal SubTitle:</label>
+                        </div>
+                        <div class="col-md-4">
+                          <span class="text-dark ">{{ JournalSubTitle }}</span>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="row mb-4">
-                    <div class="col-md-2">
-                      <label for="ManuScriptType">Manuscript Type:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
-                        <option value="Select" selected>Select Manuscript Type</option>
-                        <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
-                          {{ dropDown.ManuScriptType }}
-                        </option>
-                      </select>
-                      <div *ngIf="submitted || ManuScriptType?.touched || ManuScriptType?.errors" class="text-danger">
-                        <small *ngIf="ManuScriptType?.errors?.['required']">ManuScriptType  is required.</small>
+    
+                      <div class="row mb-4 mt-2">
+                        <div class="col-md-2 mt-3">
+                          <label for="ManuScriptTitle">Manuscript Title</label>
+                        </div>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control" formControlName="ManuScriptTitle" style="width: auto;" placeholder="Provide Manuscript Title"/>
+                          <div *ngIf="submitted || ManuScriptTitle?.touched || ManuScriptTitle?.errors" class="text-danger">
+                            <small *ngIf="ManuScriptTitle?.errors?.['required']">ManuScriptTitle  is required.</small>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="row mb-4">
-                    <div class="col-md-2 ">
-                      <label for="SubmissionType" class="form-label">Submission Type:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <select class="form-select" formControlName="SubmissionType" style="width: auto;"
-                        (change)="onSubmissionTypeChange($event)">
-                        <option value="Select">Select Submission Type</option>
-                        <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
-                          {{ dropDown.SubmissionType }}
-                        </option>
-                      </select>
-                      <div *ngIf="submitted || SubmissionType?.touched || SubmissionType?.errors" class="text-danger">
-                        <small *ngIf="SubmissionType?.errors?.['required']">SubmissionType  is required.</small>
+                      <div class="row mb-4">
+                        <div class="col-md-2">
+                          <label for="ManuScriptType">Manuscript Type:</label>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select" formControlName="ManuScriptType" style="width: auto;">
+                            <option value="Select" selected>Select Manuscript Type</option>
+                            <option [value]="dropDown.ManuScriptType" *ngFor="let dropDown of ManuScriptTypes">
+                              {{ dropDown.ManuScriptType }}
+                            </option>
+                          </select>
+                          <div *ngIf="submitted || ManuScriptType?.touched || ManuScriptType?.errors" class="text-danger">
+                            <small *ngIf="ManuScriptType?.errors?.['required']">ManuScriptType  is required.</small>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
-                    <div class="col-md-2 ">
-                      <label for="SubItemType" class="form-label">Sub Item Type:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <select class="form-select" formControlName="SubItemType" style="width: auto;">
-                        <option value="Select">Select Sub Item Type</option>
-                        <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
-                          {{ dropDown.SubItemType }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="row ">
-                    <div class="col-md-2">
-                      <label for="file" class="form-label">Upload File:</label>
-                    </div>
-                    <div class="col-md-4">
-                      <input type="file" id="File" name="File" formControlName="file" class="form-control"
-                        style="width: 17.5rem;" (change)="onFileSelected($event)" accept="*.*" />
-                    </div>
-                    <div class="col-md-6 text-center  text-danger"> If file size > 20 MB kindly send additional file
-                      to Editor In Chief </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-12 text-center">
-                      <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach
-                        More Document</button>
-                    </div>
-                  </div>
-
-                </form> -->
+                      <div class="row mb-4">
+                        <div class="col-md-2 ">
+                          <label for="SubmissionType" class="form-label">Submission Type:</label>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select" formControlName="SubmissionType" style="width: auto;"
+                            (change)="onSubmissionTypeChange($event)">
+                            <option value="Select">Select Submission Type</option>
+                            <option [value]="dropDown.SubmissionType" *ngFor="let dropDown of SubmissionTypes">
+                              {{ dropDown.SubmissionType }}
+                            </option>
+                          </select>
+                          <div *ngIf="submitted || SubmissionType?.touched || SubmissionType?.errors" class="text-danger">
+                            <small *ngIf="SubmissionType?.errors?.['required']">SubmissionType  is required.</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="submissionType === 'Manuscript'" class="row mb-3">
+                        <div class="col-md-2 ">
+                          <label for="SubItemType" class="form-label">Sub Item Type:</label>
+                        </div>
+                        <div class="col-md-4">
+                          <select class="form-select" formControlName="SubItemType" style="width: auto;">
+                            <option value="Select">Select Sub Item Type</option>
+                            <option [value]="dropDown.SubItemType" *ngFor="let dropDown of SubItemType">
+                              {{ dropDown.SubItemType }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+    
+                      <div class="row ">
+                        <div class="col-md-2">
+                          <label for="file" class="form-label">Upload File:</label>
+                        </div>
+                        <div class="col-md-4">
+                          <input type="file" id="File" name="File" formControlName="file" class="form-control"
+                            style="width: 17.5rem;" (change)="onFileSelected($event)" accept="*.*" />
+                        </div>
+                        <div class="col-md-6 text-center  text-danger"> If file size > 20 MB kindly send additional file
+                          to Editor In Chief </div>
+                      </div>
+    
+                      <div class="row">
+                        <div class="col-md-12 text-center">
+                          <button type="submit" class="btn btn-primary" [disabled]="scriptUploadForm.invalid">Attach
+                            More Document</button>
+                        </div>
+                      </div>
+    
+                    </form> -->
                 </div>
                 <div class="container  ">
                   <!-- Cart Items Dashboard -->
@@ -366,23 +362,23 @@
               </div>
             </div>
           </div>
-
+    
           <!-- Reviewer Dashboard -->
           <div *ngSwitchCase="'Reviewer'">
             <div class="row">
               <div class="text-center">
                 <h2 class="text-center text-danger mb-5"> {{action.label}} Dashboard </h2>
               </div>
-
+    
               <nav>
                 <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
                   <!-- Manuscript To Review Tab -->
                   <button class="dashboardButton me-5 active" id="ManuscriptToReview-all-tab" data-bs-toggle="tab"
-                    data-bs-target="#ManuscriptToReview-all" type="button" role="tab"
-                    aria-controls="ManuscriptToReview-all" aria-selected="true">
+                    data-bs-target="#ManuscriptToReview-all" type="button" role="tab" aria-controls="ManuscriptToReview-all"
+                    aria-selected="true">
                     Manuscript To Review
                   </button>
-
+    
                   <!-- Reviewers Tab -->
                   <button class="dashboardButton ms-5" id="Reviewed-all-tab" data-bs-toggle="tab"
                     data-bs-target="#Reviewed-all" type="button" role="tab" aria-controls="Reviewed-all"
@@ -391,10 +387,10 @@
                   </button>
                 </div>
               </nav>
-
+    
               <!-- SINGLE tab-content wrapper for all tab panes -->
               <div class="tab-content mt-4" id="nav-tabContent">
-
+    
                 <!-- Manuscript Tab Content (Initially Active) -->
                 <div class="tab-pane fade show active" id="ManuscriptToReview-all" role="tabpanel"
                   aria-labelledby="ManuscriptToReview-all-tab">
@@ -423,26 +419,25 @@
                                       <!-- View File -->
                                       <i class="bi bi-file-earmark-text "></i>
                                     </button>
-
+    
                                     <button *ngSwitchCase="'journalId'" class="btn btn-danger btn-sm"
-                                      (click)="onTakeAction2(row)" data-bs-toggle="modal"
-                                      data-bs-target="#ReviewerModal">
+                                      (click)="onTakeAction2(row)" data-bs-toggle="modal" data-bs-target="#ReviewerModal">
                                       <!-- Take Action -->
                                       <i class="bi bi-exclamation-circle"></i>
                                     </button>
                                     <span *ngSwitchCase="'manuScriptType'">
                                       {{row[col]?.length>0? row[col]: 'NA'}}
                                     </span>
-
+    
                                     <span *ngSwitchDefault>{{ row[col] }}</span>
                                   </ng-container>
                                 </td>
-
-
+    
+    
                               </tr>
                             </tbody>
                           </table>
-
+    
                           <div class="pagination-controls">
                             <button (click)="previousPageReviewer()" class="btn btn-dark btn-sm"
                               [disabled]="currentPageReviewer == 1">Previous</button>
@@ -462,7 +457,7 @@
                 </div>
               </div>
             </div>
-
+            <!-- Reviewers Tab -->
             <div class="tab-pane fade" id="Reviewed-all" role="tabpanel" aria-labelledby="Reviewed-all-tab">
               <div class="text-center">
                 <h2 class="text-center text-danger mb-2"> Reviewed Manuscript Details </h2>
@@ -477,9 +472,8 @@
                   </div>
                   <div class="col-md-12 stretch-card">
                     <div class="card accordionColor ">
-                      <div class="card-body accordionColor "
-                        *ngIf="filteredReviewerRemarksData.length > 0; else NoData">
-
+                      <div class="card-body accordionColor " *ngIf="filteredReviewerRemarksData.length > 0; else NoData">
+    
                         <div class="table-responsive">
                           <table class="table table-bordered">
                             <thead>
@@ -512,26 +506,26 @@
                                         </ng-template>
                                       </ng-container>
                                     </span>
-
+    
                                     <!-- <span *ngSwitchCase="'journalId'" class="col-md-6">
-                                    <ng-container *ngIf="row.isActionable; else NoApp">
-                                      <button class="btn btn-success btn-sm" (click)="ChangeApproveStatus(row)"
-                                        [ngClass]="'btn-success'">
-                                        <i class="bi bi-check-circle"></i>
-                                      </button>
-                                      <button class="btn btn-danger btn-sm" (click)="DisapproveStatus(row)"
-                                        [ngClass]=" 'btn-danger'">
-                                        <i class="bi bi-x-circle"></i>
-                                      </button>
-                                    </ng-container>
-                                    <ng-template #NoApp>
-                                      <span class="text-danger "> <i class="bi bi-x-circle  "></i><br />Action Applied
-                                      </span>
-                                    </ng-template>
-        
-        
-                                  </span> -->
-
+                                                  <ng-container *ngIf="row.isActionable; else NoApp">
+                                                    <button class="btn btn-success btn-sm" (click)="ChangeApproveStatus(row)"
+                                                      [ngClass]="'btn-success'">
+                                                      <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm" (click)="DisapproveStatus(row)"
+                                                      [ngClass]=" 'btn-danger'">
+                                                      <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                  </ng-container>
+                                                  <ng-template #NoApp>
+                                                    <span class="text-danger "> <i class="bi bi-x-circle  "></i><br />Action Applied
+                                                    </span>
+                                                  </ng-template>
+                      
+                      
+                                                </span> -->
+    
                                     <span *ngSwitchCase="'isApproved'">
                                       <span [ngClass]="row[col] == '1' ? 'text-success' : 'text-danger'">
                                         {{ row[col] == '1' ? 'Approved' : 'Not Approved' }}
@@ -554,8 +548,8 @@
                               </tr>
                             </tbody>
                           </table>
-
-
+    
+    
                           <div class="pagination-controls">
                             <button (click)="previousPageReviewerRemarks()"
                               [disabled]="currentPageReviewerRemarks === 1">Previous</button>
@@ -565,7 +559,7 @@
                           </div>
                         </div>
                       </div>
-
+    
                       <ng-template #NoData>
                         <div class="themeClr">
                           <h1 class="fs-2 text-center vh-50 p-3 m-4 themeClr"> No Data Found </h1>
@@ -577,9 +571,8 @@
               </div>
             </div>
           </div>
-
+    
           <!-- Editor Dashboard -->
-
           <div *ngSwitchCase="'Editor'">
             <div class="text-center">
               <h2 class="text-center text-danger mb-5"> {{action.label}} Dashboard </h2>
@@ -600,184 +593,98 @@
                 </button>
               </div>
             </nav>
-
+    
             <div class="tab-content mt-4" id="nav-tabContent">
-
+    
               <!-- Manuscript Tab Content (Initially Active) -->
-              <div class="tab-pane fade show active" id="Manuscript-all" role="tabpanel"
-                aria-labelledby="Manuscript-all-tab">
+              <div class="tab-pane fade show active" id="Manuscript-all" role="tabpanel" aria-labelledby="Manuscript-all-tab">
                 <div class="text-center">
                   <h2 class="text-center text-danger mb-2"> Manuscript Details </h2>
                 </div>
-                 <div class="container-fluid">
-        <div class="row" *ngIf="EditorData.length > 0; else NoData">
-            <div class="col-md-12 stretch-card">
-                <div class="card ">
-                    <div class="card-body ">
-                        
-                        <div class="table-responsive">
+                <div class="container-fluid">
+                  <div class="row" *ngIf="EditorData.length > 0; else NoData">
+                    <div class="col-md-12 stretch-card">
+                      <div class="card ">
+                        <div class="card-body ">
+              
+                          <div class="table-responsive">
                             <table class="table table-bordered table-striped align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th *ngFor="let col of editorTableColumns">{{ col.header }}</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr *ngFor="let row of paginatedEditorData">
-                                        
-                                        <td *ngFor="let col of editorTableColumns">
-                                            
-                                            <ng-container *ngIf="getReviewerStatus(row) as statusInfo">
-                                                <ng-container [ngSwitch]="col.type">
-                                                    
-                                                    <span *ngSwitchCase="'data'">
-                                                        {{ row[col.key] }}
-                                                    </span>
-                                                    
-                                                    <ng-container *ngSwitchCase="'file'">
-                                                        <button class="btn btn-dark btn-sm"
-                                                            (click)="onSelectFileEditorX(row[col.key])">
-                                                            <i class="bi bi-file-earmark-text"></i> Download
-                                                        </button>
-                                                    </ng-container>
-
-                                                    <span *ngSwitchCase="'status'">
-                                                        <span [class.text-success]="statusInfo.assigned" 
-                                                              [class.text-danger]="!statusInfo.assigned" 
-                                                              class="fw-bold small wrap-email-text">
-                                                            {{ statusInfo.display }} 
-                                                        </span>
-                                                    </span>
-
-                                                    <ng-container *ngSwitchCase="'action'">
-                                                        <button class="btn btn-sm"
-                                                            [ngClass]="{'btn-success': statusInfo.assigned, 'btn-primary': !statusInfo.assigned}"
-                                                            (click)="onTakeAction(row)" 
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#assignReviewerModal">
-                                                            <i class="bi" [ngClass]="{'bi-pencil-square': statusInfo.assigned, 'bi-exclamation-circle': !statusInfo.assigned}"></i>
-                                                            {{ statusInfo.assigned ? 'Change' : 'Assign' }}
-                                                        </button>
-                                                    </ng-container>
-
-                                                </ng-container>
-                                            </ng-container>
-                                            
-                                        </td>
-                                    </tr>
-                                </tbody>
+                              <thead class="table-light">
+                                <tr>
+                                  <th *ngFor="let col of editorTableColumns">{{ col.header }}</th>
+                                </tr>
+                              </thead>
+              
+                              <tbody>
+                                <tr *ngFor="let row of paginatedEditorData">
+              
+                                  <td *ngFor="let col of editorTableColumns">
+              
+                                    <ng-container *ngIf="getReviewerStatus(row) as statusInfo">
+                                      <ng-container [ngSwitch]="col.type">
+              
+                                        <span *ngSwitchCase="'data'">
+                                          {{ row[col.key] }}
+                                        </span>
+              
+                                        <ng-container *ngSwitchCase="'file'">
+                                          <button class="btn btn-dark btn-sm" (click)="onSelectFileEditorX(row[col.key])">
+                                            <i class="bi bi-file-earmark-text"></i> 
+                                          </button>
+                                        </ng-container>
+              
+                                        <span *ngSwitchCase="'status'">
+                                          <span [class.text-success]="statusInfo.assigned" [class.text-danger]="!statusInfo.assigned"
+                                            class="fw-bold small wrap-email-text">
+                                            {{ statusInfo.display }}
+                                          </span>
+                                        </span>
+              
+                                        <ng-container *ngSwitchCase="'action'">
+                                          <button class="btn btn-sm"
+                                            [ngClass]="{'btn-success': statusInfo.assigned, 'btn-primary': !statusInfo.assigned}"
+                                            (click)="onTakeActionChange(row)" data-bs-toggle="modal"
+                                            data-bs-target="#assignReviewerModal">
+                                            <i class="bi"
+                                              [ngClass]="{'bi-pencil-square me-2': statusInfo.assigned, 'bi-exclamation-circle me-2': !statusInfo.assigned}"></i>
+                                            {{ statusInfo.assigned ? 'Change' : 'Assign' }}
+                                          </button>
+                                        </ng-container>
+              
+                                      </ng-container>
+                                    </ng-container>
+              
+                                  </td>
+                                </tr>
+                              </tbody>
                             </table>
-                        
-                        </div>
-                        
-                        <div class="pagination-controls text-center mt-3">
+              
+                          </div>
+              
+                          <div class="pagination-controls text-center mt-3">
                             <button class="btn btn-sm btn-outline-secondary me-2" (click)="previousPageEditor()"
-                                [disabled]="currentPageEditor === 1">Previous</button>
+                              [disabled]="currentPageEditor === 1">Previous</button>
                             <span class="mx-2">Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
                             <button class="btn btn-sm btn-outline-secondary" (click)="nextPageEditor()"
-                                [disabled]="currentPageEditor === totalPagesEditor">Next</button>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ng-template #NoData>
-            <div class="themeClr vh-50">
-                <h1 class="fs-2 text-center p-3 m-4 text-danger "> No Manuscript Found </h1>
-            </div>
-        </ng-template>
-
-    </div>
-                <!-- <div class="d-flex p-2 align-items-center justify-content-center ">
-                  <div class="container-fluid">
-                    <div class="row" *ngIf="EditorData.length > 0; else NoData">
-                      <div class="col-md-12 stretch-card">
-                        <div class="card ">
-                          <div class="card-body ">
-
-                            <div class="table-responsive">
-                              <table class="table table-bordered table-striped align-middle">
-                                <thead class="table-light">
-                                  <tr>
-                                    <th *ngFor="let col of editorTableColumns">{{ col.header }}</th>
-                                  </tr>
-                                </thead>
-
-                                <tbody>
-                                  <tr *ngFor="let row of paginatedEditorData">
-
-                                    <td *ngFor="let col of editorTableColumns">
-
-                                      <ng-container *ngIf="getReviewerStatus(row) as statusInfo">
-                                        <ng-container [ngSwitch]="col.type">
-
-                                          <span *ngSwitchCase="'data'">
-                                            {{ row[col.key] }}
-                                          </span>
-
-                                          <ng-container *ngSwitchCase="'file'">
-                                            <button class="btn btn-dark btn-sm"
-                                              (click)="onSelectFileEditorX(row[col.key])">
-                                              <i class="bi bi-file-earmark-text"></i> Download
-                                            </button>
-                                          </ng-container>
-
-                                          <span *ngSwitchCase="'status'">
-                                            <span [class.text-success]="statusInfo.assigned"
-                                              [class.text-danger]="!statusInfo.assigned"
-                                              class="fw-bold small wrap-email-text">
-                                              {{ statusInfo.display }}
-                                            </span>
-                                          </span>
-
-                                          <ng-container *ngSwitchCase="'action'">
-                                            <button class="btn btn-sm"
-                                              [ngClass]="{'btn-success': statusInfo.assigned, 'btn-primary': !statusInfo.assigned}"
-                                              (click)="onTakeAction(row)" data-bs-toggle="modal"
-                                              data-bs-target="#assignReviewerModal">
-                                              <i class="bi"
-                                                [ngClass]="{'bi-pencil-square': statusInfo.assigned, 'bi-exclamation-circle': !statusInfo.assigned}"></i>
-                                              {{ statusInfo.assigned ? 'Change' : 'Assign' }}
-                                            </button>
-                                          </ng-container>
-
-                                        </ng-container>
-                                      </ng-container>
-
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-
-                            </div>
-
-                            <div class="pagination-controls text-center mt-3">
-                              <button class="btn btn-sm btn-outline-secondary me-2" (click)="previousPageEditor()"
-                                [disabled]="currentPageEditor === 1">Previous</button>
-                              <span class="mx-2">Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
-                              <button class="btn btn-sm btn-outline-secondary" (click)="nextPageEditor()"
-                                [disabled]="currentPageEditor === totalPagesEditor">Next</button>
-                            </div>
-
+                              [disabled]="currentPageEditor === totalPagesEditor">Next</button>
                           </div>
+              
                         </div>
                       </div>
                     </div>
-                    <ng-template #NoData>
-                      <div class="themeClr vh-50">
-                        <h1 class="fs-2 text-center p-3 m-4 text-danger "> No Manuscript Found </h1>
-                      </div>
-                    </ng-template>
-
                   </div>
-                </div> -->
+                  <ng-template #NoData>
+                    <div class="themeClr vh-50">
+                      <h1 class="fs-2 text-center p-3 m-4 text-danger "> No Manuscript Found </h1>
+                    </div>
+                  </ng-template>
+              
+                </div>
               </div>
               <!--  Reviewers Tab Content (Initially Hidden) -->
               <div class="tab-pane fade" id="Reviewers-tab" role="tabpanel" aria-labelledby="Reviewers-all-tab">
                 <div class="text-center">
-                  <h2 class="text-center text-danger mb-2"> All Reviews </h2>
+                  <h2 class="text-center text-danger mb-2"> All Reviews Remarks </h2>
                 </div>
                 <div class="container-fluid table-bordered table-responsive">
                   <div class="row">
@@ -816,8 +723,8 @@
                                           </ng-template>
                                         </ng-container>
                                       </span>
-
-
+    
+    
                                       <span *ngSwitchCase="'isApproved'">
                                         <span [ngClass]="row[col] === '1' ? 'text-success' : 'text-danger'">
                                           {{ row[col] === '1' ? 'Approved' : 'Not Approved' }}
@@ -828,10 +735,10 @@
                                       </span>
                                       <span *ngSwitchCase="'approvalStatus'">
                                         <span [ngClass]="{
-                                                                  'text-warning': row.isActionable == null,
-                                                                  'text-success': row.isActionable == 1,
-                                                                  'text-danger': row.isActionable == 0
-                                                                }">
+                                                                      'text-warning': row.isActionable == null,
+                                                                      'text-success': row.isActionable == 1,
+                                                                      'text-danger': row.isActionable == 0
+                                                                    }">
                                           {{ row.isActionable == null ? 'Pending' : row.isActionable == 1 ? 'Approved'
                                           :
                                           'Rejected' }}
@@ -840,12 +747,12 @@
                                       <span *ngSwitchDefault>{{ row[col] }}</span>
                                     </ng-container>
                                   </td>
-
+    
                                 </tr>
                               </tbody>
                             </table>
-
-
+    
+    
                             <div class="pagination-controls">
                               <button (click)="previousPageReviewerRemarks()"
                                 [disabled]="currentPageReviewerRemarks === 1">Previous</button>
@@ -865,11 +772,11 @@
                   </div>
                 </div>
               </div>
-
+    
             </div>
           </div>
-
-
+    
+    
           <!-- Publisher Dashboard -->
           <div *ngSwitchCase="'Publisher'">
             <div class="text-center">
@@ -1120,170 +1027,8 @@
         </div>
     </div>
 </div>
-<!-- <div class="modal fade" id="assignReviewerModal" tabindex="-1" aria-labelledby="assignReviewerModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="assignReviewerModalLabel">Assign Reviewer</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="assignReviewer()">
-
-          <div class="mb-3">
-            <label class="form-label">Journal :</label>
-            <input type="text" class="form-control" [ngModel]="currentJournalTitle" name="JournalTitless" readonly />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-bold">Select Reviewer Type:</label>
-            <div class="d-flex gap-4">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="reviewerType" id="internalRadio" value="internal"
-                  [(ngModel)]="reviewerType">
-                <label class="form-check-label" for="internalRadio">Internal User</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="reviewerType" id="externalRadio" value="external"
-                  [(ngModel)]="reviewerType">
-                <label class="form-check-label" for="externalRadio">External User</label>
-              </div>
-            </div>
-          </div>
-
-          <hr>
-
-          <div *ngIf="reviewerType === 'internal'">
-            <label class="form-label">Select Internal Reviewer (Max {{ MAX_INTERNAL_REVIEWERS }}):</label>
-            <div class="input-group mb-3">
-              <select id="internalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
-                name="internalReviewerId">
-                <option value="" disabled>Select Reviewer</option>
-                <option *ngFor="let reviewer of internalReviewerList" [value]="reviewer.emailId">
-                  {{ reviewer.candidateName }} ({{ reviewer.emailId }})
-                </option>
-              </select>
-              <button type="button" class="btn btn-outline-primary"
-                [disabled]="internalReviewersList.length >= MAX_INTERNAL_REVIEWERS" (click)="addReviewerFromDropdown()">
-                <i class="bi bi-plus-circle"></i> Add
-              </button>
-            </div>
-
-            <div *ngIf="internalReviewersList.length > 0">
-              <table class="table table-sm table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let reviewer of internalReviewersList; let i = index">
-                    <td>{{ reviewer.candidateName }}</td>
-                    <td>{{ reviewer.emailId }}</td>
-                    <td>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeInternalReviewer(i)">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div *ngIf="reviewerType === 'external'">
-            <label class="form-label">External Reviewer Details (Max {{ MAX_EXTERNAL_REVIEWERS }}):</label>
-
-            <div class="input-group mb-3">
-              <select id="externalReviewerDropdown" class="form-select" [(ngModel)]="selectedReviewerId"
-                name="externalReviewerId">
-                <option value="" disabled>Select Existing Reviewer</option>
-                <option *ngFor="let reviewer of externalReviewerList" [value]="reviewer.emailId">
-                  {{ reviewer.candidateName }} ({{ reviewer.emailId }})
-                </option>
-              </select>
-              <button type="button" class="btn btn-outline-primary"
-                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS" (click)="addReviewerFromDropdown()">
-                <i class="bi bi-plus-circle"></i> Add
-              </button>
-            </div>
-
-            <div class="mb-3 text-end">
-              <button type="button" class="btn btn-warning btn-sm" (click)="toggleNewExternalReviewerForm()"
-                [disabled]="externalReviewersList.length >= MAX_EXTERNAL_REVIEWERS">
-                Did not find reviewer in list, Add New
-              </button>
-            </div>
-
-            <div *ngIf="showNewExternalReviewerForm" class="card p-3 mb-3 border-primary">
-              <h6 class="card-title text-primary">Add New External Reviewer Account (Requires Page Reload)</h6>
-              <div class="row g-2 align-items-end">
-                <div class="col-md-4">
-                  <label class="form-label">Name</label>
-                  <input type="text" class="form-control" placeholder="Name" [(ngModel)]="tempExternalUser.name"
-                    name="extName">
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" placeholder="Email" [(ngModel)]="tempExternalUser.email"
-                    name="extEmail">
-                </div>
-                <div class="col-md-3">
-                  <label class="form-label">Contact No</label>
-                  <input type="text" class="form-control" placeholder="Contact No"
-                    [(ngModel)]="tempExternalUser.contact" name="extContact">
-                </div>
-                <div class="col-md-1">
-                  <button type="button" class="btn btn-success w-100" (click)="addNewExternalReviewerFromForm()">
-                    <i class="bi bi-check"></i> Save
-                  </button>
-                </div>
-              </div>
-            </div>
 
 
-            <div *ngIf="externalReviewersList.length > 0">
-              <table class="table table-sm table-striped mt-3">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Contact</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let ext of externalReviewersList; let i = index">
-                    <td>{{ ext.name }}</td>
-                    <td>{{ ext.email }}</td>
-                    <td>{{ ext.contact }}</td>
-                    <td>
-                      <button type="button" class="btn btn-sm btn-danger" (click)="removeExternalReviewer(i)">
-                        <i class="bi bi-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="modal-footer mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success"
-              [disabled]="(reviewerType === 'internal' && internalReviewersList.length === 0) || (reviewerType === 'external' && externalReviewersList.length === 0)">
-              Assign Reviewers
-            </button>
-          </div>
-        </form>
-
-      </div>
-    </div>
-  </div>
-</div> -->
 <!-- submitReviewerForm Reviewers Modal -->
 <div class="modal fade" id="ReviewerModal" tabindex="-1" aria-labelledby="ReviewerModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -1399,13 +1144,7 @@
             </div>
           </div>
 
-          <!-- <div class="row">
-
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Sending Manuscript master Id {{this.ManuscriptMasterId }}</label>
-            </div>
-          </div> -->
-
+        
           <div class="modal-footer py-1 px-2">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary btn-sm"

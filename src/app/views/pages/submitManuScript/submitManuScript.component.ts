@@ -505,7 +505,6 @@ export class SubmitManuScriptComponent implements OnInit {
         }
         this.dataShowing = true;
         this.showEditorData(this.BookId);
-
         this.loadReviewers(this.BookId);
         this.GetJournalDetailsAbout(this.BookId);
         this.showData();
@@ -523,6 +522,30 @@ export class SubmitManuScriptComponent implements OnInit {
       }
     });
   }
+  currentPageReviewer: number = 1;
+  pageSizeReviewer: number = 10;
+  paginatedReviewerData: any[] = [];
+  totalPagesReviewer: number = 1;
+  calculateTotalPagesReviewer() {
+    this.totalPagesReviewer = Math.ceil(this.ReviewerData.length / this.pageSizeReviewer);
+  }
+  updatePaginatedDataReviewer() {
+    const startIndex = (this.currentPageReviewer - 1) * this.pageSizeReviewer;
+    this.paginatedReviewerData = this.ReviewerData.slice(startIndex, startIndex + this.pageSizeReviewer);
+  }
+  nextPageReviewer() {
+    if (this.currentPageReviewer < this.totalPagesReviewer) {
+      this.currentPageReviewer++;
+      this.updatePaginatedDataReviewer();
+    }
+  }
+  previousPageReviewer() {
+    if (this.currentPageReviewer > 1) {
+      this.currentPageReviewer--;
+      this.updatePaginatedDataReviewer();
+    }
+  }
+  // Editor Dashboard Assign Reviewer Logic started 
 
   showEditorData(journalId: any) {
     this.journalWebApiService.GetAllMenuScriptForJournalId(journalId).subscribe({
@@ -551,25 +574,244 @@ export class SubmitManuScriptComponent implements OnInit {
     this.GetallReviewsData(this.BookId);
   }
 
-  // loadReviewers(id: any) {
-  //   // API call to fetch reviewer list
-  //   this.journalWebApiService.GetReviewerDetailsForEditors(this.userId).subscribe({
-  //     next: (dataX: any) => {
-  //       this.dataSource = dataX.item1;
-  //       this.reviewerList = dataX.item1;
-  //     //  console.log("ALL Reviewerlist" + JSON.stringify(this.reviewerList))
-  //     },
-  //     error: (error: any) => {
-  //       this.dataShowing = false;
-  //       console.error('Error fetching data', error);
-  //       this.LoginFalied();
-  //     },
-  //     complete: () => {
-  //       this.dataShowing = true;
-  //     }
-  //   });
+
+  GetallReviewsData(journalId: any) {
+    this.journalWebApiService.GetAllReviewersRemarkss(journalId).subscribe({
+      next: (dataXY: any) => {
+        this.ReviewerRemarksData = dataXY.item1 || [];
+        // console.log("Fetched ReviewerRemarksData:", JSON.stringify(this.ReviewerRemarksData));
+        this.filteredReviewerRemarksData = [...this.ReviewerRemarksData];
+        if (this.ReviewerRemarksData.length > 0) {
+          this.ReviewerRemarksDataColumns = Object.keys(this.ReviewerRemarksData[0]);
+          this.calculateTotalPagesReviewerRemarks();
+          this.updatePaginatedDataReviewerRemarks();
+        }
+        this.dataShowing = true;
+      },
+      error: (error: any) => {
+        console.error('Error fetching data', error);
+        this.dataShowing = false;
+        this.LoginFalied();
+      }
+    });
+  }
+
+
+  currentPageReviewerRemarks: number = 1;
+  pageSizeReviewerRemarks: number = 10;
+  paginatedReviewerRemarks: any[] = [];
+  totalPagesReviewerRemarks: number = 1;
+  ReviewerRemarksData: any[] = [];
+  ReviewerRemarksDataColumns: string[] = [];
+  searchText: string = '';
+  filteredReviewerRemarksData: any[] = [];
+
+  // Display headers mapping
+  displayedReviewerRemarksColumnHeaders: { [key: string]: string } = {
+    // 'reviewerName':'Reviewer Name',
+    // 'publicationDate':'Published Date',
+    reviewerTerm: 'Term Reviewed',
+    overallRating: 'Overall Rating',
+    commentsForAuthor: 'Comments for Author',
+    commentsforEditor: 'Comments for Editor',
+    transferResponse: 'Transfer Response',
+    newSubjectRating: 'Subject Rating',
+    manuscriptRating: 'Manuscript Rating',
+    manuscriptOrganisedRating: 'Manuscript Organised Rating',
+    journalId: 'Action',
+    approvalStatus: 'Status',
+    fileUrl: 'Manuscript File'
+  };
+
+  ReviewerRemarksdisplayedColumns: string[] = [
+    // 'reviewerName',
+    // 'publicationDate',
+    'reviewerTerm',
+    'overallRating',
+    'commentsForAuthor',
+    'commentsforEditor',
+    'transferResponse',
+    'newSubjectRating',
+    'manuscriptRating',
+    'manuscriptOrganisedRating',
+    'journalId',
+    'approvalStatus',
+    'fileUrl'
+  ];
+
+  calculateTotalPagesReviewerRemarks() {
+    this.totalPagesReviewerRemarks = Math.ceil(this.filteredReviewerRemarksData.length / this.pageSizeReviewerRemarks);
+  }
+
+  updatePaginatedDataReviewerRemarks() {
+    const startIndex = (this.currentPageReviewerRemarks - 1) * this.pageSizeReviewerRemarks;
+    this.paginatedReviewerRemarks = this.filteredReviewerRemarksData.slice(startIndex, startIndex + this.pageSizeReviewerRemarks);
+  }
+
+  applySearch() {
+    const search = this.searchText.toLowerCase();
+
+    this.filteredReviewerRemarksData = this.ReviewerRemarksData.filter(row =>
+      Object.values(row).some(val =>
+        val?.toString().toLowerCase().includes(search)
+      )
+    );
+
+    this.currentPageReviewerRemarks = 1;
+    this.calculateTotalPagesReviewerRemarks();
+    this.updatePaginatedDataReviewerRemarks();
+  }
+
+  nextPageReviewerRemarks() {
+    if (this.currentPageReviewerRemarks < this.totalPagesReviewerRemarks) {
+      this.currentPageReviewerRemarks++;
+      this.updatePaginatedDataReviewerRemarks();
+    }
+  }
+
+  previousPageReviewerRemarks() {
+    if (this.currentPageReviewerRemarks > 1) {
+      this.currentPageReviewerRemarks--;
+      this.updatePaginatedDataReviewerRemarks();
+    }
+  }
+
+  DisapproveStatus(rowData: any) {
+    // alert(rowData.manuscriptId)
+    Swal.fire({
+      title: "Reason for Disapproval",
+      // text: "Disapproval reason",
+      input: 'text',
+      showCancelButton: true
+    }).then((result) => {
+      if (result.value) {
+        this.Reason = result.value;
+        const formData = new FormData();
+        formData.append('Id', rowData.manuscriptId);
+        formData.append('DisapprovalReason', this.Reason);
+        formData.append('Action', 'Disapprove');
+        this.handleStatusChange(formData, 'Disapprove');
+      } else {
+        this.showCancelledSwal();
+      }
+    });
+  }
+
+
+
+
+  ChangeApproveStatus(rowData: any) {
+    // alert(rowData.manuscriptId)
+    const formData = new FormData();
+    formData.append('Id', rowData.manuscriptId);
+    formData.append('Action', 'Approve');
+
+    Swal.fire({
+      title: 'Are you sure you want to change the status?',
+      text: 'Kindly confirm if the document is valid!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, accept current changes!',
+      cancelButtonText: 'No, do not change it'
+    }).then((result: any) => {
+      if (result.value) {
+        this.handleStatusChange(formData, 'Approve');
+      } else {
+        this.showCancelledSwal();
+      }
+    });
+  }
+
+  private handleStatusChange(formData: FormData, action: string) {
+    this.journalWebApiService.ApproveDocument(formData).subscribe((data: any) => {
+      if (action === 'Approve' && data.responseData === 'Cancel') {
+        Swal.fire(
+          'No Change!',
+          ' ',
+          'error'
+        );
+      } else {
+        Swal.fire(
+          ' Approved/Disapproved successfully !',
+          '',
+          'success'
+        ).then(() => {
+          window.location.reload();
+        });
+      }
+    });
+  }
+
+  private showCancelledSwal() {
+    Swal.fire(
+      'Cancelled',
+      ' ',
+      'error'
+    );
+  }
+
+  // onSelectFileEditorX(a: any) {
+  //   let aa = a;
+  //   // alert(aa)
+  //   window.open('https://files.lpu.in/umsweb/Journal/' + aa, '_blank');
   // }
 
+
+  currentPageEditor: number = 1;
+  pageSizeEditor: number = 5;
+  paginatedEditorData: any[] = [];
+  totalPagesEditor: number = 1;
+
+  // calculateTotalPagesEditor() {
+  //   this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor);
+  // }
+
+  // updatePaginatedDataEditor() {
+  //   const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
+  //   this.paginatedEditorData = this.EditorData.slice(startIndex, startIndex + this.pageSizeEditor);
+  // }
+
+  // nextPageEditor() {
+  //   if (this.currentPageEditor < this.totalPagesEditor) {
+  //     this.currentPageEditor++;
+  //     this.updatePaginatedDataEditor();
+  //   }
+  // }
+
+  // previousPageEditor() {
+  //   if (this.currentPageEditor > 1) {
+  //     this.currentPageEditor--;
+  //     this.updatePaginatedDataEditor();
+  //   }
+  // }
+
+
+
+  loadReviewers(journalId: number): void {
+    this.subscriptions.add(
+      this.journalWebApiService.GetReviewerDetailsForEditors(journalId).subscribe({
+        next: (dataX: any) => {
+          const allReviewers: Reviewer[] = dataX.item1 || [];
+          this.reviewerList = allReviewers;
+
+          this.internalReviewerList = allReviewers.filter(
+            (reviewer: Reviewer) => !reviewer.userType || reviewer.userType.toLowerCase() === "null" || reviewer.userType.toLowerCase() === "internal"
+          );
+
+          this.externalReviewerList = allReviewers.filter(
+            (reviewer: Reviewer) => reviewer.userType && reviewer.userType.toLowerCase() === 'external'
+          );
+
+        },
+        error: (error: any) => {
+          console.error('Error fetching reviewers', error);
+          this.reviewerList = [];
+          this.internalReviewerList = [];
+          this.externalReviewerList = [];
+        },
+      })
+    );
+  }
   GetJournalDetailsAbout(JournalId: any): void {
     this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
@@ -586,6 +828,7 @@ export class SubmitManuScriptComponent implements OnInit {
       }
     });
   }
+
 
 
   showData() {
@@ -667,41 +910,140 @@ export class SubmitManuScriptComponent implements OnInit {
     });
   }
 
+  // Assign Reviewer Logic
+
+
+  editorTableColumns: TableColumn[] = [
+    { key: 'journalTitle', header: 'Journal Title', type: 'data' },
+    { key: 'manuScript', header: 'Manuscript', type: 'data' },
+    { key: 'editorInChief', header: 'Author Name', type: 'data' },
+    { key: 'emailId', header: 'Submitted User Email', type: 'data' },
+    { key: 'userName', header: 'Submitted By', type: 'data' },
+    { key: 'submissionType', header: 'Submission Type', type: 'data' },
+    { key: 'fileUrl', header: 'Manuscript ', type: 'file' },
+    // Dynamic Status Column
+    { key: 'reviewerStatus', header: 'Reviewer Status', type: 'status' },
+    // Dynamic Action Column (Uses journalId implicitly for row context)
+    { key: 'action', header: 'Action', type: 'action' }
+  ];
+
+  getReviewerStatus(row: Manuscript): { display: string, assigned: boolean } {
+    const assignedData = row.reviewerAssigned;
+
+    // The data is null, empty string, or a string of comma-separated emails.
+    const isAssigned = !!assignedData && assignedData.trim().length > 0;
+
+    return {
+      // Returns the comma-separated emails if assigned, otherwise 'Pending'
+      display: isAssigned ? assignedData! : 'Pending',
+      assigned: isAssigned
+    };
+  }
+
+  reviewerType: 'internal' | 'external' = 'internal';
+  // selectedReviewerId: string = '';
+  // externalReviewer = {
+  //   name: '',
+  //   email: '',
+  //   contact: ''
+  // };
+  externalReviewer: ExternalReviewer = { name: '', email: '', contact: '' };
+
+  resetSelectedReviewers() {
+    this.selectedReviewerIds = [];
+  }
+  selectedReviewerIds: string[] = [];
+
+  toggleReviewerSelection(email: string, event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const isChecked = checkbox.checked;
+
+    const index = this.selectedReviewerIds.indexOf(email);
+
+    if (isChecked && index === -1) {
+      if (this.selectedReviewerIds.length >= 3) {
+        checkbox.checked = false;
+        alert('Maximum 3 reviewers can be selected.');
+        return;
+      }
+      this.selectedReviewerIds.push(email);
+    } else if (!isChecked && index !== -1) {
+      this.selectedReviewerIds.splice(index, 1);
+    }
+  }
+
+  isReviewerFormValid(): boolean {
+    if (this.reviewerType === 'internal') {
+      return this.selectedReviewerIds.length > 0;
+    } else if (this.reviewerType === 'external') {
+      return this.isExternalReviewerValid();
+    }
+    return false;
+  }
+
+  isExternalReviewerValid(): boolean {
+    const isNameValid = !!this.externalReviewer.name; // Convert to boolean
+    const isEmailValid = !!this.externalReviewer.email; // Convert to boolean
+    const isContactValid = /^[0-9]{10}$/.test(this.externalReviewer.contact); // Check if contact is a valid 10-digit number
+
+    return isNameValid && isEmailValid && isContactValid; // Return true only if all conditions are met
+  }
+  // Assign Reviewer Functionality
+
+  private subscriptions: Subscription = new Subscription();
+  // All available reviewers (Fetched from API)
+  readonly MAX_INTERNAL_REVIEWERS = 3;
+  readonly MAX_EXTERNAL_REVIEWERS = 2;
+  readonly SERVER_URL = 'https://files.lpu.in/umsweb/Journal/';
+
+  // --- Component State Variables ---
+  // dataShowing: boolean = false;
+  // dataLoaded: boolean = false;
+  isLoading: boolean = false;
+
+  // Journal Selection
+  journalListsData: any[] = [];
+  // JournalTitle: any= ''; 
+  currentJournalId: any;
+  currentJournalTitle: string = '';
+
+  // Manuscript Data Grid
+  EditorData: Manuscript[] = [];
+  currentPageEditorY: number = 1;
+  pageSizeEditorY: number = 10;
+  paginatedEditorDataY: Manuscript[] = [];
+  totalPagesEditorY: number = 1;
+
+  // Reviewer Assignment Modal State
+  // reviewerType: 'internal' | 'external' = 'internal'; 
+
+  // All available reviewers (Fetched from API)
+  reviewerList: Reviewer[] = [];
+  internalReviewerList: Reviewer[] = [];
+  externalReviewerList: Reviewer[] = [];
+
+  // Selected Reviewers for Assignment
+
+  internalReviewersList: Reviewer[] = [];
+  externalReviewersList: ExternalReviewer[] = []; // Only holds existing external users selected
+
+  // New External Reviewer Form State
+  showNewExternalReviewerForm: boolean = false;
+
+
+  tempExternalUser: ExternalReviewer = {
+    name: '',
+    email: '',
+    contact: ''
+  };
+
+  selectedManuscript: Manuscript | null = null;
+
 
 
   onSelectFileX(a: any) {
     let aa = a;
     window.open('https://files.lpu.in/umsweb/Journal/' + aa, '_blank');
-  }
-
-  currentPageReviewer: number = 1;
-  pageSizeReviewer: number = 10;
-  paginatedReviewerData: any[] = [];
-  totalPagesReviewer: number = 1;
-
-
-
-  calculateTotalPagesReviewer() {
-    this.totalPagesReviewer = Math.ceil(this.ReviewerData.length / this.pageSizeReviewer);
-  }
-
-  updatePaginatedDataReviewer() {
-    const startIndex = (this.currentPageReviewer - 1) * this.pageSizeReviewer;
-    this.paginatedReviewerData = this.ReviewerData.slice(startIndex, startIndex + this.pageSizeReviewer);
-  }
-
-  nextPageReviewer() {
-    if (this.currentPageReviewer < this.totalPagesReviewer) {
-      this.currentPageReviewer++;
-      this.updatePaginatedDataReviewer();
-    }
-  }
-
-  previousPageReviewer() {
-    if (this.currentPageReviewer > 1) {
-      this.currentPageReviewer--;
-      this.updatePaginatedDataReviewer();
-    }
   }
 
   // 25-feb-25
@@ -877,164 +1219,8 @@ export class SubmitManuScriptComponent implements OnInit {
     });
   }
 
-  // Assign Reviewer Logic
 
-
-  editorTableColumns: TableColumn[] = [
-    { key: 'journalTitle', header: 'Journal Title', type: 'data' },
-    { key: 'manuScript', header: 'Manuscript', type: 'data' },
-    { key: 'editorInChief', header: 'Author Name', type: 'data' },
-    { key: 'emailId', header: 'Submitted User Email', type: 'data' },
-    { key: 'userName', header: 'Submitted By', type: 'data' },
-    { key: 'submissionType', header: 'Submission Type', type: 'data' },
-    { key: 'fileUrl', header: 'Manuscript ', type: 'file' },
-    // Dynamic Status Column
-    { key: 'reviewerStatus', header: 'Reviewer Status', type: 'status' },
-    // Dynamic Action Column (Uses journalId implicitly for row context)
-    { key: 'action', header: 'Action', type: 'action' }
-  ];
-
-  getReviewerStatus(row: Manuscript): { display: string, assigned: boolean } {
-    const assignedData = row.reviewerAssigned;
-
-    // The data is null, empty string, or a string of comma-separated emails.
-    const isAssigned = !!assignedData && assignedData.trim().length > 0;
-
-    return {
-      // Returns the comma-separated emails if assigned, otherwise 'Pending'
-      display: isAssigned ? assignedData! : 'Pending',
-      assigned: isAssigned
-    };
-  }
-
-  reviewerType: 'internal' | 'external' = 'internal';
-  // selectedReviewerId: string = '';
-  // externalReviewer = {
-  //   name: '',
-  //   email: '',
-  //   contact: ''
-  // };
-  externalReviewer: ExternalReviewer = { name: '', email: '', contact: '' };
-
-  resetSelectedReviewers() {
-    this.selectedReviewerIds = [];
-  }
-  selectedReviewerIds: string[] = [];
-
-  toggleReviewerSelection(email: string, event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-    const isChecked = checkbox.checked;
-
-    const index = this.selectedReviewerIds.indexOf(email);
-
-    if (isChecked && index === -1) {
-      if (this.selectedReviewerIds.length >= 3) {
-        checkbox.checked = false;
-        alert('Maximum 3 reviewers can be selected.');
-        return;
-      }
-      this.selectedReviewerIds.push(email);
-    } else if (!isChecked && index !== -1) {
-      this.selectedReviewerIds.splice(index, 1);
-    }
-  }
-
-  isReviewerFormValid(): boolean {
-    if (this.reviewerType === 'internal') {
-      return this.selectedReviewerIds.length > 0;
-    } else if (this.reviewerType === 'external') {
-      return this.isExternalReviewerValid();
-    }
-    return false;
-  }
-
-  isExternalReviewerValid(): boolean {
-    const isNameValid = !!this.externalReviewer.name; // Convert to boolean
-    const isEmailValid = !!this.externalReviewer.email; // Convert to boolean
-    const isContactValid = /^[0-9]{10}$/.test(this.externalReviewer.contact); // Check if contact is a valid 10-digit number
-
-    return isNameValid && isEmailValid && isContactValid; // Return true only if all conditions are met
-  }
-  // Assign Reviewer Functionality
-
-  private subscriptions: Subscription = new Subscription();
-  // All available reviewers (Fetched from API)
-  readonly MAX_INTERNAL_REVIEWERS = 3;
-  readonly MAX_EXTERNAL_REVIEWERS = 2;
-  readonly SERVER_URL = 'https://files.lpu.in/umsweb/Journal/';
-
-  // --- Component State Variables ---
-  // dataShowing: boolean = false;
-  // dataLoaded: boolean = false;
-  isLoading: boolean = false;
-
-  // Journal Selection
-  journalListsData: any[] = [];
-  // JournalTitle: any= ''; 
-  currentJournalId: any;
-  currentJournalTitle: string = '';
-
-  // Manuscript Data Grid
-  EditorData: Manuscript[] = [];
-  currentPageEditorY: number = 1;
-  pageSizeEditorY: number = 10;
-  paginatedEditorDataY: Manuscript[] = [];
-  totalPagesEditorY: number = 1;
-
-  // Reviewer Assignment Modal State
-  // reviewerType: 'internal' | 'external' = 'internal'; 
-
-  // All available reviewers (Fetched from API)
-  reviewerList: Reviewer[] = [];
-  internalReviewerList: Reviewer[] = [];
-  externalReviewerList: Reviewer[] = [];
-
-  // Selected Reviewers for Assignment
-
-  internalReviewersList: Reviewer[] = [];
-  externalReviewersList: ExternalReviewer[] = []; // Only holds existing external users selected
-
-  // New External Reviewer Form State
-  showNewExternalReviewerForm: boolean = false;
-  
-  
-  tempExternalUser: ExternalReviewer = {
-    name: '',
-    email: '',
-    contact: ''
-  };
-
-  selectedManuscript: Manuscript | null = null;
-
-
-
-
-  loadReviewers(journalId: number): void {
-    this.subscriptions.add(
-      this.journalWebApiService.GetReviewerDetailsForEditors(journalId).subscribe({
-        next: (dataX: any) => {
-          const allReviewers: Reviewer[] = dataX.item1 || [];
-          this.reviewerList = allReviewers;
-
-          this.internalReviewerList = allReviewers.filter(
-            (reviewer: Reviewer) => !reviewer.userType || reviewer.userType.toLowerCase() === "null" || reviewer.userType.toLowerCase() === "internal"
-          );
-
-          this.externalReviewerList = allReviewers.filter(
-            (reviewer: Reviewer) => reviewer.userType && reviewer.userType.toLowerCase() === 'external'
-          );
-
-        },
-        error: (error: any) => {
-          console.error('Error fetching reviewers', error);
-          this.reviewerList = [];
-          this.internalReviewerList = [];
-          this.externalReviewerList = [];
-        },
-      })
-    );
-  }
-  onTakeActions(rowData: Manuscript): void {
+  onTakeActionChange(rowData: Manuscript): void {
     this.selectedManuscript = rowData;
 
     // Reset Modal State
@@ -1046,32 +1232,32 @@ export class SubmitManuScriptComponent implements OnInit {
     this.showNewExternalReviewerForm = false;
   }
 
-  calculateTotalPagesEditorY() {
+  calculateTotalPagesEditor() {
     this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1;
     this.currentPageEditor = 1;
   }
 
-  updatePaginatedDataEditorY() {
+  updatePaginatedDataEditor() {
     const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
     const endIndex = Math.min(startIndex + this.pageSizeEditor, this.EditorData.length);
     this.paginatedEditorData = this.EditorData.slice(startIndex, endIndex);
   }
 
-  nextPageEditorY() {
+  nextPageEditor() {
     if (this.currentPageEditor < this.totalPagesEditor) {
       this.currentPageEditor++;
       this.updatePaginatedDataEditor();
     }
   }
 
-  previousPageEditorY() {
+  previousPageEditor() {
     if (this.currentPageEditor > 1) {
       this.currentPageEditor--;
       this.updatePaginatedDataEditor();
     }
   }
 
-  onSelectFileEditorXY(fileUrl: string): void {
+  onSelectFileEditorX(fileUrl: string): void {
     if (fileUrl) {
       window.open(this.SERVER_URL + fileUrl, '_blank');
     }
@@ -1125,7 +1311,7 @@ export class SubmitManuScriptComponent implements OnInit {
     this.internalReviewersList.splice(index, 1);
   }
 
-  removeExternalReviewerY(index: number): void {
+  removeExternalReviewer(index: number): void {
     this.externalReviewersList.splice(index, 1);
   }
 
@@ -1146,8 +1332,8 @@ export class SubmitManuScriptComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append('JournalTitle', manuscript.journalTitle);
-    formData.append('JournalId', this.currentJournalId?.toString() || '');
+    formData.append('JournalTitle', this.JournalTitle);
+    formData.append('JournalId', this.BookId);
     formData.append('CandidateName', name);
     formData.append('UserEmail', email);
     formData.append('MobileNumber', contact);
@@ -1237,6 +1423,10 @@ export class SubmitManuScriptComponent implements OnInit {
     formData.append('Manuscript', manuScript);
     formData.append('SubmissionType', submissionType);
 
+    // formData.forEach((value, key) => {
+    //   console.log(`${key}: ${value}`);
+    // });
+
     Swal.fire({
       title: 'Assigning Reviewers...',
       allowOutsideClick: false,
@@ -1288,48 +1478,6 @@ export class SubmitManuScriptComponent implements OnInit {
     }
   }
 
-  // assignReviewer() {
-  //   const formData = new FormData();
-  //   if (!this.isReviewerFormValid()) return;
-
-  //   if (this.reviewerType === 'internal') {
-  //     if (this.selectedReviewerIds.length === 0) {
-  //       alert('Please select at least one internal reviewer.');
-  //       return;
-  //     }
-
-  //     formData.append('JournalId', this.selectedJournalId);
-  //     formData.append('MultipleAssignedTo', this.selectedReviewerIds.join(','));
-  //     formData.append('SubmittedBy', this.AssignedById);
-  //     formData.append('RecordId', this.RecordId);
-
-  //     this.assignInternalReviewer(formData);
-  //   } else if (this.reviewerType === 'external') {
-
-  //     const reviewerFormData = new FormData();
-  //     reviewerFormData.append('JournalTitle', this.JournalTitle);
-  //     reviewerFormData.append('JournalId', this.selectedJournalId);
-  //     reviewerFormData.append('MultipleAssignedTo', this.externalReviewer.email);
-  //     reviewerFormData.append('RecordId', this.RecordId);
-  //     reviewerFormData.append('CandidateName', this.externalReviewer.name);
-  //     reviewerFormData.append('UserEmail', this.externalReviewer.email);
-  //     reviewerFormData.append('MobileNumber', this.externalReviewer.contact);
-  //     reviewerFormData.append('UserType', '2');
-  //     reviewerFormData.append('PasswordText', this.externalReviewer.contact);
-  //     reviewerFormData.append('SubmittedBy', this.AssignedById);
-  //     reviewerFormData.append('AuthorEmailId', this.AuthorEmailId);
-
-  //     this.assignExternalReviewer(reviewerFormData);
-  //   }
-
-  //   this.resetReviewerForm();
-
-  //   const modalEl = document.getElementById('assignReviewerModal');
-  //   if (modalEl) {
-  //     const modalInstance = bootstrap.Modal.getInstance(modalEl);
-  //     modalInstance?.hide();
-  //   }
-  // }
 
 
   getReviewerNameByEmail(email: string): string {
@@ -1420,14 +1568,6 @@ export class SubmitManuScriptComponent implements OnInit {
     modal?.hide();
   }
 
-  // ngAfterViewInit(): void {
-  //   const modalEl = document.getElementById('assignReviewerModal');
-  //   if (modalEl) {
-  //     modalEl.addEventListener('hidden.bs.modal', () => {
-  //       this.resetReviewerForm();
-  //     });
-  //   }
-  // }
 
   //  Editors login action Data grid start 
 
@@ -1505,216 +1645,6 @@ export class SubmitManuScriptComponent implements OnInit {
   ];
 
 
-  currentPageReviewerRemarks: number = 1;
-  pageSizeReviewerRemarks: number = 10;
-  paginatedReviewerRemarks: any[] = [];
-  totalPagesReviewerRemarks: number = 1;
-  ReviewerRemarksData: any[] = [];
-  ReviewerRemarksDataColumns: string[] = [];
-  searchText: string = '';
-  filteredReviewerRemarksData: any[] = [];
-
-  // Display headers mapping
-  displayedReviewerRemarksColumnHeaders: { [key: string]: string } = {
-    // 'reviewerName':'Reviewer Name',
-    // 'publicationDate':'Published Date',
-    reviewerTerm: 'Term Reviewed',
-    overallRating: 'Overall Rating',
-    commentsForAuthor: 'Comments for Author',
-    commentsforEditor: 'Comments for Editor',
-    transferResponse: 'Transfer Response',
-    newSubjectRating: 'Subject Rating',
-    manuscriptRating: 'Manuscript Rating',
-    manuscriptOrganisedRating: 'Manuscript Organised Rating',
-    journalId: 'Action',
-    approvalStatus: 'Status',
-    fileUrl: 'Manuscript File'
-  };
-
-  ReviewerRemarksdisplayedColumns: string[] = [
-    // 'reviewerName',
-    // 'publicationDate',
-    'reviewerTerm',
-    'overallRating',
-    'commentsForAuthor',
-    'commentsforEditor',
-    'transferResponse',
-    'newSubjectRating',
-    'manuscriptRating',
-    'manuscriptOrganisedRating',
-    'journalId',
-    'approvalStatus',
-    'fileUrl'
-  ];
-
-  calculateTotalPagesReviewerRemarks() {
-    this.totalPagesReviewerRemarks = Math.ceil(this.filteredReviewerRemarksData.length / this.pageSizeReviewerRemarks);
-  }
-
-  updatePaginatedDataReviewerRemarks() {
-    const startIndex = (this.currentPageReviewerRemarks - 1) * this.pageSizeReviewerRemarks;
-    this.paginatedReviewerRemarks = this.filteredReviewerRemarksData.slice(startIndex, startIndex + this.pageSizeReviewerRemarks);
-  }
-
-  applySearch() {
-    const search = this.searchText.toLowerCase();
-
-    this.filteredReviewerRemarksData = this.ReviewerRemarksData.filter(row =>
-      Object.values(row).some(val =>
-        val?.toString().toLowerCase().includes(search)
-      )
-    );
-
-    this.currentPageReviewerRemarks = 1;
-    this.calculateTotalPagesReviewerRemarks();
-    this.updatePaginatedDataReviewerRemarks();
-  }
-
-  nextPageReviewerRemarks() {
-    if (this.currentPageReviewerRemarks < this.totalPagesReviewerRemarks) {
-      this.currentPageReviewerRemarks++;
-      this.updatePaginatedDataReviewerRemarks();
-    }
-  }
-
-  previousPageReviewerRemarks() {
-    if (this.currentPageReviewerRemarks > 1) {
-      this.currentPageReviewerRemarks--;
-      this.updatePaginatedDataReviewerRemarks();
-    }
-  }
-
-  GetallReviewsData(journalId: any) {
-    this.journalWebApiService.GetAllReviewersRemarkss(journalId).subscribe({
-      next: (dataXY: any) => {
-        this.ReviewerRemarksData = dataXY.item1 || [];
-        // console.log("Fetched ReviewerRemarksData:", JSON.stringify(this.ReviewerRemarksData));
-        this.filteredReviewerRemarksData = [...this.ReviewerRemarksData];
-        if (this.ReviewerRemarksData.length > 0) {
-          this.ReviewerRemarksDataColumns = Object.keys(this.ReviewerRemarksData[0]);
-          this.calculateTotalPagesReviewerRemarks();
-          this.updatePaginatedDataReviewerRemarks();
-        }
-
-        this.dataShowing = true;
-      },
-      error: (error: any) => {
-        console.error('Error fetching data', error);
-        this.dataShowing = false;
-        this.LoginFalied();
-      }
-    });
-  }
-
-  DisapproveStatus(rowData: any) {
-    // alert(rowData.manuscriptId)
-    Swal.fire({
-      title: "Reason for Disapproval",
-      // text: "Disapproval reason",
-      input: 'text',
-      showCancelButton: true
-    }).then((result) => {
-      if (result.value) {
-        this.Reason = result.value;
-        const formData = new FormData();
-        formData.append('Id', rowData.manuscriptId);
-        formData.append('DisapprovalReason', this.Reason);
-        formData.append('Action', 'Disapprove');
-        this.handleStatusChange(formData, 'Disapprove');
-      } else {
-        this.showCancelledSwal();
-      }
-    });
-  }
-
-
-
-
-  ChangeApproveStatus(rowData: any) {
-    // alert(rowData.manuscriptId)
-    const formData = new FormData();
-    formData.append('Id', rowData.manuscriptId);
-    formData.append('Action', 'Approve');
-
-    Swal.fire({
-      title: 'Are you sure you want to change the status?',
-      text: 'Kindly confirm if the document is valid!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, accept current changes!',
-      cancelButtonText: 'No, do not change it'
-    }).then((result: any) => {
-      if (result.value) {
-        this.handleStatusChange(formData, 'Approve');
-      } else {
-        this.showCancelledSwal();
-      }
-    });
-  }
-
-  private handleStatusChange(formData: FormData, action: string) {
-    this.journalWebApiService.ApproveDocument(formData).subscribe((data: any) => {
-      if (action === 'Approve' && data.responseData === 'Cancel') {
-        Swal.fire(
-          'No Change!',
-          ' ',
-          'error'
-        );
-      } else {
-        Swal.fire(
-          ' Approved/Disapproved successfully !',
-          '',
-          'success'
-        ).then(() => {
-          window.location.reload();
-        });
-      }
-    });
-  }
-
-  private showCancelledSwal() {
-    Swal.fire(
-      'Cancelled',
-      ' ',
-      'error'
-    );
-  }
-
-  onSelectFileEditorX(a: any) {
-    let aa = a;
-    // alert(aa)
-    window.open('https://files.lpu.in/umsweb/Journal/' + aa, '_blank');
-  }
-
-  currentPageEditor: number = 1;
-  pageSizeEditor: number = 5;
-  paginatedEditorData: any[] = [];
-  totalPagesEditor: number = 1;
-
-
-
-  calculateTotalPagesEditor() {
-    this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor);
-  }
-
-  updatePaginatedDataEditor() {
-    const startIndex = (this.currentPageEditor - 1) * this.pageSizeEditor;
-    this.paginatedEditorData = this.EditorData.slice(startIndex, startIndex + this.pageSizeEditor);
-  }
-
-  nextPageEditor() {
-    if (this.currentPageEditor < this.totalPagesEditor) {
-      this.currentPageEditor++;
-      this.updatePaginatedDataEditor();
-    }
-  }
-
-  previousPageEditor() {
-    if (this.currentPageEditor > 1) {
-      this.currentPageEditor--;
-      this.updatePaginatedDataEditor();
-    }
-  }
   // Added on 24-feb-25
 
   NewIdForJournal: any;
@@ -1762,12 +1692,7 @@ export class SubmitManuScriptComponent implements OnInit {
   addExternalReviewer() {
     this.externalReviewers.push({ name: '', email: '', contact: '' });
   }
-
-  removeExternalReviewer(index: number) {
-    if (this.externalReviewers.length > 1) {
-      this.externalReviewers.splice(index, 1);
-    }
-  }
+ 
 
 
   // In your component TypeScript file

@@ -2,7 +2,7 @@
 <app-EditorHeader></app-EditorHeader>
 
 <div class="vh-150 d-flex p-2 align-items-center justify-content-center">
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
 
       <div class="col-md-12 grid-margin stretch-card">
@@ -11,10 +11,10 @@
         </div>
         <div class="container-fluid d-flex justify-content-center">
           <div class="row">
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
               <label class="form-label fs-3">Select Journal for Action </label>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-6 mb-3">
               <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
                 (change)="setJournalId()">
                 <option value="" disabled>Select Journal</option>
@@ -36,93 +36,101 @@
       <span class="material-icons lg-48 spin-icon">autorenew</span>
     </div>
   </div>
-
-  <div *ngIf="currentJournalId && !isLoading" class="manuscripts-grid-area card-content">
-
-    <h5 class="text-center grid-title mb-4">
-      Manuscripts List for: **{{ currentJournalTitle }}**
-    </h5>
-
-    <div *ngIf="manuscriptsList.length > 0">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-25" placeholder="Search manuscripts..." [(ngModel)]="searchText"
-          (ngModelChange)="pageNumber = 1">
-        <span>Total Active Manuscripts: **{{ filteredManuscripts.length }}**</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-hover table-striped manuscript-table">
-          <thead class="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Manuscript Type</th>
-              <th>Submission Type</th>
-              <th>Manuscript Subtitle</th>
-              <th>Author</th>
-              <th>Submitted By</th>
-              <th>Submitted On</th>
-              <th>Assigned Reviewer(s)</th>
-              <th>File</th>
-              <th style="width: 150px;">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let record of paginatedManuscripts(); let i = index">
-              <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-              <td>{{ record.ManuscriptTitle }}</td>              
-              <td>{{ record.MenuScriptType }}</td>
-              <td>{{ record.SubmissionType }}</td>
-              <td>{{ record.ManuscriptSubtitle }}</td>             
-              <td>{{ record.EditorInchief }}</td>
-              <td>{{ record.SubmitedBy }}</td>
-              <td>{{ record.SubmissionDate }}</td>
-              <td>{{ record.AssignedToReviewer || 'None Assigned' }}</td>
-               <td>
-                <button class="btn btn-sm btn-link p-0" (click)="onDownloadFile(record.FileUrl)">
-                  <i class="bi bi-file-earmark-arrow-down"></i> Download
-                </button>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-sm btn-info me-2" (click)="openEditModal(record)">
-                  <i class="bi bi-pen"></i> Edit
-                </button>
-                <button class="btn btn-sm btn-danger" (click)="openDeleteModal(record)">
-                  <i class="bi bi-trash"></i> Disapprove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="d-flex justify-content-center mt-3 gap-3">
-        <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
-          Prev
-        </button>
-        <span class="d-flex align-items-center text-muted">
-          Page {{ pageNumber }} of {{ totalPages() }}
-        </span>
-        <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages()">
-          Next
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="manuscriptsList.length === 0" class="no-data-message text-center p-4 text-muted">
-      No active manuscripts found for this journal.
-    </div>
-
-  </div>
-
-  <div *ngIf="!currentJournalId && !isLoading" class="no-selection-message text-center p-4 alert alert-info">
-    👉 Please **select a journal** from the dropdown above to view and manage manuscripts.
-  </div>
-
 </div>
 
-<div class="modal fade" id="editManuscriptModal" tabindex="-1" aria-labelledby="editManuscriptModalLabel" aria-hidden="true">
+<div *ngIf="currentJournalId && !isLoading" class="container-fluid">
+
+
+  <div class="d-flex align-items-center justify-content-center ">
+    <div class="container-fluid">
+      <div class="row" *ngIf="manuscriptsList.length > 0; else NoData">
+      
+            <div class="card-body ">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <input type="text" class="form-control w-25" placeholder="Search manuscripts..."
+                  [(ngModel)]="searchText" (ngModelChange)="pageNumber = 1">
+                <span>Total Manuscripts: {{ filteredManuscripts.length }}</span>
+              </div>
+
+              <div class="table">
+                <table class="table table-hover table-striped manuscript-table">
+                  <thead class="table-dark">
+                    <tr>
+                      <th  class="d-none d-lg-table-cell">#</th>
+                      <th>Title</th>
+                      <th class="d-none d-lg-table-cell">Author</th>
+                      <th class="d-none d-lg-table-cell">Submitted By</th>
+                      <th>Assigned Reviewer(s)</th>
+                      <th class="d-none d-lg-table-cell">File</th>
+                      <th style="width: 150px;">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let record of paginatedManuscripts(); let i = index">
+                      <td  class="d-none d-lg-table-cell">{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+                      <td>{{ record.ManuscriptTitle || 'None'}}</td>
+                      <td class="d-none d-lg-table-cell">{{ record.EditorInchief }}</td>
+                      <td class="d-none d-lg-table-cell">{{ record.SubmitedBy }}</td>
+                      <td class="d-none d-lg-table-cell" *ngIf="record.AssignedToReviewer; else noReviewer">
+                        <div *ngFor="let reviewer of record.AssignedToReviewer?.split(',')" class="small text-nowrap">
+                          {{ reviewer.trim() }},
+                        </div>
+
+                        <!-- {{ record.AssignedToReviewer || 'None Assigned' }} -->
+                      </td>
+                      <ng-template #noReviewer>
+                        <td class="d-none d-lg-table-cell">None Assigned</td>
+                      </ng-template>
+                      <td>
+                        <button class="btn btn-sm btn-link p-0" (click)="onDownloadFile(record.FileUrl)">
+                          <i class="bi bi-file-earmark-arrow-down fs-4"></i>
+                        </button>
+                      </td>
+                      <td class="text-center">
+
+                        <button class="btn btn-sm btn-danger" (click)="openDeleteModal(record)">
+                          <i class="bi bi-trash"></i> Disapprove
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="d-flex justify-content-center mt-3 gap-3">
+                <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
+                  Prev
+                </button>
+                <span class="d-flex align-items-center text-muted">
+                  Page {{ pageNumber }} of {{ totalPages() }}
+                </span>
+                <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages()">
+                  Next
+                </button>
+              </div>
+            </div>
+        
+      </div>
+
+      <ng-template #NoData>
+        <div class="themeClr vh-50">
+          <h1 class="fs-2 text-center p-3 m-4 text-danger "> No Manuscript Found </h1>
+        </div>
+      </ng-template>
+
+
+    </div>
+
+    <div *ngIf="!currentJournalId && !isLoading" class="no-selection-message text-center p-4 alert alert-info">
+      👉 Please **select a journal** from the dropdown above to view and manage manuscripts.
+    </div>
+
+  </div>
+</div>
+
+<div class="modal fade" id="editManuscriptModal" tabindex="-1" aria-labelledby="editManuscriptModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -131,11 +139,12 @@
       </div>
       <div class="modal-body" *ngIf="selectedRecord">
         <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
-            
+
           <div class="mb-3">
             <label for="menuScriptType" class="form-label">Manuscript Type</label>
             <input id="menuScriptType" type="text" class="form-control" formControlName="MenuScriptType" required>
-            <div *ngIf="editForm.get('MenuScriptType')?.invalid && editForm.get('MenuScriptType')?.touched" class="text-danger">
+            <div *ngIf="editForm.get('MenuScriptType')?.invalid && editForm.get('MenuScriptType')?.touched"
+              class="text-danger">
               Manuscript Type is required.
             </div>
           </div>
@@ -143,7 +152,8 @@
           <div class="mb-3">
             <label for="editorInChief" class="form-label">Editor In Chief (Author Name)</label>
             <input id="editorInChief" type="text" class="form-control" formControlName="EditorInChief" required>
-            <div *ngIf="editForm.get('EditorInChief')?.invalid && editForm.get('EditorInChief')?.touched" class="text-danger">
+            <div *ngIf="editForm.get('EditorInChief')?.invalid && editForm.get('EditorInChief')?.touched"
+              class="text-danger">
               Editor In Chief is required.
             </div>
           </div>
@@ -151,15 +161,16 @@
           <div class="mb-3">
             <label for="manuscriptTitle" class="form-label">Manuscript Title</label>
             <input id="manuscriptTitle" type="text" class="form-control" formControlName="ManuscriptTitle" required>
-            <div *ngIf="editForm.get('ManuscriptTitle')?.invalid && editForm.get('ManuscriptTitle')?.touched" class="text-danger">
+            <div *ngIf="editForm.get('ManuscriptTitle')?.invalid && editForm.get('ManuscriptTitle')?.touched"
+              class="text-danger">
               Title is required.
             </div>
           </div>
-          
+
           <div class="mb-3">
             <label for="assignedReviewer" class="form-label">Assigned Reviewer(s)</label>
             <input id="assignedReviewer" type="text" class="form-control" formControlName="AssignedToReviewer"
-                   placeholder="e.g., email1,email2">
+              placeholder="e.g., email1,email2">
             <small class="form-text text-muted">Comma-separated email IDs of internal reviewers (optional).</small>
           </div>
           <div class="modal-footer">
@@ -172,204 +183,31 @@
   </div>
 </div>
 
-<div class="modal fade" id="deleteManuscriptModal" tabindex="-1" aria-labelledby="deleteManuscriptModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deleteManuscriptModalLabel">Disapprove Manuscript (ID: {{ selectedRecord?.Id }})</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" *ngIf="selectedRecord">
-          <p class="text-danger">This action will soft-delete/disapprove the manuscript (setting IsActive=0).</p>
-          <form [formGroup]="deleteForm" (ngSubmit)="onDelete()">
-            <div class="mb-3">
-              <label for="remarks" class="form-label">Reason for Disapproval/Deletion (Remarks)</label>
-              <textarea id="remarks" class="form-control" formControlName="Remarks" rows="3" required></textarea>
-              <div *ngIf="deleteForm.get('Remarks')?.invalid && deleteForm.get('Remarks')?.touched" class="text-danger">
-                Remarks are required.
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger" [disabled]="deleteForm.invalid">Confirm Disapproval</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<!-- <app-topslider></app-topslider>
-<app-EditorHeader></app-EditorHeader>
-
-<div class="vh-150 d-flex p-2 align-items-center justify-content-center">
-  <div class="container-fluid ">
-    <div class="row">
-
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card-body m-5 ">
-          <h1 class="text-center themeClr"> All Manuscript Details </h1>
-        </div>
-        <div class="container-fluid d-flex justify-content-center">
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label fs-3">Select Journal for Action </label>
-            </div>
-            <div class="col-md-4 mb-3">
-              <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
-                (change)="setJournalId()">
-                <option value="" disabled>Select Journal</option>
-                <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
-                  {{ journalLists.journalTitle }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-<div class="d-flex p-2 align-items-center justify-content-center ">
-  <div class="full-page-loader" *ngIf="isLoading">
-    <div class="loader-spinner">
-      <span class="material-icons lg-48 spin-icon">autorenew</span>
-    </div>
-  </div>
-
-  <div *ngIf="currentJournalId && !isLoading" class="manuscripts-grid-area card-content">
-
-    <h5 class="text-center grid-title mb-4">
-      Manuscripts List for: **{{ currentJournalTitle }}**
-    </h5>
-
-    <div *ngIf="manuscriptsList.length > 0">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <input type="text" class="form-control w-25" placeholder="Search manuscripts..." [(ngModel)]="searchText"
-          (ngModelChange)="pageNumber = 1">
-        <span>Total Active Manuscripts: **{{ filteredManuscripts.length }}**</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="table table-hover table-striped manuscript-table">
-          <thead class="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Author Email</th>
-              <th>Assigned Reviewer(s)</th>
-              <th>File</th>
-              <th style="width: 150px;">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let record of paginatedManuscripts(); let i = index">
-              <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-              <td>{{ record.ManuscriptTitle }}</td>
-              <td>{{ record.EditorInChief }}</td>
-              <td>{{ record.UserId }}</td>
-              <td>{{ record.AssignedToReviewer || 'None Assigned' }}</td>
-              <td>
-                <button class="btn btn-sm btn-link p-0" (click)="onDownloadFile(record.FileUrl)">
-                  <i class="bi bi-file-earmark-arrow-down"></i> Download
-                </button>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-sm btn-info me-2" (click)="openEditModal(record)">
-                  <i class="bi bi-pen"></i> Edit
-                </button>
-                <button class="btn btn-sm btn-danger" (click)="openDeleteModal(record)">
-                  <i class="bi bi-trash"></i> Disapprove
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="d-flex justify-content-center mt-3 gap-3">
-        <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
-          Prev
-        </button>
-        <span class="d-flex align-items-center text-muted">
-          Page {{ pageNumber }} of {{ totalPages() }}
-        </span>
-        <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages()">
-          Next
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="manuscriptsList.length === 0" class="no-data-message text-center p-4 text-muted">
-      No active manuscripts found for this journal.
-    </div>
-
-  </div>
-
-  <div *ngIf="!currentJournalId && !isLoading" class="no-selection-message text-center p-4 alert alert-info">
-    👉 Please **select a journal** from the dropdown above to view and manage manuscripts.
-  </div>
-
-</div>
-
-<div class="modal fade" id="editManuscriptModal" tabindex="-1" aria-labelledby="editManuscriptModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteManuscriptModal" tabindex="-1" aria-labelledby="deleteManuscriptModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editManuscriptModalLabel">Edit Manuscript (ID: {{ selectedRecord?.Id }})</h5>
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteManuscriptModalLabel">Disapprove Manuscript (ID: {{ selectedRecord?.Id }})
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" *ngIf="selectedRecord">
-        <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
+        <p class="text-danger">This action will soft-delete/disapprove the manuscript (setting IsActive=0).</p>
+        <form [formGroup]="deleteForm" (ngSubmit)="onDelete()">
           <div class="mb-3">
-            <label for="manuscriptTitle" class="form-label">Manuscript Title</label>
-            <input id="manuscriptTitle" type="text" class="form-control" formControlName="ManuscriptTitle" required>
-            <div *ngIf="editForm.get('ManuscriptTitle')?.invalid && editForm.get('ManuscriptTitle')?.touched" class="text-danger">
-              Title is required.
+            <label for="remarks" class="form-label">Reason for Disapproval/Deletion (Remarks)</label>
+            <textarea id="remarks" class="form-control" formControlName="Remarks" rows="3" required></textarea>
+            <div *ngIf="deleteForm.get('Remarks')?.invalid && deleteForm.get('Remarks')?.touched" class="text-danger">
+              Remarks are required.
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="assignedReviewer" class="form-label">Assigned Reviewer(s)</label>
-            <input id="assignedReviewer" type="text" class="form-control" formControlName="AssignedToReviewer"
-                   placeholder="e.g., email1,email2">
-            <small class="form-text text-muted">Comma-separated email IDs of internal reviewers (optional).</small>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">Save Changes</button>
+            <button type="submit" class="btn btn-danger" [disabled]="deleteForm.invalid">Confirm Disapproval</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal fade" id="deleteManuscriptModal" tabindex="-1" aria-labelledby="deleteManuscriptModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deleteManuscriptModalLabel">Disapprove Manuscript (ID: {{ selectedRecord?.Id }})</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" *ngIf="selectedRecord">
-          <p class="text-danger">This action will soft-delete/disapprove the manuscript (setting IsActive=0).</p>
-          <form [formGroup]="deleteForm" (ngSubmit)="onDelete()">
-            <div class="mb-3">
-              <label for="remarks" class="form-label">Reason for Disapproval/Deletion (Remarks)</label>
-              <textarea id="remarks" class="form-control" formControlName="Remarks" rows="3" required></textarea>
-              <div *ngIf="deleteForm.get('Remarks')?.invalid && deleteForm.get('Remarks')?.touched" class="text-danger">
-                Remarks are required.
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-danger" [disabled]="deleteForm.invalid">Confirm Disapproval</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div> -->

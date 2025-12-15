@@ -10,7 +10,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul *ngIf="show" class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link "(click)="VisitPage('ManuscriptCrudDashboard')" >CRUD</a></li>
+                   
                     <!-- <li class="nav-item"><a class="nav-link " (click)="VisitPage('AllJournals')"> Journals </a></li> -->
                     <!--  -->
                     <li class="nav-item dropdown">
@@ -38,7 +38,7 @@
                             Manuscript
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
-                            
+                            <li ><a class="dropdown-item"(click)="VisitPage('ManuscriptCrudDashboard')" >Disable Manuscript</a></li>
                             <li><a class="dropdown-item" (click)="VisitPage('EditorDashboard')">All Manuscripts </a></li>
                             <li><a class="dropdown-item" (click)="VisitPage('ReviewersRemarks')">All Reviewer's Remarks </a></li>
                             <!-- <li><a class="dropdown-item" (click)="VisitPage('UpdateJournalsDetails')">Assign Managing Editor </a></li> -->
@@ -90,23 +90,23 @@
 <div class="container-fluid  mt-4 ">
     <div class="card">
     <div class="card-body">
-        <div class="row d-flex justify-content-center">
-            <div class="col-2">
+        <div class="row d-flex justify-content-">
+            <!-- <div class="col-2">
                 <label class=" form-label fw-bolder">User Name
                 </label>
-            </div>
-            <div class="col-2">
+            </div> -->
+            <div class="col-4 text-center">
                 <label class=" form-label fw-bolder">{{this.candidateName}}
                 </label>
             </div>
             <div class="col-4 text-center">
-                <label class="text-success  fs-3 fw-bolder "> Lpu e-Journal Editors Dashboard </label>
+                <label class="text-success  fs-5 fw-bolder "> Lpu e-Journal Editors Dashboard </label>
             </div>
-            <div class="col-2 text-end">
+            <!-- <div class="col-2 text-end">
                 <label class=" form-label fw-bolder">Department Name</label>
-            </div>
-            <div class="col-2">
-                <label class="form-label text-dark fw-bolder text-end"> {{this.departmentName}} </label>
+            </div> -->
+            <div class="col-4 text-center">
+                <label class="form-label text-dark fw-bolder"> {{this.departmentName}} </label>
             </div>
         </div>
 
