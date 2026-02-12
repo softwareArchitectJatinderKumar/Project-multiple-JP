@@ -211,11 +211,42 @@ currentJournalTitle: any;
   getUserRolesforId() {
     throw new Error('Method not implemented.');
   }
-    onSelectFileX(a: any) {
+     onDownloadFile(a: any) {
       let aa = a;
       window.open('https://files.lpu.in/umsweb/Journal/'+aa, '_blank');
     }
   
+
+   onSelectFileX(remoteUrl: string): void {
+      Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
+  
+      this.journalWebApiService.downloadMOUFile('https://files.lpu.in/umsweb/Journal/'+remoteUrl).subscribe({
+        next: (blob: Blob) => {
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+  
+          const fileName = remoteUrl.split('/').pop() || 'Document.pdf';
+          link.download = fileName;
+  
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(downloadUrl);
+  
+          Swal.close();
+        },
+        error: async (err) => {
+          Swal.close();
+          if (err.error instanceof Blob) {
+            const errorMsg = JSON.parse(await err.error.text());
+            Swal.fire('Error', errorMsg.message || 'Download failed', 'error');
+          } else {
+            Swal.fire('Error', 'Could not connect to the server', 'error');
+          }
+        }
+      });
+    }
     currentPageReviewer: number = 1;
     pageSizeReviewer: number = 10;
     paginatedReviewerData: any[] = [];

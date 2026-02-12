@@ -236,10 +236,41 @@ export class MyRemarksDetailsComponent implements OnInit {
     });
   }
 
-  onSelectFileEditorX(data: any) {
+    onSelectFileX(data: any) {
     window.open('https://files.lpu.in/umsweb/Journal/' + data, '_blank');
   }
 
+  
+   onSelectFileEditorX(remoteUrl: string): void {
+        Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
+    
+        this.journalWebApiService.downloadMOUFile('https://files.lpu.in/umsweb/Journal/'+remoteUrl).subscribe({
+          next: (blob: Blob) => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+    
+            const fileName = remoteUrl.split('/').pop() || 'Document.pdf';
+            link.download = fileName;
+    
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(downloadUrl);
+    
+            Swal.close();
+          },
+          error: async (err) => {
+            Swal.close();
+            if (err.error instanceof Blob) {
+              const errorMsg = JSON.parse(await err.error.text());
+              Swal.fire('Error', errorMsg.message || 'Download failed', 'error');
+            } else {
+              Swal.fire('Error', 'Could not connect to the server', 'error');
+            }
+          }
+        });
+      }
   calculateTotalPagesEditor() {
     // Fixed: Use pageSizeEditor instead of totalPagesEditor
     this.totalPagesEditor = Math.ceil(this.EditorData.length / this.pageSizeEditor) || 1;

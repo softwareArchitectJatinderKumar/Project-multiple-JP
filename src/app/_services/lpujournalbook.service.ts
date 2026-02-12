@@ -14,7 +14,29 @@ export class LpujournalbookService {
   baseUrl = AUTH_API;
 
   constructor(private http: HttpClient, private storageService: StorageService) { }
-  private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbk5hbWUiOiJMUFVKb3VybmFsIiwibmJmIjoxNzM5MjU0OTYzLCJleHAiOjE3NzA3OTA5NjMsImlhdCI6MTczOTI1NDk2MywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEyNS8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTI1LyJ9.Ir-NM1QRF4MMr-hSvbMAhwv6Fzyhc3agCmn0TkqtwrM';//
+  // private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbk5hbWUiOiJMUFVKb3VybmFsIiwibmJmIjoxNzM5MjU0OTYzLCJleHAiOjE3NzA3OTA5NjMsImlhdCI6MTczOTI1NDk2MywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEyNS8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTI1LyJ9.Ir-NM1QRF4MMr-hSvbMAhwv6Fzyhc3agCmn0TkqtwrM';//
+  private authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJMb2dpbk5hbWUiOiJMUFVKb3VybmFsIiwibmJmIjoxNzcwODcwMTYyLCJleHAiOjE4MDI0MDYxNjIsImlhdCI6MTc3MDg3MDE2MiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzEyNS8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTI1LyJ9.gLsgDiKprttfoOKvWAlp_8HvGAF1OKodFbR_vOWHao8';//
+  //  
+
+
+
+  downloadMOUFile(fileUrl: string): Observable<Blob> {
+    const payload = {
+      fileName: fileUrl,
+      folderPath: ""
+    };
+    const token = this.storageService.getUser(); 
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.post(AUTH_API+'api/Mou/DownloadMOUFiles/MOUDownloadFiles', payload, {
+      headers: headers,
+      responseType: 'blob'
+    });
+  }
+
 
   GetAllBooksDetails(): Observable<any> {
     const httpOptions = {

@@ -200,10 +200,46 @@ export class ManuScriptReportComponent implements OnInit {
   //     }
   //   });
   // }
-  onSelectFileX(a: any) {
+  onSelectFileXsss(a: any) {
     let aa = a;
-    window.open(aa, '_blank');
+    window.open(this.serverUrl+aa, '_blank');
   }
+
+    // added on 12-Feb-26
+
+//https://files.lpu.in/umsweb/Journal/
+    onSelectFileX(fileUrl: string): void {
+          Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
+      
+          this.journalWebApiService.downloadMOUFile(this.serverUrl+fileUrl).subscribe({
+            next: (blob: Blob) => {
+              const downloadUrl = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+      
+              const fileName = fileUrl.split('/').pop() || fileUrl;
+              link.download = fileName;
+      
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+      
+              Swal.close();
+            },
+            error: async (err) => {
+              Swal.close();
+              if (err.error instanceof Blob) {
+                const errorMsg = JSON.parse(await err.error.text());
+                Swal.fire('Error', errorMsg.message || 'Download failed', 'error');
+              } else {
+                Swal.fire('Error', 'Could not connect to the server', 'error');
+              }
+            }
+          });
+        }
+     
+        // ended logic for 12-feb-26
 
   showData(Emailid: any) {
     this.journalWebApiService.UserWiseAllMenuScript(Emailid).subscribe({

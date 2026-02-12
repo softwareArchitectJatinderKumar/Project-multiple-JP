@@ -62,6 +62,51 @@ interface TableColumn {
   styleUrls: ['./submitManuScript.component.scss']
 })
 export class SubmitManuScriptComponent implements OnInit {
+
+  // added on 12-Feb-26
+
+//https://files.lpu.in/umsweb/Journal/
+    // onSelectFileEditorX(fileUrl: string): void {
+    //       Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
+      
+    //       this.journalWebApiService.downloadMOUFile(this.SERVER_URL+fileUrl).subscribe({
+    //         next: (blob: Blob) => {
+    //           const downloadUrl = window.URL.createObjectURL(blob);
+    //           const link = document.createElement('a');
+    //           link.href = downloadUrl;
+      
+    //           const fileName = fileUrl.split('/').pop() || fileUrl;
+    //           link.download = fileName;
+      
+    //           document.body.appendChild(link);
+    //           link.click();
+    //           document.body.removeChild(link);
+    //           window.URL.revokeObjectURL(downloadUrl);
+      
+    //           Swal.close();
+    //         },
+    //         error: async (err) => {
+    //           Swal.close();
+    //           if (err.error instanceof Blob) {
+    //             const errorMsg = JSON.parse(await err.error.text());
+    //             Swal.fire('Error', errorMsg.message || 'Download failed', 'error');
+    //           } else {
+    //             Swal.fire('Error', 'Could not connect to the server', 'error');
+    //           }
+    //         }
+    //       });
+    //     }
+     
+        // ended logic for 12-feb-26
+
+
+
+  onSelectFileEditorX(fileUrl: string): void {
+    if (fileUrl) {
+      window.open(this.SERVER_URL + fileUrl, '_blank');
+    }
+  }
+
   @ViewChild('reviewerForm') reviewerForm: NgForm | undefined;
 
   emailId: any = ''; candidateName: any; supervisorName: any; mobileNumber: any; instituteName: any;
@@ -1378,11 +1423,7 @@ calculateTotalPagesEditor() {
   //   }
   // }
 
-  onSelectFileEditorX(fileUrl: string): void {
-    if (fileUrl) {
-      window.open(this.SERVER_URL + fileUrl, '_blank');
-    }
-  }
+
 
   addReviewerFromDropdown(): void {
     if (!this.selectedReviewerId) return;
