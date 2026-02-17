@@ -30,17 +30,7 @@ export class ComplaintPolicyComponent implements OnInit {
       } else {
       //  //console.log("error Somthing went wrong");
        this.router.navigate(['/Home']);
-        // swal.fire({
-        //   icon: 'error',
-        //   title: 'Oops...',
-        //   text: 'Something went wrong!',
-        //   confirmButtonColor: '#3085d6',
-        //   confirmButtonText: 'Ok'
-        // }).then((result) => {
-        //   if (result.isConfirmed) {
-        //     this.router.navigate(['/journalHome']);
-        //   }
-        // });
+         
       }
    // })
   }

@@ -26,18 +26,7 @@ export class ManuScriptPreparationComponent implements OnInit {
         // this.name= name;
         this.name = name.replace(/-/g, ' ');
       } else {
-        // this.router.navigate(['/journalHome']);
-        // swal.fire({
-        //   icon: 'error',
-        //   title: 'Oops...',
-        //   text: 'Something went wrong!',
-        //   confirmButtonColor: '#3085d6',
-        //   confirmButtonText: 'Ok'
-        // }).then((result) => {
-        //   if (result.isConfirmed) {
-        //     this.router.navigate(['/journalHome']);
-        //   }
-        // });
+  
       }
   }
 

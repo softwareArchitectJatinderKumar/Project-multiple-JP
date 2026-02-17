@@ -27,17 +27,7 @@ export class ManuScriptWorkflowComponent implements OnInit {
       this.name = name.replace(/-/g, ' ');
     } else {
 
-      // swal.fire({
-      //   icon: 'error',
-      //   title: 'Oops...',
-      //   text: 'Something went wrong!',
-      //   confirmButtonColor: '#3085d6',
-      //   confirmButtonText: 'Ok'
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     this.router.navigate(['/journalHome']);
-      //   }
-      // });
+      
     }
   }
 }

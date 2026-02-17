@@ -58,42 +58,7 @@ export class ManuScriptReportComponent implements OnInit {
   VisitUrl(Id: any, name: any, Sufix: any) {
     this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
-  // ngOnInit(): void {
-
-  //   const bookId: string | undefined = this.route.snapshot.params['Id'];
-  //   this.serverUrl = 'https://files.lpu.in/umsweb/Journal/';
-  //   let BookId = this.route.snapshot.params['Id'];
-  //   const name: string = this.route.snapshot.params['name'];
-  
-  //   this.newJournalTitle = name.replace(/-/g, ' ');
-  //   if (!this.storageService.isLoggedIn()) {
-  //     this.VisitUrl(bookId, name, 'ExternalLogin');
-  //     return;  
-  //   }
-  //   this.LoginStatus = this.checkUserLogin();  
-     
-  
-  //   if (bookId && !this.isLoginFailed) {
-  //     this.BookId = bookId;
-  //     this.name = name;
-  //     this.BookId = bookId;
-  //     this.JournalId = bookId;
-  //     this.JournalTitle = name.replace(/-/g, ' ');
-  //   }
-
-  //   if (!this.storageService.isLoggedIn()) {
-  //     this.VisitUrl(BookId, name, 'ExternalLogin');
-  //     return;  
-  //   }
-  //   let loginStatus = this.checkUserLogin();
-  //   if (BookId != undefined && BookId != null) {
-  //     this.BookId = BookId;
-  //     this.JournalId = BookId;
-  //     this.JournalTitle = name;
-  //     this.JournalTitle = name.replace(/-/g, ' ');
-  //     this.showData(this.userId);
-  //   }
-  // }
+   
   ngOnInit(): void {
     const bookId: string | undefined = this.route.snapshot.params['Id'];
     const name: string = this.route.snapshot.params['name'];
@@ -162,44 +127,7 @@ export class ManuScriptReportComponent implements OnInit {
 
   }
 
-
-
-  // showData(Emailid: any) {
-  //   this.journalWebApiService.UserWiseAllMenuScript(Emailid).subscribe({
-  //     next: (dataX: any) => {
-  //       this.dataSource = dataX.item1;
-  //       this.dataLoaded = true;
-  //       this.booksData = dataX.item1;
-  //       console.log("ALL Scripts Data" + JSON.stringify(this.booksData))
-  //       if (this.booksData.length > 0) {
-  //         this.booksDataColumns = Object.keys(this.booksData[0]);
-  //       }
-  //       this.dataShowing = true;
-  //       // this.paginatedData();
-  //       setTimeout(() => {
-
-  //         var wrapper1 = (<HTMLInputElement>document.getElementById('wrapper1'));
-  //         var wrapper2 = (<HTMLInputElement>document.getElementById('wrapper2'));
-  //         wrapper1.onscroll = function () {
-  //           wrapper2.scrollLeft = wrapper1.scrollLeft;
-  //         };
-  //         wrapper2.onscroll = function () {
-  //           wrapper1.scrollLeft = wrapper2.scrollLeft;
-  //         };
-
-  //       }, 500);
-
-  //     },
-  //     error: (error: any) => {
-  //       this.dataShowing = false;
-  //       console.error('Error fetching data', error);
-  //     },
-  //     complete: () => {
-  //       this.dataShowing = true;
-  //       console.log('Data fetching complete');
-  //     }
-  //   });
-  // }
+ 
   onSelectFileXsss(a: any) {
     let aa = a;
     window.open(this.serverUrl+aa, '_blank');

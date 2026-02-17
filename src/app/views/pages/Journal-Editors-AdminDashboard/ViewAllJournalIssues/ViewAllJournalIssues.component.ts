@@ -59,7 +59,6 @@ export class ViewAllJournalIssuesComponent implements OnInit {
 
   ngOnInit(): void {
     this.serverUrl = 'https://files.lpu.in/umsweb/Journal/';
-    // this.serverUrl = 'http://172.19.2.52/umsweb/webftp/Journal/';
     if(this.getUserDetails())
       this.loadJournals();
     else

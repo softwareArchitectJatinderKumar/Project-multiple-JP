@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-// import { ColumnMode } from '@swimlane/ngx-datatable';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-// import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-corection-retraction-policy',
@@ -20,17 +18,12 @@ export class CorectionRetractionPolicyComponent implements OnInit {
 
     let BookId  = this.route.snapshot.params['Id'];
     let name  = this.route.snapshot.params['name'];
-      // console.log("Value of Book Id = " + BookId)
       if (BookId != undefined && BookId != null) {
         this.BookId = BookId;
-        // this.name = name;
         this.name = name.replace(/-/g, ' ');
       } else {
-       
-        // //console.log("error Somthing went wrong");
         this.router.navigate(['/Home']);
       }
-   // })
   }
 
 }

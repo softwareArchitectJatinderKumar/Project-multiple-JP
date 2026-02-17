@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-// import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-digital-self-archiving-policy',
@@ -22,10 +20,8 @@ export class DigitalSelfArchivingPolicyComponent implements OnInit {
     let name  = this.route.snapshot.params['name'];
       if (BookId != undefined && BookId != null) {
         this.BookId = BookId;
-        // this.name = name;
         this.name = name.replace(/-/g, ' ');
       } else {       
-        // //console.log("error Somthing went wrong");
        this.router.navigate(['/Home']);
       }
   }

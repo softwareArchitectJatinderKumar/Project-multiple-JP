@@ -7,13 +7,33 @@
     <!-- <app-journalfooter></app-journalfooter> -->
 </div>
 <ng-template #ErrorConnection>
+    <app-journalmenubar></app-journalmenubar>
     <div id="ServerError">
-        <div class="col-sm-12" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <!-- <div class="col-sm-12" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);">
             <div class="d-flex justify-content-center align-item-center">
-                <span class="text-danger fs-3">Loading </span><br />
-                <div class="spinner-grow text-danger tex-center" style=" width: 14rem; height: 14rem;" role="status">
-                </div>
+                <span class="text-danger fs-3">Site is currently unavailable. Try Again later</span>
             </div>
+        </div> -->
+        <div class="text-center ">
+        <h3 class="text-center fs-2 m-5 text-danger pt-2 "> Site is currently unavailable </h3>
+        <div class="row mt-4 mb-4 d-flex justify-content-center ">
+            <div class="col-3 ">
+                <ul class="list-group  w-20">
+                    <Label class="mb-4 fs-4 text-danger">Why ? </Label>
+                    <li class="list-group-item">The site is under updation phase.</li>
+                    <li class="list-group-item">May be due to database server.</li>
+                </ul>
+            </div>
+             <div class="col-3 ">
+                 <ul class="list-group  w-20">
+                    <span class="mb-4 fs-4 text-danger">Try Following step(s) :- </span>
+                    <li class="list-group-item">Wait for some time. </li>
+                    <li class="list-group-item">Try Login again.</li>
+                </ul>
+            </div>
+         
+            
         </div>
+    </div>
     </div>
 </ng-template>
