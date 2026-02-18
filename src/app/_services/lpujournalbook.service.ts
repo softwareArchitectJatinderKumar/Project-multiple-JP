@@ -80,7 +80,8 @@ export class LpujournalbookService {
         'Authorization': `Bearer ${this.authToken}`
       })
     };
-    return this.http.get<any>(`${this.baseUrl}api/LpuJournal/GetJournalAuthorDetails`, httpOptions);
+    // return this.http.get<any>(`${this.baseUrl}api/LpuJournal/GetJournalAuthorDetails`, httpOptions);
+    return this.http.get<any>(`${this.baseUrl}api/LpuJournal/GetAllJournalMasterwithEditorDetails`, httpOptions);
   }
 
 

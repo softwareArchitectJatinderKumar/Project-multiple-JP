@@ -11,12 +11,16 @@
                 <div class="top-authors" >
                     <!-- <img src="assets/journal/11057.jpg" width="auto" height="auto" alt="" /> -->
                     <!-- <img [src]="assets/journal/"+ width="auto" height="auto" alt="" />  assets\images\authors-->
-                    <img [src]="'assets/images/authors/'+ Author.imageUrl" [alt]="Author.firstName" [title]="Author.firstName">
-                    <h4>{{ Author.firstName }} {{Author.lastName}}</h4>
-                    <p>
-                        {{Author.publicationDetails}} <br/>
+                    <img [src]="this.serverUrl+  Author.imageUrl" [alt]="Author.editorName" [title]="Author.editorName">
+                    <h4>{{ Author.editorName }} </h4>
+                    <!-- <h4>{{Author.editorType}} - {{Author.designation}}</h4> -->
+                      <p class="accordionColor" [innerHTML]="Author.journalTitle"></p>
+                      <!-- <p class="accordionColor" [innerHTML]="Author.introduction"></p> -->
+                      <!-- <p class="accordionColor" [innerHTML]="Author.introduction"></p> -->
+                    <!-- <p>
+                        {{Author.articleType}} <br/>
                         {{Author.publications}} 
-                    </p> 
+                    </p>  -->
                 </div>
             </div>
         </div>

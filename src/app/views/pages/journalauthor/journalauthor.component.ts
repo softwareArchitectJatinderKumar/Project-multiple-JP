@@ -9,10 +9,12 @@ import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service'
 })
 export class JournalauthorComponent {
   authorDetails: any;
+  serverUrl: any = 'https://files.lpu.in/umsweb/Journal/';
   constructor( 
     private route: ActivatedRoute,
     private journalWebApiService: LpujournalbookService,
     private router: Router,) { }
+
 
   ngOnInit(): void {
     this.getAuthorDetails();
@@ -24,12 +26,13 @@ export class JournalauthorComponent {
         // this.authorDetails = response.item1.filter((item: { id: number }, index: number) => {
         //   return index<4;
         // })
+        // console.log(JSON.stringify(response.item1)+' asdas')
         this.authorDetails = response.item1
         // .sort((a: { BookId: number }, b: { BookId: number }) => b.BookId - a.BookId)
-        .sort((a: { firstName: string }, b: { firstName: string }) => {
+        .sort((a: { editorName: string }, b: { editorName: string }) => {
           // Convert both names to lowercase for case-insensitive comparison
-          const nameA = a.firstName.toLowerCase();
-          const nameB = b.firstName.toLowerCase();
+          const nameA = a.editorName.toLowerCase();
+          const nameB = b.editorName.toLowerCase();
           // Compare the names in descending order
           if (nameA < nameB) {
               return -1;
@@ -40,7 +43,7 @@ export class JournalauthorComponent {
           // Names are equal
           return 0;
       })
-        .filter((item: { id: number }, index: number) => index < 4);
+        .filter((item: { id: number }, index: number) => index < 16);
       }
       else {
         this.authorDetails = [];
