@@ -1,4 +1,4 @@
-<div id="HomeComponent" *ngIf="this.ServerConnection==1; else ErrorConnection">
+<div id="HomeComponent" *ngIf="this.ServerConnection==1 && !this.serverError; else ErrorConnection">
     <!-- <app-topslider> </app-topslider> -->
     <app-journalmenubar></app-journalmenubar>
     <app-journalcarousel></app-journalcarousel>
@@ -8,30 +8,55 @@
 </div>
 <ng-template #ErrorConnection>
     <app-journalmenubar></app-journalmenubar>
-    <div id="ServerError">
-        <!-- <div class="col-sm-12" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);">
-            <div class="d-flex justify-content-center align-item-center">
-                <span class="text-danger fs-3">Site is currently unavailable. Try Again later</span>
+    <div class="server-error-container">
+        <div class="server-error-content">
+            <div class="error-icon-wrapper">
+                <svg class="error-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                </svg>
             </div>
-        </div> -->
-        <div class="text-center ">
-            <h3 class="text-center fs-2 m-5 text-danger pt-2 "> Site is currently unavailable </h3>
-            <!-- <div class="row mt-4 mb-4 d-flex justify-content-center ">
-                <div class="col-3 ">
-                    <ul class="list-group  w-20">
-                        <Label class="mb-4 fs-4 text-danger">Why ? </Label>
-                        <li class="list-group-item">The site is under updation phase.</li>
-                        <li class="list-group-item">May be due to database server.</li>
+            <h1 class="error-title">Our Journals are Temporarily Unavailable</h1>
+            <p class=" fs-5 fw-bolder">We're experiencing technical difficulties. Our team is working to resolve the issue. Please try again later.</p>
+            <div class="error-details ">
+                <div class="detail-card">
+                    <div class="detail-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>What's Happening?</h3>
+                    <ul>
+                        <li>Scheduled maintenance in progress</li>
+                        <li>Server connectivity issues</li>
+                        <li>System updates being applied</li>
                     </ul>
                 </div>
-                <div class="col-3 ">
-                    <ul class="list-group  w-20">
-                        <span class="mb-4 fs-4 text-danger">Try Following step(s) :- </span>
-                        <li class="list-group-item">Wait for some time. </li>
-                        <li class="list-group-item">Try Login again.</li>
+                <div class="detail-card text-danger">
+                    <div class="detail-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>What Can You Do?</h3>
+                    <ul>
+                        <li>Wait a few minutes and refresh</li>
+                        <li>Clear your browser cache</li>
+                        <li>Contact support if issue persists</li>
                     </ul>
                 </div>
-            </div> -->
+            </div>
+            <button class="retry-button" (click)="retryConnection()">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 4V10H7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M23 20V14H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M20.49 9.00001C19.9828 7.56679 19.1209 6.28542 17.9845 5.27543C16.8482 4.26545 15.4745 3.55978 13.9917 3.22427C12.5089 2.88877 10.9652 2.93436 9.50481 3.35679C8.04437 3.77922 6.71475 4.56473 5.64 5.64001L1 10M23 14L18.36 18.36C17.2853 19.4353 15.9556 20.2208 14.4952 20.6432C13.0348 21.0657 11.4911 21.1113 10.0083 20.7758C8.52547 20.4402 7.1518 19.7346 6.01547 18.7246C4.87913 17.7146 4.01717 16.4332 3.51 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Try Again
+            </button>
         </div>
     </div>
 </ng-template>

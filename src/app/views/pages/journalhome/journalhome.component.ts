@@ -12,7 +12,7 @@ import { StorageService } from 'src/app/_services/storage.service';
 })
 export class JournalhomeComponent implements OnInit {
 
-  booksData: any; ServerConnection: any;
+  booksData: any; ServerConnection: any; serverError: boolean = false;
 
   constructor(
     private journalWebApiService: LpujournalbookService,
@@ -39,19 +39,31 @@ export class JournalhomeComponent implements OnInit {
     });
   }
 
-  getBooksDetail(): void {
-    this.journalWebApiService.GetAllBooksDetails().subscribe((response) => {
-    // this.journalWebApiService.getData().subscribe((response) => {
-      if (response.item1 && response.item1.length > 0) {
-        this.booksData = response.item1;
-        this.ServerConnection = 1;
-      }
-      else {
-        this.booksData = [];
+getBooksDetail(): void {
+    this.journalWebApiService.GetAllBooksDetails().subscribe({
+      next: (response) => {
+        if (response.item1 && response.item1.length > 0) {
+          this.booksData = response.item1;
+          this.ServerConnection = 1;
+          this.serverError = false;
+        }
+        else {
+          this.booksData = [];
+          this.ServerConnection = 0;
+          this.serverError = true;
+        }
+      },
+      error: (error) => {
+        console.error('Server error:', error);
         this.ServerConnection = 0;
+        this.serverError = true;
       }
-      // console.log("Books Data" + JSON.stringify(this.booksData))
     });
+  }
+
+  retryConnection(): void {
+    this.serverError = false;
+    this.getBooksDetail();
     // if (this.ServerConnection == 0) {
     //   (<HTMLInputElement>document.getElementById('HomeComponent')).style.display = 'none';
     //   (<HTMLInputElement>document.getElementById('ServerError')).style.display = 'block';
