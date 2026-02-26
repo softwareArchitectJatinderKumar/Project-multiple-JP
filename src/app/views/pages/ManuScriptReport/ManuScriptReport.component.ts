@@ -24,22 +24,7 @@ export class ManuScriptReportComponent implements OnInit {
   userId: any; serverUrl: any; supervisorName: any; departmentName: any;
   candidateName: any;
   Math: any;
-  //   displayedColumns: string[] = [
-  //   // 'journalId',
-  //   'journalTitle',
-  //   'editorInChief',
-  //   // 'ManuScriptType',
-  //   'submissionType',
-  //   // 'fileUrl'
-  // ];
-  // displayedColumnsHeader: string[] = [
-  //   // 'journalId',
-  //   'Journal Title',
-  //   'Editor In Chief',
-  //   // 'ManuScript Type',
-  //   'Submission Type',
-  //   // 'Action'
-  // ];
+ 
   constructor(
     private storageService: StorageService,
     private authService: AuthService,
@@ -109,20 +94,7 @@ export class ManuScriptReportComponent implements OnInit {
 
   }
   exportExcel() {
-    // const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);  
-    // const wb: XLSX.WorkBook = XLSX.utils.book_new();  
-    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');  
-    // XLSX.writeFile(wb, 'Data.xlsx');  
-
-    // let element = document.getElementById('dataTableExampleNews');
-    // const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-
-    // /* generate workbook and add the worksheet */
-    // const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    // /* save to file */
-    // XLSX.writeFile(wb, 'ManuScriptReport.xlsx');
+    
 
 
   }
@@ -134,8 +106,7 @@ export class ManuScriptReportComponent implements OnInit {
   }
 
     // added on 12-Feb-26
-
-//https://files.lpu.in/umsweb/Journal/
+ 
     onSelectFileX(fileUrl: string): void {
           Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
       
@@ -178,7 +149,6 @@ export class ManuScriptReportComponent implements OnInit {
         console.log("ALL EDitors  Data" + JSON.stringify(this.ManuscriptData))
         if (this.ManuscriptData.length > 0) {
           this.ManuscriptDataColumns = Object.keys(this.ManuscriptData[0]);
-          // console.log(JSON.stringify(this.ManuscriptDataColumns))
 
           this.calculateTotalPagesManuscript();
           this.updatePaginatedDataManuscript();

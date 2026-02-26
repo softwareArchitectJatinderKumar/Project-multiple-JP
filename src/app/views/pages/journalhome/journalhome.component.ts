@@ -45,6 +45,7 @@ getBooksDetail(): void {
         if (response.item1 && response.item1.length > 0) {
           this.booksData = response.item1;
           this.ServerConnection = 1;
+         
           this.serverError = false;
         }
         else {

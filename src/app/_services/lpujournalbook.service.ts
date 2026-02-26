@@ -233,16 +233,7 @@ export class LpujournalbookService {
       this.baseUrl + 'api/LpuJournal/GetAllMenuScriptForUser?Email=' + UserEmail, { headers }
     );
   }
-  // GetUserRolesforUser(UserEmail:any): Observable<any> {
-  //   let token = this.storageService.getUser();
-  //   let headers = new HttpHeaders()
-  //   .set('Authorization', 'Bearer ' + this.authToken)
-  //   return this.http.get(
-  //     // AUTH_API_LOCAL + 'api/LpuJournal/GetAllMenuScriptForUser?Email=' + UserEmail, { headers }
-  //     // AUTH_API+ 'api/LpuJournal/GetUserRoles?Email=' + UserEmail, { headers }
-  //     AUTH_API_LOCAL+ 'api/LpuJournal/GetUserRoles?Email=' + UserEmail, { headers }
-  //   );
-  // }
+
   GetUserRolesforUser(UserEmail: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -253,18 +244,6 @@ export class LpujournalbookService {
     return this.http.get<any>(`${this.baseUrl}api/LpuJournal/GetUserRoles?Email=` + UserEmail, httpOptions);
   }
 
-  // AuthoriseUserDetails(UserEmail: any, secreatKeys: any, JournalId: any): Observable<any> {
-  //   let headers = new HttpHeaders()
-  //     .set('Authorization', 'Bearer ' + this.authToken)
-  //     .set('Content-Type', 'application/json');
-
-  //   const url = this.baseUrl + 'api/LpuJournal/GetUserDetailsIdWise' +
-  //     '?Email=' + encodeURIComponent(UserEmail) +
-  //     '&PasswordText=' + encodeURIComponent(secreatKeys) +
-  //     '&JournalId=' + encodeURIComponent(JournalId);
-
-  //   return this.http.get(url, { headers });
-  // }
 
 AuthoriseUserDetails(loginData: FormData): Observable<any> {
   const headers = new HttpHeaders()
