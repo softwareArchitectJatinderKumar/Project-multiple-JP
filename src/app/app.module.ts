@@ -103,6 +103,7 @@ import { EditorCrudComponent } from './views/pages/Journal-Editors-AdminDashboar
 import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { ManuscriptCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/Manuscript-Crud.component';
+import { UrlNormalizerService } from './_services/url-normalizer.service';
 // import { ManuscriptCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/manuscript-crud.component';
 
 @NgModule({
@@ -224,7 +225,7 @@ import { ManuscriptCrudComponent } from './views/pages/Journal-Editors-AdminDash
     MatCardModule,
     MatOptionModule
 ],
-  providers: [],
+  providers: [UrlNormalizerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
