@@ -104,10 +104,21 @@ import { MatCardModule } from "@angular/material/card";
 import { MatOptionModule } from "@angular/material/core";
 import { ManuscriptCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/Manuscript-Crud.component';
 import { UrlNormalizerService } from './_services/url-normalizer.service';
+import { EdsLoginPageComponent } from './EditorsDashboards/Eds-LoginPage/Eds-LoginPage.component';
+import { EdsTopMenuBarComponent } from './EditorsDashboards/Eds-TopMenuBar/Eds-TopMenuBar.component';
+import { EdsManageEditorDetailsComponent } from './EditorsDashboards/Eds-ManageEditorDetails/EdsManageEditorDetails.component';
+import { EdsManageUserComponent } from './EditorsDashboards/Eds-ManageUser/EdsManageUser.component';
+import { EdsManageManuscriptsComponent } from './EditorsDashboards/Eds-ManageManuscripts/Eds-ManageManuscripts.component';
 // import { ManuscriptCrudComponent } from './views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/manuscript-crud.component';
 
 @NgModule({
   declarations: [
+    EdsLoginPageComponent,
+    EdsTopMenuBarComponent,
+    EdsManageEditorDetailsComponent,
+    EdsManageUserComponent,
+    EdsManageManuscriptsComponent,
+
     EDNewJournalVolumeComponent,
     AppComponent,
     NewRegistrationPageComponent,

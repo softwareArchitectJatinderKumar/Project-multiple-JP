@@ -9,6 +9,27 @@ const routes: Routes = [
   {
     path: '',
     children: [
+      // added on 26-Feb-26
+      {
+        path:'EditorsLogin',
+        loadChildren: ()=> import('./EditorsDashboards/Eds-LoginPage/Eds-LoginPage.module').then(m=>m.EdsLoginModule)
+      },      
+      {
+        path:'EdsEditorDashboard',
+        loadChildren: ()=> import('./EditorsDashboards/Eds-ManageEditorDetails/EdsManageEditorDetails.module').then(m=>m.EdsManageEditorDetailsModule)
+      },
+       {
+        path: ":Menu/:Role/EdsManageUser",
+        loadChildren: () => import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(m=>m.EdsManageUserModule)
+      },
+      {
+        path: "EdsManageUser",
+        loadChildren: () => import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(m=>m.EdsManageUserModule)
+      },
+      {
+        path: "EdsManageManuscript",
+        loadChildren: () => import('./EditorsDashboards/Eds-ManageManuscripts/EdsManageManuscripts.module').then(m=>m.EdsManageManuscriptsModule)
+      },
 
       {
         path: ":Id/:name/SecurityIssue",

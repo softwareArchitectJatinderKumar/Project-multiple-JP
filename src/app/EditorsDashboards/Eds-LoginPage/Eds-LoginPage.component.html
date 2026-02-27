@@ -1,0 +1,77 @@
+<app-topslider></app-topslider>
+<section class="eds-login-section">
+  <div class="eds-login-container">
+    <div class="eds-login-wrapper">
+      <!-- Left Side - Image -->
+      <div class="eds-login-image-col">
+        <div class="eds-login-image-wrapper">
+          <img src="https://www.lpu.in/lpu-assets/images/cif/login-left.png" alt="Login Background" class="eds-login-image">
+        </div>
+      </div>
+      
+      <!-- Right Side - Login Form -->
+      <div class="eds-login-form-col">
+        <div class="eds-login-form-wrapper ">
+          <div class="eds-login-header">
+            <h1 class="eds-login-title">Editor Login</h1>
+            <p class="eds-login-subtitle">Access your dashboard</p>
+          </div>
+          
+          <form [autocomplete]="false" class="eds-login-form" [formGroup]="formdata" (ngSubmit)="OnSubmit()">
+            <div class="eds-form-group">
+              <label for="UserId" class="eds-form-label">User ID</label>
+              <div class="eds-input-wrapper">
+                <input 
+                  type="text" 
+                  formControlName="Email" 
+                  placeholder="Enter User ID" 
+                  autocomplete="off"
+                  class="eds-form-control" 
+                  id="UserId"
+                  [class.is-invalid]="submitted && email?.errors">
+                <span class="eds-input-icon">
+                  <i class="material-icons">person</i>
+                </span>
+              </div>
+              <div *ngIf="submitted || email?.touched || email?.errors" class="eds-error-message">
+                <small *ngIf="email?.errors?.['required']">User ID is required.</small>
+              </div>
+            </div>
+            
+            <div class="eds-form-group">
+              <label for="secretKey" class="eds-form-label">Password</label>
+              <div class="eds-input-wrapper">
+                <input 
+                  type="password" 
+                  formControlName="password" 
+                  class="eds-form-control" 
+                  placeholder="Enter Password"
+                  autocomplete="off" 
+                  id="secretKey"
+                  [class.is-invalid]="submitted && passwordText?.errors">
+                <span class="eds-input-icon">
+                  <i class="material-icons">lock</i>
+                </span>
+              </div>
+              <div *ngIf="submitted || passwordText?.touched || passwordText?.errors" class="eds-error-message">
+                <small *ngIf="passwordText?.errors?.['required']">Password is required.</small>
+                <small *ngIf="passwordText?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+              </div>
+            </div>
+            
+            <div class="eds-form-actions">
+              <button type="submit" class="eds-btn-primary" [disabled]="formdata.invalid">
+                <span>Login</span>
+                <i class="material-icons">arrow_forward</i>
+              </button>
+            </div>
+          </form>
+          
+          <div class="eds-login-footer">
+            <p class="eds-footer-text">Restricted access for authorized personnel only</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

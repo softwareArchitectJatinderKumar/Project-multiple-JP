@@ -1,0 +1,89 @@
+<header *ngIf="LoginStatus === true">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg ">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul *ngIf="show" class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Editor Details
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+
+                            <li><a class="dropdown-item" (click)="VisitPage('EdsEditorDashboard')">Manage Editors</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Manuscript
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
+                            <li><a class="dropdown-item" (click)="VisitPage('EdsManageManuscript')">Disable
+                                    Manuscript</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            User Details
+                        </a>
+                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'EdsManageUser')">Editors </a>
+                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'EdsManageUser')">Authors </a>
+                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'EdsManageUser')">Reviewers </a>
+                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'EdsManageUser')">Managing Editors
+                                </a></li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'EdsManageUser')">View all </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="AccountDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Account Setting
+                        </a>
+                        <ul class="dropdown-menu dropDownWidth" aria-labelledby="AccountDropdown">
+                            <li><a class="dropdown-item" (click)="Logout()">Logout </a> </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <a class="navbar-brand mx-0" routerLink="/">
+                <img src="assets/images/logo/logo.svg" height="80rem" width="80rem" />
+            </a>
+        </nav>
+    </div>
+</header>
+<div class="container-fluid  mt-4 ">
+    <div class="card">
+        <div class="card-body">
+            <div class="row d-flex justify-content-">
+                <div class="col-4 text-center">
+                    <label class=" form-label fw-bolder">{{this.candidateName}}
+                    </label>
+                </div>
+                <div class="col-4 text-center">
+                    <label class="text-success  fs-5 fw-bolder "> Lpu e-Journal Editors Dashboard </label>
+                </div>
+                <div class="col-4 text-center">
+                    <label class="form-label text-dark fw-bolder"> {{this.departmentName}} </label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
