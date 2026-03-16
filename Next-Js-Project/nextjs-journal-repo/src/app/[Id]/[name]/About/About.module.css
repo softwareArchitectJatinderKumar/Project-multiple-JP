@@ -1,0 +1,25 @@
+.editorColor1 {
+  font-weight: 500;
+  color: #F58220 !important;
+}
+
+.editorColor2 {
+  font-weight: 500;
+  color: rgb(47, 141, 70) !important;
+}
+.JournalsDetails{
+  border: 1.5px solid #909090;
+  padding: 20px;
+}
+.journalDetails {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+
+
+  
+  li {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+  }
+}

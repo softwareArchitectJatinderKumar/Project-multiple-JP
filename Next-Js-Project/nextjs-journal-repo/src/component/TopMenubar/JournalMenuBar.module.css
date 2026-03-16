@@ -1,0 +1,88 @@
+/* JournalMenuBar.module.css */
+.header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  position: relative; /* Necessary for the absolute search form */
+}
+
+.header :global(.navbar-brand) {
+  padding: 0;
+}
+
+.header :global(.navbar-brand img) {
+  width: 200px;
+}
+
+.navLink {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 20px;
+  border-left: 1px solid;
+  line-height: 13px;
+}
+
+.navItemNotLast .navLink {
+  margin-right: 20px;
+  border-left: 0;
+}
+
+.srchIcon svg {
+  margin-right: 5px;
+}
+
+/* Search CSS */
+.searchForm {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+  padding: 14px;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.searchInput {
+  width: 96%;
+  border: 0;
+  background: transparent;
+  font-size: 30px;
+  padding: 5px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.searchInput:focus-visible {
+  outline: 0;
+}
+
+.searchSubmit {
+  float: right;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.searchSubmit img {
+  width: 15px;
+}
+
+/* Responsive */
+@media all and (max-width: 1180px) {
+  .navLink {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 992px) {
+  .srchIcon {
+    display: none;
+  }
+  .navItemNotLast .navLink {
+    margin-right: 0;
+    padding: 15px;
+    border-bottom: 1px solid #efefef;
+  }
+}

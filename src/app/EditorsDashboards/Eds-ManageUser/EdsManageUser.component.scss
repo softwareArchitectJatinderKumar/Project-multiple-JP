@@ -5,33 +5,28 @@
   height: 45rem;
   overflow-y: auto;
 }
-/* ✅ Add border to entire table */
 .custom-table {
-    border: 2px solid #343a40 !important; /* Dark border */
+    border: 2px solid #343a40 !important;
     width: 100%;
   }
   
-  /* ✅ Dark background with light text for table header */
   .custom-table thead {
-    background-color: #212529 !important; /* Dark background */
-    color: #ffffff !important; /* Light text */
+    background-color: #212529 !important;
+    color: #ffffff !important; 
     text-align: center;
   }
   
-  /* ✅ Add border to table cells */
   .custom-table th,
   .custom-table td {
-    border: 1px solid #dee2e6 !important; /* Light grey border */
+    border: 1px solid #dee2e6 !important;
     padding: 10px;
     text-align: center;
   }
   
-  /* ✅ Ensure row hover effect */
   .custom-table tbody tr:hover {
-    background-color: #f8f9fa !important; /* Light grey hover */
+    background-color: #f8f9fa !important; 
   }
   
-  /* ✅ Ensure styles apply */
   .custom-table * {
     box-sizing: border-box;
   }

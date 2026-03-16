@@ -29,14 +29,12 @@ export class EdsManageEditorDetailsComponent implements OnInit {
   ];
 
   isLoading: boolean = false;
-  JournalTitle: any = ''; // Bound to the Journal select dropdown (ID)
+  JournalTitle: any = ''; 
   currentJournalId: number | null = null;
   currentJournalTitle: string = '';
 
-  // To store the entire editor object when editing, including the ID required for API calls
   editorToEdit: any = null;
 
-  // Search & Pagination
   searchText: string = '';
   pageSize: number = 8;
   pageNumber: number = 1;
@@ -49,12 +47,12 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     this.loadJournals();
   }
 
-  /** Initializes the editor form with validators. */
+
   initForm(): void {
     this.editorForm = this.fb.group({
-      EditorId: [null], // Field to hold the ID in edit/delete mode
+      EditorId: [null],
       JournalId: [{ value: '', disabled: true }, Validators.required],
-      EditorName: ['', Validators.required], // Enabled by default
+      EditorName: ['', Validators.required],
       Designation: ['', Validators.required],
       Email: ['', [Validators.required, Validators.email]], 
       EditorAddress: ['', Validators.required],
@@ -65,7 +63,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
 
   loadJournals() {
     this.isLoading = true;
-    const minLoadingTime = 400; // keep UI responsive but show spinner briefly
+    const minLoadingTime = 400;
     const startTime = Date.now();
 
     this.journalWebApiService.GetAllBooksDetails().pipe(
@@ -77,6 +75,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     ).subscribe({
       next: (dataX: any) => {
         this.journalListsData = dataX?.item1 || [];
+        console.log(JSON.stringify(this.journalListsData)+'Data Journals')
       },
       error: (error: any) => {
         console.error('Error fetching journal data', error);
@@ -94,12 +93,10 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     if (selectedJournal) {
       this.currentJournalId = selectedJournal.id;
       this.currentJournalTitle = selectedJournal.journalTitle || selectedJournal.title || '';
-      // Update the JournalId control in the form (disabled but needed for payload)
       this.editorForm.get('JournalId')?.setValue(this.currentJournalId);
       this.pageNumber = 1;
       this.loadEditorsByJournal(this.currentJournalId);
     } else {
-      // If nothing selected, hide list and form
       this.currentJournalId = null;
       this.currentJournalTitle = '';
       this.editorsList = [];
@@ -136,21 +133,18 @@ export class EdsManageEditorDetailsComponent implements OnInit {
   }
 
   onSubmit() {
-    // Temporarily enable JournalId to allow form validation (if needed) and getRawValue() to include it.
+
     this.editorForm.get('JournalId')?.enable();
 
     if (this.editorForm.invalid) {
       this.editorForm.markAllAsTouched();
-      // Re-disable JournalId after checking invalid state
       this.editorForm.get('JournalId')?.disable();
       this.updateFormControlsDisabledState();
       return;
     }
 
     this.isLoading = true;
-    const formValue = this.editorForm.getRawValue(); // includes disabled fields
-
-    // Ensure journalId comes from selection
+    const formValue = this.editorForm.getRawValue();
     const journalIdForPayload = this.currentJournalId;
     if (!journalIdForPayload) {
       Swal.fire('Select Journal', 'Please select a Journal before saving.', 'warning');
@@ -169,8 +163,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     formData.append('EditorType', formValue.EditorType ?? '');
     
     let apiCall$;
-    if (this.isEditMode) {
-      // include EditorId if available
+    if (this.isEditMode) {    
       const editorIdVal = formValue.EditorId ?? this.editorToEdit?.id;
       formData.append('EditorId', String(editorIdVal ?? '0'));
       apiCall$ = this.journalWebApiService.UpdateEditorDetails(formData);
@@ -180,14 +173,12 @@ export class EdsManageEditorDetailsComponent implements OnInit {
 
     apiCall$.pipe(
       finalize(() => {
-        this.isLoading = false;
-        // Re-disable JournalId in the form UI
+        this.isLoading = false;        
         this.editorForm.get('JournalId')?.disable();
         this.updateFormControlsDisabledState();
       })
     ).subscribe({
-      next: (data: any) => {
-        // Handle different shapes for returnId/msg
+      next: (data: any) => {        
         const row = Array.isArray(data?.item1) ? data.item1[0] : (data?.item1 ?? {});
         const returnId = row?.ReturnId ?? row?.returnId ?? -99;
         const msg = row?.Msg ?? row?.msg ?? (this.isEditMode ? 'Update completed.' : 'Insert completed.');
@@ -213,9 +204,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     });
   }
 
-  /** Sets the component state and form values for editing. */
   editEditor(editor: any) {
-    // Ensure we have the journal selection set (if row came from another source)
     if (!this.currentJournalId && (editor?.JournalId || editor?.journalId)) {
       this.currentJournalId = editor?.JournalId ?? editor?.journalId;
       this.editorForm.get('JournalId')?.setValue(this.currentJournalId);
@@ -224,7 +213,6 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     this.isEditMode = true;
     this.editorToEdit = editor;
 
-    // Determine ID safely
     const resolvedId = editor.id ?? editor.EditorId ?? editor.ID ?? editor.editorId ?? null;
 
     this.editorForm.patchValue({
@@ -237,41 +225,33 @@ export class EdsManageEditorDetailsComponent implements OnInit {
       EditorType: editor.EditorType ?? editor.editorType ?? ''
     });
 
-    // Disable/Enable fields based on the new logic
     this.updateFormControlsDisabledState();
 
-    // Ensure the form is visible and scroll to it
     setTimeout(() => {
       const el = document.querySelector('.editor-form-area');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
   }
 
-  /** Disables/Enables fields based on edit mode. */
   private updateFormControlsDisabledState() {
     const isEdit = this.isEditMode;
-
-    // EditorName: Disabled in edit mode (as it is likely the unique identifier), enabled in add mode
+    
     if (isEdit) {
       this.editorForm.get('EditorName')?.disable({ emitEvent: false });
     } else {
       this.editorForm.get('EditorName')?.enable({ emitEvent: false });
     }
-
-    // JournalId: Always disabled in UI
-    this.editorForm.get('JournalId')?.disable({ emitEvent: false });
     
-    // Designation and Address: Always enabled
+    this.editorForm.get('JournalId')?.disable({ emitEvent: false }); 
+    
     this.editorForm.get('Designation')?.enable({ emitEvent: false });
     this.editorForm.get('EditorAddress')?.enable({ emitEvent: false });
     
-    // FIX: Email and EditorType are ALWAYS ENABLED to allow editing in both modes
      this.editorForm.get('EditorName')?.enable({ emitEvent: false });
-    this.editorForm.get('Email')?.enable({ emitEvent: false }); // 🟢 FIX APPLIED
-    this.editorForm.get('EditorType')?.enable({ emitEvent: false }); // 🟢 FIX APPLIED
+    this.editorForm.get('Email')?.enable({ emitEvent: false }); 
+    this.editorForm.get('EditorType')?.enable({ emitEvent: false }); 
   }
 
-  /** Deletes an editor. */
   deleteEditor(editor: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -283,11 +263,9 @@ export class EdsManageEditorDetailsComponent implements OnInit {
       if (result.isConfirmed) {
         this.isLoading = true;
 
-        // Build full payload same as edit
         const formData = new FormData();
         const idVal = editor.id ?? editor.EditorId ?? editor.ID ?? editor.editorId ?? 0;
 
-        // Use JournalId from editor if present else currentJournalId
         const journalIdVal = editor.JournalId ?? editor.journalId ?? this.currentJournalId ?? 0;
 
         formData.append('JournalId', String(journalIdVal));
@@ -322,18 +300,15 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     });
   }
 
-  /** Resets the form and exits edit mode. */
   resetForm(resetJournal: boolean = false) {
     this.editorForm.reset();
     this.isEditMode = false;
     this.selectedEditorId = null;
     this.editorToEdit = null;
 
-    // Re-patch JournalId and re-disable all fixed fields
     if (this.currentJournalId) {
       this.editorForm.get('JournalId')?.setValue(this.currentJournalId);
     }
-    // Set EditorType default value after reset
     this.editorForm.get('EditorType')?.setValue('select');
 
     this.updateFormControlsDisabledState();
@@ -345,7 +320,6 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     }
   }
 
-  /** Utility to conditionally show/hide the editor form */
   showEditorForm(): boolean {
     return !!this.currentJournalId;
   }
@@ -354,17 +328,16 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     this.searchText = '';
     this.editorForm.reset();
 
-    // Refill JournalId as disabled control
     if (this.currentJournalId) {
       this.editorForm.get('JournalId')?.setValue(this.currentJournalId);
     }
-    // Set EditorType default value after reset
+    
     this.editorForm.get('EditorType')?.setValue('select');
 
-    // Re-apply edit/add mode control disabling
+    
     this.updateFormControlsDisabledState();
 
-    // Reset flags
+    
     this.isEditMode = false;
     this.editorToEdit = null;
     this.selectedEditorId = null;
@@ -372,7 +345,6 @@ export class EdsManageEditorDetailsComponent implements OnInit {
 
   // -------------------- Search & Pagination functions --------------------
 
-  /** Returns filtered results based on searchText */
   filteredEditors(): any[] {
     const q = (this.searchText || '').toLowerCase().trim();
 
@@ -382,28 +354,24 @@ export class EdsManageEditorDetailsComponent implements OnInit {
   }
 
 
-  /** Returns paginated editors for current page */
   paginatedEditors(): any[] {
     const list = this.filteredEditors();
     const start = (this.pageNumber - 1) * this.pageSize;
-    // The slice end is calculated correctly
     return list.slice(start, start + this.pageSize);
   }
 
-  /** Calculates the total number of pages. */
   totalPages(): number {
     const totalRecords = this.filteredEditors().length;
-    // Ensures at least 1 page if there are records
+
     return Math.max(1, Math.ceil(totalRecords / this.pageSize));
   }
 
 
-  /** Moves to the next page. */
   nextPage() {
-    // Check using the new totalPages helper
+
     if (this.pageNumber < this.totalPages()) {
       this.pageNumber++;
-      // Optional: scroll to the top of the grid 
+
       setTimeout(() => {
         const el = document.querySelector('.editors-grid-area');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -411,11 +379,10 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     }
   }
 
-  /** Moves to the previous page. */
+
   prevPage() {
     if (this.pageNumber > 1) {
       this.pageNumber--;
-      // Optional: scroll to the top of the grid
       setTimeout(() => {
         const el = document.querySelector('.editors-grid-area');
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -423,6 +390,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     }
   }
 }
+
 // import { Component, OnInit } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';

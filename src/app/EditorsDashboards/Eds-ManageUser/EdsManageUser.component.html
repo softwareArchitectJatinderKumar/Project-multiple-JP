@@ -22,7 +22,6 @@
               <table id="UserslDataTableY" class="table table-bordered">
                 <thead>
                   <tr>
-                    <!-- CandidateName, DepartmentName, Designation, Address, MobileNumber, UserRole, EmailId, JournalId, IsActive, IsApproved  -->
                     <th class="form-label text-danger ">Sr.No</th>
                     <th class="form-label text-danger">Candidate Name</th>
                     <th class="form-label text-danger">Department </th>
@@ -30,7 +29,6 @@
                     <th class="form-label text-danger">Mobile Number</th>
                     <th class="form-label text-danger">Email Id</th>
                     <th class="form-label text-danger">User Role</th>
-                    <!-- <th class="form-label text-danger">Journal Id</th> -->
                     <th class="form-label text-danger">Current Status </th>
                     <th class="form-label text-danger">Action Approve/ Disapprove </th>
 
@@ -47,9 +45,9 @@
                       <td class="form-label">{{ UsersDataRow.mobileNumber }}</td>
                       <td class="form-label">{{ UsersDataRow.emailId }}</td>
                       <td class="form-label"> {{ getUserRoleText(UsersDataRow.userRole) }}</td>
-                      <!-- <td class="form-label">{{ UsersDataRow.journalId>0 ? UsersDataRow.journalId: 'N/A' }}</td> -->
                       <td class="form-label">
-                        <ng-container *ngIf="UsersDataRow.isActive=='0' && UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' && UsersDataRow.isApproved=='False'; else Actives">
+                        <ng-container
+                          *ngIf="UsersDataRow.isActive=='0' && UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' && UsersDataRow.isApproved=='False'; else Actives">
                           <span class="text-danger"> Inactive </span>
                         </ng-container>
                         <ng-template #Actives>
@@ -57,11 +55,14 @@
                         </ng-template>
                       </td>
                       <td class="form-label">
-                        <ng-container *ngIf="UsersDataRow.isActive=='0' || UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' || UsersDataRow.isApproved=='False' || UsersDataRow.isApproved==null; else NoApp">
-                          <button class="btn btn-success btn-sm me-2" (click)="ChangeApproveStatus(UsersDataRow)" [ngClass]="'btn-success'">
+                        <ng-container
+                          *ngIf="UsersDataRow.isActive=='0' || UsersDataRow.isApproved=='0' || UsersDataRow.isActive=='False' || UsersDataRow.isApproved=='False' || UsersDataRow.isApproved==null; else NoApp">
+                          <button class="btn btn-success btn-sm me-2" (click)="ChangeApproveStatus(UsersDataRow)"
+                            [ngClass]="'btn-success'">
                             <i class="bi bi-check-circle"></i>
                           </button>
-                          <button class="btn btn-danger btn-sm " (click)="DisapproveStatus(UsersDataRow)" [ngClass]=" 'btn-danger'">
+                          <button class="btn btn-danger btn-sm " (click)="DisapproveStatus(UsersDataRow)"
+                            [ngClass]=" 'btn-danger'">
                             <i class="bi bi-x-circle"></i>
                           </button>
                         </ng-container>
@@ -70,7 +71,7 @@
                           </span>
                         </ng-template>
                       </td>
-                      
+
                     </tr>
                   </ng-container>
                 </tbody>
@@ -80,7 +81,7 @@
             <div class="d-flex justify-content- mt-3">
               <button class="btn btn-danger btn-sm col-md-1" (click)="prevPage()"
                 [disabled]="currentPage === 1">Previous</button>
-                <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
+              <span class="m-3">Page {{ currentPage }} of {{ totalPages }}</span>
               <button class="btn btn-danger btn-sm col-md-1" (click)="nextPage()"
                 [disabled]="currentPage === totalPages">Next</button>
             </div>

@@ -13,15 +13,15 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Editor Details
+                            Editorial Board
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="policiesDropdown">
 
-                            <li><a class="dropdown-item" (click)="VisitPage('EdsEditorDashboard')">Manage Editors</a>
+                            <li><a class="dropdown-item" (click)="VisitPage('EdsEditorDashboard')">Manage Members</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="policiesDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Manuscript
@@ -30,24 +30,19 @@
                             <li><a class="dropdown-item" (click)="VisitPage('EdsManageManuscript')">Disable
                                     Manuscript</a></li>
                         </ul>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            User Details
+                            Manage User 
                         </a>
                         <ul class="dropdown-menu dropDownWidth" aria-labelledby="UserDropdown">
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'EdsManageUser')">Editors </a>
-                            </li>
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'EdsManageUser')">Authors </a>
-                            </li>
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'EdsManageUser')">Reviewers </a>
-                            </li>
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'EdsManageUser')">Managing Editors
-                                </a></li>
-                            <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'EdsManageUser')">View all </a>
-                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',0,'EdsManageUser')">Editor </a>                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',1,'EdsManageUser')">Author </a>                            </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',2,'EdsManageUser')">Reviewer </a>                          </li>
+                            <li><a class="dropdown-item" (click)="VisitUserPage('E',4,'EdsManageUser')">Managing Editor </a>                   </li>
+                            <!-- <li><a class="dropdown-item" (click)="VisitUserPage('E',99,'EdsManageUser')">View all </a>                          </li> -->
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

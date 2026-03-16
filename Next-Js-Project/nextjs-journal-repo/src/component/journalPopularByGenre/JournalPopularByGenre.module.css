@@ -1,0 +1,121 @@
+.popularGenre {
+    margin-bottom: 20px;
+      display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #cacaca;
+}
+
+.title h3 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.popularGenreContent {
+    /* align-items: center;
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    height: 100%; */
+
+    color: #000;
+    background-color: #f1f2f4;
+
+    margin: 1.2rem;
+    margin-bottom: 3.2rem;
+}
+
+.popularGenreImg {
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    /* position: relative;
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center;
+    height: 220px;
+    margin-bottom: 15px; */
+    /* background-color: #f9f9f9; */
+}
+
+.popularGenreImg img {
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -65px;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 0.9rem;
+    padding: 10px;
+    
+}
+
+.popularGenreDesc {
+    /* font-weight: 600;
+    font-size: 1rem;
+    margin-top: 10px !important;
+    color: #333; */
+    padding: 0 30px 30px 30px;
+    margin-top: 10px !important;
+    /* color: #606060; */
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.popularGenreAuthor {
+     padding: 15px 0 !important;
+  margin: 0;
+  /* color: #606060 ; */
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  border-top: 1px solid #cacaca;
+  text-align: center;
+}
+
+/* Pagination Styles */
+.paginationContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.pageItem {
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.pageLink {
+    color: #000;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    display: block;
+    transition: all 0.2s ease-in-out;
+}
+
+.pageItem:hover:not(.disabled) .pageLink {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+}
+
+.pageItem.active .pageLink {
+    background-color: #ffcc99;
+    border-color: #ffcc99;
+    color: #000;
+    font-weight: 600;
+}
+
+.pageItem.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

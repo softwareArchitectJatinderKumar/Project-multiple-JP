@@ -25,13 +25,9 @@ export class JournalEditorBoardComponent implements OnInit {
     private journalWebApiService: LpujournalbookService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    // let name  = this.route.snapshot.params['name'];
     let BookId  = this.route.snapshot.params['Id'];
     let name  = this.route.snapshot.params['name'];
-    //this.route.queryParams.subscribe(params => {
-      // const BookId = params['BookId'];
-      // const name = params['name'];
-      // console.log("Value of Book Id = " + BookId)
+    
       if (BookId != undefined && BookId != null) {
         this.BookId = BookId;
         this.name = name.replace(/-/g, ' ');
@@ -50,27 +46,7 @@ export class JournalEditorBoardComponent implements OnInit {
         //   }
         // });
       }
-   // })
-
-    // this.route.queryParams.subscribe(params => {
-    //   const BookId = params['BookId'];
-    //   console.log("Value of Book Id = " + BookId)
-    //   if (BookId && BookId.length >= 1) {
-    //     this.GetJournalEditorsDetailsByBookId(BookId);
-    //   } else {
-    //     swal.fire({
-    //       icon: 'error',
-    //       title: 'Oops...',
-    //       text: 'Something went wrong!',
-    //       confirmButtonColor: '#3085d6',
-    //       confirmButtonText: 'Ok'
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         this.router.navigate(['/journalHome']);
-    //       }
-    //     });
-    //   }
-    // })
+  
   }
 
   GetJournalEditorsDetailsByBookId(BookId: any): void {
@@ -135,37 +111,7 @@ export class JournalEditorBoardComponent implements OnInit {
       )
     );
   
-    // console.log("Editor-in-Chief:", JSON.stringify(this.EditorInChief));
-    // console.log("Sorted Associate Editors:", JSON.stringify(this.AssociateEditor));
-    // console.log("Sorted Managing Editors:", JSON.stringify(this.ManagingEditor));
-    // console.log("Sorted Editorial Board Members:", JSON.stringify(this.EditorialboardmembersReviews));
   }
   
   
-  
-  // GetDataforEditors() {
-  //   this.EditorInChief = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('editor in chief')); //
-  //   //this.AssociateEditor = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('associate editors'));
-  //   this.AssociateEditor = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('associate editors')
-  //     )
-  //     .sort((a: { designation: string }, b: { designation: string }) => {
-  //       const importantRoles = ["head", "dean", "associate dean"];
-
-  //       const getPriority = (designation: string) => {
-  //         designation = designation.toLowerCase();
-  //         if (designation.includes("head")) return 1;
-  //         if (designation.includes("dean")) return 2;
-  //         if (designation.includes("associate dean")) return 3;
-  //         return 4; // Default priority for others
-  //       };
-
-  //       return getPriority(a.designation) - getPriority(b.designation);
-  //     });
-
-  //   this.ManagingEditor = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('managing editor'));
-
-  //   // this.EditorialboardmembersReviews = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('reviewers '));
-  // }
 }

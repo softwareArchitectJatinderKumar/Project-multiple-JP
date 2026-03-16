@@ -1,0 +1,23 @@
+.accordionColor {
+    background-color: #FDFFF7 !important;
+}
+
+.sectPresident {
+    padding: 1.5rem;
+    border-radius: 0.8 rem;
+    transition: background-color 0.3s ease;
+}
+
+.sectPresident:hover {
+    background-color: #f1f3e9;
+}
+
+.sectPresident h3 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.sectPresident h4 {
+    margin-bottom: 0.9rem;
+    font-style: italic;
+}

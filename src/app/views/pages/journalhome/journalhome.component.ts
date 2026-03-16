@@ -23,21 +23,10 @@ export class JournalhomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBooksDetail();
-    // let loginName = this.route.snapshot.params['loginName'];
-    // if (loginName != '' && loginName != undefined) {
-    //   this.getToken(loginName);
-    // }
+     
   }
 
-  getToken(id: any) {
-    this.authService.loginTemp(id).subscribe({
-      next: data => {
-        this.storageService.saveUser(data);
-      },
-      error: err => {
-      }
-    });
-  }
+ 
 
 getBooksDetail(): void {
     this.journalWebApiService.GetAllBooksDetails().subscribe({
@@ -65,17 +54,7 @@ getBooksDetail(): void {
   retryConnection(): void {
     this.serverError = false;
     this.getBooksDetail();
-    // if (this.ServerConnection == 0) {
-    //   (<HTMLInputElement>document.getElementById('HomeComponent')).style.display = 'none';
-    //   (<HTMLInputElement>document.getElementById('ServerError')).style.display = 'block';
-
-    // }
-    // else  if (this.ServerConnection ==1){
-    //   (<HTMLInputElement>document.getElementById('HomeComponent')).style.display = 'block';
-    //   (<HTMLInputElement>document.getElementById('ServerError')).style.display = 'none';
-
-    // }
-
+     
   }
 
 }

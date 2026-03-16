@@ -90,7 +90,6 @@ export class EdsManageUserComponent implements OnInit {
       if (response.item1 && response.item1.length > 0) {
         this.UserData = response.item1;
         this.Users = this.UserData;
-        // console.log(JSON.stringify(this.Users))
       }
       else {
         this.Users = [];
@@ -99,7 +98,7 @@ export class EdsManageUserComponent implements OnInit {
   }
 
   isLoading: boolean[] = [];
-  loadingTimeout: any[] = []; // Store timeout references
+  loadingTimeout: any[] = []; 
 
   currentPage = 1;
   itemsPerPage = 15;
@@ -125,7 +124,6 @@ export class EdsManageUserComponent implements OnInit {
     }
   }
 
-
   // Define the user role mappings
   userRoleMap: { [key: number]: string } = {
     0: 'Editors',
@@ -137,10 +135,9 @@ export class EdsManageUserComponent implements OnInit {
   };
 
   getUserRoleText(userRoles: number | number[] | null | undefined): string {
-    if (userRoles === null || userRoles === undefined) return 'N/A'; // Ensure 0 is not treated as falsy
-
+    if (userRoles === null || userRoles === undefined) return 'N/A'; 
     if (typeof userRoles === 'number') {
-      userRoles = [userRoles]; // Convert single number to array
+      userRoles = [userRoles]; 
     }
 
     return userRoles
@@ -152,8 +149,7 @@ Reason: any;
 
   DisapproveStatus(rowData: any) {
     Swal.fire({
-      title: "Reason for Disapproval",
-      // text: "Disapproval reason",
+      title: "Reason for Disapproval",       
       input: 'text',
       showCancelButton: true
     }).then((result) => {

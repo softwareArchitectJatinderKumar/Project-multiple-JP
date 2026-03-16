@@ -112,17 +112,11 @@
     </div>
 
     <div *ngIf="showEditorForm()">
-
       <hr class="my-5" />
-
       <div class="editors-grid-area card-content" *ngIf="editorsList.length > 0">
-
-        <h5 class="text-center grid-title mb-4">
-          Editors List for: {{ currentJournalTitle }}
-        </h5>
+        <h5 class="text-center grid-title mb-4">          Editors List for: {{ currentJournalTitle }}        </h5>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-
           <input type="text" class="form-control w-25" placeholder="Search editors..." [(ngModel)]="searchText"
             (ngModelChange)="pageNumber = 1">
         </div>
@@ -150,17 +144,13 @@
                 <td>{{ editor.Email }}</td>
                 <td>{{ editor.EditorAddress }}</td>
                 <td>{{ editor.EditorType }}</td>
-
                 <td class="text-center">
-
                   <button class="btn btn-sm btn-edit me-2" (click)="editEditor(editor)">
                     <i class="bi bi-pen"></i>
                   </button>
-
                   <button class="btn btn-sm btn-delete" (click)="deleteEditor(editor)">
                     <i class="bi bi-trash"></i>
                   </button>
-
                 </td>
               </tr>
             </tbody>
@@ -171,23 +161,17 @@
           <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
             Prev
           </button>
-
           <span class="d-flex align-items-center text-muted">
             Page {{ pageNumber }} of {{ totalPages() }}
           </span>
-
           <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages()">
             Next
           </button>
         </div>
-
       </div>
-
       <div *ngIf="!editorsList.length" class="no-editors-message text-center p-4 text-muted">
         No editors found for the selected journal.
       </div>
-
     </div>
-
   </div>
 </div>

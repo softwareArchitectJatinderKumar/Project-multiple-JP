@@ -43,17 +43,8 @@ export class JournalAboutComponent implements OnInit {
     private route: ActivatedRoute,
     private cookieService: CookieService,
   ) { }
-  // VisitUrl(Sufix: any) {
-  //   // this.router.navigateByUrl(this.BookId + '/' + this.name + '/' + Sufix);
-  //   alert(this.BookId+'' +this.name)
-  //   this.router.navigateByUrl(this.BookId + '/' + this.name + '/' + Sufix).then(() => {
-  //     window.location.reload();
-  //   });
-  // }
-
   
   VisitUrl(Id: any, name: any, Sufix: any) {
-    // alert(this.BookId + '/' + this.JournalTitle + '/' + Sufix)
     this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
   ngOnInit(): void {
@@ -99,19 +90,16 @@ export class JournalAboutComponent implements OnInit {
     this.detailsArray = items.map((item: { split: (arg0: string) => { (): any; new(): any; map: { (arg0: (part: any) => any): [any, any]; new(): any; }; }; }) => {
       const [key, value] = item.split(':').map(part => part.trim());
   
-      // Handle specific cases for abbreviations to avoid unwanted spacing
       let formattedKey;
       if (key === 'ISSNNo') {
         formattedKey = 'ISSN No';
       } else {
-        // Add space before uppercase letters and numbers, except the first character
         formattedKey = key.replace(/([A-Z0-9])/g, ' $1').trim();
       }
   
       return { key: formattedKey, value };
     });
   
-    // console.log("Details: " + JSON.stringify(this.detailsArray));
   }
   AssociateEditor: any;
   AssistantEditor: any;
@@ -132,9 +120,6 @@ export class JournalAboutComponent implements OnInit {
       this.EditorialboardmembersNational = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('editorial board members national'));
       this.EditorialboardmembersInterNational = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('editorial board members international'));
       this.AssistantEditor = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('Assistant Editor'));
-
-      // console.log(JSON.stringify(this.EditorialboardmembersNational))
-      // console.log(JSON.stringify(this.EditorialboardmembersInterNational))
       }
       else {
         this.editorData =  this.EditorInChief = this.AssociateEditor =  this.ManagingEditor =this.EditorialboardmembersNational = this.EditorialboardmembersInterNational = this.EditorialboardmembersReviews =[];
@@ -142,29 +127,12 @@ export class JournalAboutComponent implements OnInit {
 
       if(this.editorData.length < 1 )
         {
-          // this.LoadingData= true;
           this.router.navigateByUrl('/');
         }
      
     });
   }
-  // GetDataforEditors() {
-  //   const targetId = 255; // change this to the specific ID you want
-  //   this.EditorInChief = this.filteredEditors.filter((item: { editorType: string; }) =>
-  //     item.editorType.toLowerCase().includes('editor in chief')
-  //   );
-  //   this.AssociateEditor = this.filteredEditors.filter((item: { editorType: string; }) =>
-  //     item.editorType.toLowerCase().includes('associate editors')
-  //   );
-  //   this.ManagingEditor = this.filteredEditors.find((item: { editorType: string; id: number; }) =>
-  //     item.editorType.toLowerCase().includes('managing editor') && item.id === targetId
-  //   );
-  //   console.log("Managing Editor:", this.ManagingEditor);
-  
-  //   this.AssistantEditors = this.filteredEditors.filter((item: { editorType: string; }) =>
-  //     item.editorType.toLowerCase().includes('assistant editor')
-  //   );
-  // }
+ 
   ManagingEditorNames: any;
   GetDataforEditors()
   {
@@ -172,7 +140,6 @@ export class JournalAboutComponent implements OnInit {
     this.AssociateEditor = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('associate editors'));
     this.ManagingEditor = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('managing editor'));
  
-    // this.ManagingEditorNames = this.ManagingEditor.map((editor: { editorName: any; }) => editor.editorName).join('<br/> ');
     this.ManagingEditorNames = this.ManagingEditor.map(
       (editor: { editorName: any }, index: number) => {
         const color = index % 2 === 0 ? 'EditorColor1' : 'EditorColor2'; // Alternate colors
@@ -181,50 +148,8 @@ export class JournalAboutComponent implements OnInit {
     ).join('<br/>');
     
     this.AssistantEditors = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('assistant editor'));
-    // this.EditorialboardmembersReviews = this.filteredEditors.filter((item: { editorType: string; }) => item.editorType.toLowerCase().includes('reviewers '));
   }
-
-  // GetDataforEditors() {
-  //   const sortByHIndexDesc = (a: any, b: any) => (b.hIndex || 0) - (a.hIndex || 0);
-  
-  //   this.EditorInChief = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('editor in chief')
-  //     )
-  //     .sort(sortByHIndexDesc);
-  
-  //   this.AssociateEditor = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('associate editors')
-  //     )
-  //     .sort(sortByHIndexDesc);
-  
-  //   this.ManagingEditor = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('managing editor')
-  //     )
-  //     .sort(sortByHIndexDesc);
-  
-  //   this.ManagingEditorNames = this.ManagingEditor.map(
-  //     (editor: { editorName: any }, index: number) => {
-  //       const color = index % 2 === 0 ? 'EditorColor1' : 'EditorColor2'; // Alternate colors
-  //       return `<span style="color: ${color}">${editor.editorName}</span>`;
-  //     }
-  //   ).join('<br/>');
-  
-  //   this.AssistantEditors = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('assistant editor')
-  //     )
-  //     .sort(sortByHIndexDesc);
-  
-  //   // Uncomment below if you want to sort reviewers similarly
-  //   this.EditorialboardmembersReviews = this.filteredEditors
-  //     .filter((item: { editorType: string }) =>
-  //       item.editorType.toLowerCase().includes('reviewers')
-  //     )
-  //     .sort(sortByHIndexDesc);
-  // }
+ 
   
 
 }
