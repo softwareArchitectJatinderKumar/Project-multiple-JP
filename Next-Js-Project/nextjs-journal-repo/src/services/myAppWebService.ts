@@ -211,7 +211,26 @@ class MyAppWebService {
   async GetJournalIssues(JournalId: any) {
     try {
       const response = await this.apiClient.get('api/LpuJournal/GetJournalIssuesDetails?JournalId='+JournalId);
-      // console.log(JSON.stringify(response.data)+'233333333333 ********* '+JournalId)
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+  }
+ 
+
+ 
+
+  async  AuthoriseUserDetails(loginData: FormData) {
+//GetJournalUserDetailsIdWise
+    try {
+      const response = await this.apiClient.post('api/LpuJournal/GetUserDetailsIdWise', loginData, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       return response.data;
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
@@ -219,7 +238,50 @@ class MyAppWebService {
     }
   }
 
-  
+
+  async JournalGetUserDetails(UserEmailId: string) {
+    try {
+      const response = await this.apiClient.get('api/LpuJournal/JournalGetUserDetails?EmailId=' + UserEmailId);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+  }
+ 
+  async JournalUpdatePasswordSecure(UpdateUserData: FormData) {
+    try {
+      const response = await this.apiClient.post('api/LpuJournal/UpdatePasswordWithSecurity', UpdateUserData, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+  }
+ 
+  async JournalUpdatePasswordDetails(UpdateUserData: FormData) {
+    try {
+      const response = await this.apiClient.post('api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, {
+        headers: {
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+  }
+ 
+ 
 
 }
 

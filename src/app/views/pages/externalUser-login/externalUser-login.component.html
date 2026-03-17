@@ -1,7 +1,4 @@
-
-
-
- <app-topslider></app-topslider>
+<app-topslider></app-topslider>
 <app-journalmenubar></app-journalmenubar>
 <app-journal-inner-menu></app-journal-inner-menu>
 
@@ -25,14 +22,14 @@
   <div *ngIf="!loadingIndicator; else ErrorConnection" class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-12">
-        
+
         <div class="login-card-wrapper" *ngIf="!isLoading">
           <div class="row g-0">
-            
+
             <!-- Left Side - Image (Hidden on mobile) -->
             <div class="col-lg-6 d-none d-lg-block login-image-section">
-              <div class="login-image-wrapper" 
-                   [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/journals/assets/images/login-left.png)'}">
+              <div class="login-image-wrapper"
+                [ngStyle]="{ 'background-image': 'url(https://www.lpu.in/journals/assets/images/login-left.png)'}">
                 <div class="image-overlay"></div>
               </div>
             </div>
@@ -51,12 +48,8 @@
                     <label for="exampleInputEmail1" class="form-label">Email Address</label>
                     <div class="input-group">
                       <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                      <input type="email" 
-                             formControlName="Email" 
-                             placeholder="Enter your email" 
-                             class="form-control" 
-                             id="exampleInputEmail1"
-                             [class.is-invalid]="submitted && email?.errors">
+                      <input type="email" formControlName="Email" placeholder="Enter your email" class="form-control"
+                        id="exampleInputEmail1" [class.is-invalid]="submitted && email?.errors">
                     </div>
                     <div *ngIf="submitted && email?.errors" class="invalid-feedback d-block">
                       <small *ngIf="email?.errors?.['required']">Email is required.</small>
@@ -69,12 +62,9 @@
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <div class="input-group">
                       <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                      <input [type]="showPassword ? 'text' : 'password'" 
-                             class="form-control" 
-                             placeholder="Enter your password" 
-                             formControlName="Password" 
-                             id="exampleInputPassword1"
-                             [class.is-invalid]="submitted && password?.errors">
+                      <input [type]="showPassword ? 'text' : 'password'" class="form-control"
+                        placeholder="Enter your password" formControlName="Password" id="exampleInputPassword1"
+                        [class.is-invalid]="submitted && password?.errors">
                       <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
                         <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
                       </button>
@@ -95,10 +85,12 @@
                     <button type="submit" class="btn btn-primary btn-login">
                       <i class="bi bi-box-arrow-in-right me-2"></i>Login
                     </button>
-                    <button type="button" (click)="VisitUrl(BookId, name, 'signup')" class="btn btn-outline-primary btn-register">
+                    <button type="button" (click)="VisitUrl(BookId, name, 'signup')"
+                      class="btn btn-outline-primary btn-register">
                       <i class="bi bi-person-plus me-2"></i>Register Now
                     </button>
-                    <button type="button" (click)="VisitUrl(BookId, name, 'ForgotPassword')" class="btn btn-link btn-forgot">
+                    <button type="button" (click)="VisitUrl(BookId, name, 'ForgotPassword')"
+                      class="btn btn-link btn-forgot">
                       Forgot Password?
                     </button>
                   </div>

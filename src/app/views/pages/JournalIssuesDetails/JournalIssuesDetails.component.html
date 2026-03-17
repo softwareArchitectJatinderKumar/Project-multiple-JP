@@ -1,14 +1,11 @@
 <app-topslider></app-topslider>
 <app-journalmenubar></app-journalmenubar>
-<app-EDEditorHeader 
-  *ngIf="selectedRole==0 && userRole.includes('0'); else journalMenu">
+<app-EDEditorHeader *ngIf="selectedRole==0 && userRole.includes('0'); else journalMenu">
 </app-EDEditorHeader>
 
 <ng-template #journalMenu>
-  <app-journal-inner-menu></app-journal-inner-menu>
+    <app-journal-inner-menu></app-journal-inner-menu>
 </ng-template>
-<!-- <app-EDEditorHeader [ngClass]="{'d-none': this.selectedRole == '1'}"></app-EDEditorHeader>
-<app-journal-inner-menu [ngClass]="{'d-none': this.selectedRole != '1'}"></app-journal-inner-menu> -->
 <section>
     <div class="container py-4 blockHeight">
 
@@ -34,16 +31,17 @@
 
                 <div class="accordion-item mb-3" *ngFor="let yearGroup of groupedIssuesByYear; let yearIndex = index">
                     <h2 class="accordion-header" [id]="'heading-' + yearIndex">
-                        <button class="accordion-button collapsed accordionColor py-3" type="button" data-bs-toggle="collapse"
-                            [attr.data-bs-target]="'#collapse-' + yearIndex" [attr.aria-controls]="'collapse-' + yearIndex"
+                        <button class="accordion-button collapsed accordionColor py-3" type="button"
+                            data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + yearIndex"
+                            [attr.aria-controls]="'collapse-' + yearIndex"
                             (click)="toggleAccordion('year-' + yearIndex)">
                             <span class="fw-bold">Published Year: {{ yearGroup.year }}</span>
                         </button>
                     </h2>
 
                     <div [id]="'collapse-' + yearIndex" class="accordion-collapse collapse"
-                        [class.show]="activeAccordionId === 'year-' + yearIndex" [attr.aria-labelledby]="'heading-' + yearIndex"
-                        data-bs-parent="#issuesAccordion">
+                        [class.show]="activeAccordionId === 'year-' + yearIndex"
+                        [attr.aria-labelledby]="'heading-' + yearIndex" data-bs-parent="#issuesAccordion">
 
                         <div class="accordion-body accordionColor pt-3">
                             <div class="row mt-3 " *ngFor="let issuePair of yearGroup.issues; let rowIndex = index">
@@ -56,31 +54,37 @@
                                                 (click)="toggleTitle(yearIndex + '-' + rowIndex + '-' + colIndex)"
                                                 [attr.aria-expanded]="isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)">
 
-                                                {{ formatIssueTitle(issue.issueTitle, isTitleExpanded(yearIndex + '-' + rowIndex + '-' + colIndex)) | titlecase }}
+                                                {{ formatIssueTitle(issue.issueTitle, isTitleExpanded(yearIndex + '-' +
+                                                rowIndex + '-' + colIndex)) | titlecase }}
                                             </h5>
 
                                             <div class="issue-metadata-container text-muted mb-3">
                                                 <span class="me-3 metadata-item">
-                                                    <strong class="text-dark me-3">Volume:</strong>  <span class="text-danger fw-bolder ms-3">{{ issue.volume || 'N/A' }}</span>
+                                                    <strong class="text-dark me-3">Volume:</strong> <span
+                                                        class="text-danger fw-bolder ms-3">{{ issue.volume || 'N/A'
+                                                        }}</span>
                                                 </span>
                                                 <span class="me-3 metadata-item">
-                                                    <strong class="text-dark me-3">Published:</strong> {{ formatDate(issue.publishDate) }}
+                                                    <strong class="text-dark me-3">Published:</strong> {{
+                                                    formatDate(issue.publishDate) }}
                                                 </span>
                                                 <span class="metadata-item">
-                                                    <strong class="text-dark me-3">Pages:</strong> {{ !issue.pageNumber || issue.pageNumber === 'undefined' ? 'NA' : issue.pageNumber }}
+                                                    <strong class="text-dark me-3">Pages:</strong> {{ !issue.pageNumber
+                                                    || issue.pageNumber === 'undefined' ? 'NA' : issue.pageNumber }}
                                                 </span>
                                             </div>
 
                                             <div class="author-list-container mt-3">
-                                                <!-- <i class="bi bi-person-lines-fill me-2 author-icon"></i> -->
-                                                <strong class="text-dark me-4">Author(s): </strong> 
-                                                <span class="author-name-tag">{{ !issue.authorName || issue.authorName === 'undefined' ? 'N/A' : issue.authorName }}</span>
-                                                
-                                                </div>
+                                                <strong class="text-dark me-4">Author(s): </strong>
+                                                <span class="author-name-tag">{{ !issue.authorName || issue.authorName
+                                                    === 'undefined' ? 'N/A' : issue.authorName }}</span>
+
+                                            </div>
 
                                             <div class="mt-4">
                                                 <i class="bi bi-file-earmark-pdf fs-3 text-danger cursor-pointer"
-                                                    (click)="downloadIssue(issue.issueFileName)" title="Download PDF"> </i>
+                                                    (click)="downloadIssue(issue.issueFileName)" title="Download PDF">
+                                                </i>
                                             </div>
 
                                         </div>

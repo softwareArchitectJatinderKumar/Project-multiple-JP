@@ -6,7 +6,7 @@ const USER_KEY = 'auth-user';
   providedIn: 'root'
 })
 export class StorageService {
-  constructor() {}
+  constructor() { }
 
   clean(): void {
     window.sessionStorage.clear();
@@ -14,8 +14,8 @@ export class StorageService {
 
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
-  localStorage.setItem(USER_KEY, user)
-   window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(USER_KEY, user)
+    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
   }
 
   public getUser(): any {
@@ -23,8 +23,7 @@ export class StorageService {
     if (user) {
       return user;
     }
-    else
-    {
+    else {
       this.clean();
       return null;
     }

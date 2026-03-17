@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, FormControl } from '@angular/forms';
 import { Component, OnInit, } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {  UntypedFormBuilder} from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -251,7 +251,7 @@ export class ExternalUserLoginComponent implements OnInit {
 
     this.cookieService.set('authData', JSON.stringify(userCookiesData));
 
- this.loadingIndicator = false;
+    this.loadingIndicator = false;
     const passwordchanged = user['isPasswordUpdated']
     // alert(passwordchanged + " " + this.UserData.isPasswordUpdated)
     if (passwordchanged != true) {
@@ -269,9 +269,9 @@ export class ExternalUserLoginComponent implements OnInit {
       // }).then((result) => {
       //   if (result.isConfirmed) {
 
-          this.AuthSession.addToSession(this.UserData);
-          this.VisitUrl(this.BookId, this.name, 'SubmitManuScript')
-        // }
+      this.AuthSession.addToSession(this.UserData);
+      this.VisitUrl(this.BookId, this.name, 'SubmitManuScript')
+      // }
       // });
     }
   }

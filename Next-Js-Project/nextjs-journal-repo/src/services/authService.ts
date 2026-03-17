@@ -1,11 +1,6 @@
 import axios from 'axios';
-
-/**
- * IMPORTANT: This base URL points to the proxy defined in next.config.ts
- * This bypasses CORS by routing requests through your local dev server.
- */
-// const AUTH_API = 'https://projectsapi.lpu.in/';
-const AUTH_API = 'https://localhost:7125/';
+const AUTH_API = 'https://projectsapi.lpu.in/';
+// const AUTH_API = 'https://localhost:7125/';
 
 class AuthService {
     private apiClient;
@@ -21,7 +16,6 @@ class AuthService {
             withCredentials: false 
         });
     }
-
     /**
      * Primary Login for Internal Users
      * Maps to: security/createtoken
@@ -62,7 +56,7 @@ class AuthService {
      */
     async LoginJournalAccessTemp(username: string) {
         try {
-            const response = await this.apiClient.post('security/createCifPortalToken', {
+            const response = await this.apiClient.post('security/createjournalToken', {
                 username: username
             });
             return response.data;
@@ -88,6 +82,21 @@ class AuthService {
         }
     }
 
+    async authoriseUser(formData: FormData) {
+        try {
+            const res = await fetch(`${AUTH_API}api/LpuJournal/GetUserDetailsIdWise`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!res.ok) throw new Error('Auth failed');
+            return res.json();
+        } catch (error: any) {
+            this.handleError("loginUMSTemp", error);
+            throw error;
+        }
+    }
+
     /**
      * Centralized error logging
      */
@@ -102,6 +111,9 @@ class AuthService {
             console.error(`AuthService [${methodName}] Setup Error:`, error.message);
         }
     }
+
+
+
 }
 
 // Export as a singleton instance

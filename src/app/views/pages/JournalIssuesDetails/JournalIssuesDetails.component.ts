@@ -15,42 +15,35 @@ export class JournalIssuesDetailsComponent implements OnInit {
   issues: any[] = [];
   isLoading: boolean = true;
   activeAccordionId: string | null = null;
- // serverUrl: string = 'https://files.lpu.in/umsweb/Journal/';
- serverUrl: string = 'https://files.lpu.in/umsweb/Journal/';
+  serverUrl: string = 'https://files.lpu.in/umsweb/Journal/';
   groupedIssuesByYear: { year: string; issues: any[][] }[] = [];
   expandedTitles: Set<string> = new Set<string>();
 
   constructor(
     private route: ActivatedRoute,
     private journalService: LpujournalbookService,
-      private AuthSession: LoginSessionService,
-        private router: Router,        
-        private StoragesServices: StorageService,
-        private cookieService: CookieService
-  ) {}
+    private AuthSession: LoginSessionService,
+    private router: Router,
+    private StoragesServices: StorageService,
+    private cookieService: CookieService
+  ) { }
 
   ngOnInit(): void {
-     var BookId = this.route.snapshot.params['Id'];
-        var name = this.route.snapshot.params['name'];
-        this.LoginStatus = this.checkUserLogin();
-        if (BookId != undefined && this.LoginStatus == true || this.selectedRole != '-1') {
-          this.BookId = BookId;
-          this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';          
-          this.getUserRolesforId();          
-        }
-        else {
-          this.BookId = BookId;
-          this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
-          
-        }
-        this.loadIssues();
-    // this.BookId = this.route.snapshot.params['Id'];
-    // this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
+    var BookId = this.route.snapshot.params['Id'];
+    var name = this.route.snapshot.params['name'];
+    this.LoginStatus = this.checkUserLogin();
+    if (BookId != undefined && this.LoginStatus == true || this.selectedRole != '-1') {
+      this.BookId = BookId;
+      this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
+      this.getUserRolesforId();
+    }
+    else {
+      this.BookId = BookId;
+      this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
 
-    // if (this.BookId) {
-    //   this.loadIssues();
-    //   this.getUserRolesforId();
-    // }
+    }
+    this.loadIssues();
+
   }
 
   loadIssues() {
@@ -138,10 +131,9 @@ export class JournalIssuesDetailsComponent implements OnInit {
   LoginStatus: boolean = false;
   JournalTitle: any;
   userId: any;
-  // selectedRole: any;
   userRoleText: any;
 
-    UserRolesData: any;
+  UserRolesData: any;
   UserRolesArray: { value: string; label: string; id: string }[] = [];
   editorRole: boolean = false;
   authorRole: boolean = false;
@@ -157,7 +149,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
   ];
 
   selectedRoles: string[] = []; userRole: any;
-  selectedRole:any;
+  selectedRole: any;
 
   checkUserLogin(): Boolean | any {
     const GetCookieData = this.cookieService.get('authData');
@@ -168,8 +160,6 @@ export class JournalIssuesDetailsComponent implements OnInit {
         this.userRole = retrievedCookies.UserRole?.length > 0 ? retrievedCookies.UserRole : -1;
         this.userId = retrievedCookies.EmailId;
         this.selectedRole = retrievedCookies.SelectedRole;
-        // console.log(this.userRole+ "selected Role " + this.selectedRole)
-        // let Token = retrievedCookies.AccessToken;
         this.supervisorName = retrievedCookies.SupervisorName;
         this.departmentName = retrievedCookies.DepartmentName;
         this.candidateName = retrievedCookies.CandidateName;
@@ -184,23 +174,23 @@ export class JournalIssuesDetailsComponent implements OnInit {
   }
 
 
-    getUserRolesforId(): void {
-    this.journalService.GetUserRolesforUser (this.userId).subscribe({
+  getUserRolesforId(): void {
+    this.journalService.GetUserRolesforUser(this.userId).subscribe({
       next: (response) => {
         const rolesData = response?.item1?.[0];
-       
+
         if (!rolesData) {
           this.UserRole = [];
           this.userRoleText = '';
           return;
         }
-  
+
         const roles = rolesData.userRole?.split(',') ?? [];
         this.UserRole = roles;
-  
+
         const sortedRoles = [...roles].sort().join(',');
-  
-        
+
+
 
         const roleTextMap: Record<string, string> = {
           '0': 'Editor',
@@ -208,10 +198,10 @@ export class JournalIssuesDetailsComponent implements OnInit {
           '2': 'Reviewer',
           '3': 'Publisher'
         };
-  
+
         if (this.selectedRole && sortedRoles.includes(this.userRole)) {
           this.userRoleText = roleTextMap[this.selectedRole] ?? '';
-          
+
         } else {
           this.userRoleText = '';
         }
@@ -225,4 +215,3 @@ export class JournalIssuesDetailsComponent implements OnInit {
   }
 }
 
- 
