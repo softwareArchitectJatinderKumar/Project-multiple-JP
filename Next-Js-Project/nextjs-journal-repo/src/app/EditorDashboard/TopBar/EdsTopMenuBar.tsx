@@ -41,85 +41,86 @@ const EdsTopMenuBar = () => {
     }, []);
 
     const handleLogout = () => {
-        // Clear all
         Cookies.remove('authData');
         Cookies.remove('BookData');
         sessionStorage.clear();
         localStorage.clear();
-        
         setLoginStatus(false);
         router.push('/Home');
     };
 
-    const navigateTo = (path: string) => {
-        router.push(path);
+    // FIX: Updated to point to your ManageUsers folder with Query Params
+    const navigateToManageUsers = (roleId: string) => {
+        router.push(`/EditorDashboard/ManageUsers?Role=${roleId}`);
+    };
+
+    // Navigates to the ManageUsers folder with the Role as a Query Param
+    const navigateToRole = (roleId: string) => {
+        router.push(`/EditorDashboard/ManageUsers?Role=${roleId}`);
     };
 
     if (!loginStatus) return null;
 
     return (
         <>
-            <header className={`${styles.header} border-bottom`}>
-                <div className="container-fluid">
-                    <nav className="navbar navbar-expand-lg">
-                        <button 
-                            className="navbar-toggler" 
-                            type="button" 
-                            onClick={() => setIsNavbarCollapsed(!isNavbarCollapsed)}
-                        >
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
+        <header className={`${styles.header} border-bottom`}>
+          <div className="container-fluid">
+            <nav className="navbar navbar-expand-lg">
+              <button
+                className="navbar-toggler"
+                type="button"
+                onClick={() => setIsNavbarCollapsed(!isNavbarCollapsed)}
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
 
-                        <div className={`collapse navbar-collapse ${!isNavbarCollapsed ? 'show' : ''}`}>
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                
-                                {/* Editorial Board Dropdown */}
-                                <li className="nav-item dropdown">
-                                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
-                                        Editorial Board
-                                    </a>
-                                    <ul className="dropdown-menu">
-                                        <li>
-                                            <button className="dropdown-item" onClick={() => navigateTo('/EditorDashboard/ManageBoardMembers')}>
-                                                Manage Members
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </li>
+              <div className={`collapse navbar-collapse ${!isNavbarCollapsed ? 'show' : ''}`}>
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
 
-                                {/* Manage User Dropdown */}
-                                <li className="nav-item dropdown">
-                                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
-                                        Manage User
-                                    </a>
-                                    <ul className={`dropdown-menu ${styles.dropDownWidth}`}>
-                                        <li><button className="dropdown-item" onClick={() => navigateTo('/E/0/EdsManageUser')}>Editor</button></li>
-                                        <li><button className="dropdown-item" onClick={() => navigateTo('/E/1/EdsManageUser')}>Author</button></li>
-                                        <li><button className="dropdown-item" onClick={() => navigateTo('/E/2/EdsManageUser')}>Reviewer</button></li>
-                                        <li><button className="dropdown-item" onClick={() => navigateTo('/E/4/EdsManageUser')}>Managing Editor</button></li>
-                                    </ul>
-                                </li>
-
-                                {/* Account Setting */}
-                                <li className="nav-item dropdown">
-                                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
-                                        Account Setting
-                                    </a>
-                                    <ul className={`dropdown-menu ${styles.dropDownWidth}`}>
-                                        <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <Link href="/" className="navbar-brand mx-0">
-                            <img src="/assets/images/logo/logo.svg" alt="Logo" />
+                  <li className="nav-item dropdown">
+                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+                      Editorial Board
+                    </a>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <Link href="/EditorDashboard/ManageBoardMembers" className="dropdown-item">
+                          Manage Members
                         </Link>
-                    </nav>
-                </div>
-            </header>
+                      </li>
+                    </ul>
+                  </li>
 
-            {/* Dashboard Sub-Header Card */}
+
+                  <li className="nav-item dropdown">
+                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+                      Manage User
+                    </a>
+                    <ul className="dropdown-menu">
+                      <li><button className="dropdown-item" onClick={() => navigateToRole('0')}>Editor</button></li>
+                      <li><button className="dropdown-item" onClick={() => navigateToRole('1')}>Author</button></li>
+                      <li><button className="dropdown-item" onClick={() => navigateToRole('2')}>Reviewer</button></li>
+                      <li><button className="dropdown-item" onClick={() => navigateToRole('4')}>Managing Editor</button></li>
+                    </ul>
+                  </li>
+
+                  <li className="nav-item dropdown">
+                    <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+                      Account Setting
+                    </a>
+                    <ul className={`dropdown-menu ${styles.dropDownWidth}`}>
+                      <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+              <Link href="/" className="navbar-brand mx-0">
+                <img src="/assets/images/logo/logo.svg" alt="Logo" />
+              </Link>
+            </nav>
+          </div>
+        </header>
+
             <div className="container-fluid mt-4">
                 <div className="card shadow-sm">
                     <div className="card-body">
@@ -142,6 +143,147 @@ const EdsTopMenuBar = () => {
 };
 
 export default EdsTopMenuBar;
+// "use client";
+
+// import React, { useState, useEffect } from 'react';
+// import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
+// import Cookies from 'js-cookie';
+// import styles from './EdsTopMenuBar.module.scss';
+
+// const EdsTopMenuBar = () => {
+//     const router = useRouter();
+ 
+//     const [loginStatus, setLoginStatus] = useState(false);
+//     const [userContext, setUserContext] = useState({
+//         candidateName: '',
+//         departmentName: '',
+//         userRole: ''
+//     });
+//     const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(true);
+
+//     useEffect(() => {
+//         const authData = Cookies.get('authData');
+//         const isLoggedIn = !!authData; 
+
+//         if (isLoggedIn && authData) {
+//             try {
+//                 const data = JSON.parse(authData);
+//                 setUserContext({
+//                     candidateName: data.CandidateName || '',
+//                     departmentName: data.DepartmentName || 'N-A',
+//                     userRole: data.UserRole || 'Internal User'
+//                 });
+//                 setLoginStatus(true);
+//             } catch (error) {
+//                 console.error("Cookie parse error", error);
+//                 handleLogout();
+//             }
+//         } else {
+//             setLoginStatus(false);
+//         }
+//     }, []);
+
+//     const handleLogout = () => {
+       
+//         Cookies.remove('authData');
+//         Cookies.remove('BookData');
+//         sessionStorage.clear();
+//         localStorage.clear();
+        
+//         setLoginStatus(false);
+//         router.push('/Home');
+//     };
+
+//     const navigateTo = (role: string) => {
+  
+//         router.push(`/EditorDashboard/ManageUsers?Role=${role}`);
+//     };
+
+//     if (!loginStatus) return null;
+
+//     return (
+//         <>
+//             <header className={`${styles.header} border-bottom`}>
+//                 <div className="container-fluid">
+//                     <nav className="navbar navbar-expand-lg">
+//                         <button 
+//                             className="navbar-toggler" 
+//                             type="button" 
+//                             onClick={() => setIsNavbarCollapsed(!isNavbarCollapsed)}
+//                         >
+//                             <span className="navbar-toggler-icon"></span>
+//                         </button>
+
+//                         <div className={`collapse navbar-collapse ${!isNavbarCollapsed ? 'show' : ''}`}>
+//                             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+ 
+//                                 <li className="nav-item dropdown">
+//                                     <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+//                                         Editorial Board
+//                                     </a>
+//                                     <ul className="dropdown-menu">
+//                                         <li>
+//                                             <button className="dropdown-item" onClick={() => navigateTo('/EditorDashboard/ManageBoardMembers')}>
+//                                                 Manage Members
+//                                             </button>
+//                                         </li>
+//                                     </ul>
+//                                 </li>
+ 
+//                                 <li className="nav-item dropdown">
+//                                     <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+//                                         Manage User
+//                                     </a>
+//                                     <ul className={`dropdown-menu ${styles.dropDownWidth}`}>
+//                                         <li><button className="dropdown-item" onClick={() => navigateTo('/E/0/EdsManageUser')}>Editor</button></li>
+//                                         <li><button className="dropdown-item" onClick={() => navigateTo('/E/1/EdsManageUser')}>Author</button></li>
+//                                         <li><button className="dropdown-item" onClick={() => navigateTo('/E/2/EdsManageUser')}>Reviewer</button></li>
+//                                         <li><button className="dropdown-item" onClick={() => navigateTo('/E/4/EdsManageUser')}>Managing Editor</button></li>
+//                                     </ul>
+//                                 </li>
+
+                          
+//                                 <li className="nav-item dropdown">
+//                                     <a className={`nav-link dropdown-toggle ${styles.navLink}`} href="#" role="button" data-bs-toggle="dropdown">
+//                                         Account Setting
+//                                     </a>
+//                                     <ul className={`dropdown-menu ${styles.dropDownWidth}`}>
+//                                         <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+//                                     </ul>
+//                                 </li>
+//                             </ul>
+//                         </div>
+
+//                         <Link href="/" className="navbar-brand mx-0">
+//                             <img src="/assets/images/logo/logo.svg" alt="Logo" />
+//                         </Link>
+//                     </nav>
+//                 </div>
+//             </header>
+ 
+//             <div className="container-fluid mt-4">
+//                 <div className="card shadow-sm">
+//                     <div className="card-body">
+//                         <div className="row align-items-center">
+//                             <div className="col-4 text-center">
+//                                 <label className="form-label fw-bolder">{userContext.candidateName}</label>
+//                             </div>
+//                             <div className="col-4 text-center">
+//                                 <label className="text-success fs-5 fw-bolder">Lpu e-Journal Editors Dashboard</label>
+//                             </div>
+//                             <div className="col-4 text-center">
+//                                 <label className="form-label text-dark fw-bolder">{userContext.departmentName}</label>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </>
+//     );
+// };
+
+// export default EdsTopMenuBar;
 
 // "use client";
 

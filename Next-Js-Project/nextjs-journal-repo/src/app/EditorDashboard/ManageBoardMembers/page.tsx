@@ -19,13 +19,7 @@ import myAppWebService from '@/services/myAppWebService';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-// import { 
-//     GetAllBooksDetails, 
-//     GetEditorsDetailsIdWise, 
-//     AddEditorDetails, 
-//     UpdateEditorDetails, 
-//     DeleteEditorDetails 
-// } from '@/services/myAppWebService';
+ 
 
 import styles from './EdsManageEditorDetails.module.scss';
 import EdsTopMenuBar from '../TopBar/EdsTopMenuBar';

@@ -24,7 +24,7 @@ class MyAppWebService {
       (response: any) => {
         // Check if the response indicates an error (common patterns)
         const data = response.data;
-        
+
         // Check for common error indicators in the response
         if (data && typeof data === 'object') {
           if (data.success === false || data.isError === true || data.error === true) {
@@ -32,18 +32,18 @@ class MyAppWebService {
             return Promise.reject(new Error(errorMessage));
           }
         }
-        
+
         return response;
       },
       (error: any) => {
         // Handle axios errors (network errors, HTTP errors, etc.)
         let errorMessage = 'An error occurred';
-        
+
         if (error.response) {
           // Server responded with error status
           const status = error.response.status;
           const data = error.response.data;
-          
+
           if (data && data.message) {
             errorMessage = data.message;
           } else if (status === 401) {
@@ -64,7 +64,7 @@ class MyAppWebService {
           // Error in setting up the request
           errorMessage = error.message || 'An error occurred';
         }
-        
+
         return Promise.reject(new Error(errorMessage));
       }
     );
@@ -132,7 +132,7 @@ class MyAppWebService {
     }
   }
 
-///api/LpuCIFBridge/GetAllApprovedUserData
+  ///api/LpuCIFBridge/GetAllApprovedUserData
   async getStudentById(regNo: any) {
     try {
       const response = await this.apiClient.get('api/LpuCIF/GetStudentById', {
@@ -178,7 +178,7 @@ class MyAppWebService {
     }
   }
 
- 
+
   async GetAllJournalMasterwithEditorDetails() {
     try {
       const response = await this.apiClient.get('api/LpuJournal/GetAllJournalMasterwithEditorDetails');
@@ -199,7 +199,7 @@ class MyAppWebService {
   }
   async GetJournalDetailsforAboutPage(JournalId: any) {
     try {
-      const response = await this.apiClient.get('api/LpuJournal/GetJournalDetailsforAboutPage?JournalId='+JournalId);
+      const response = await this.apiClient.get('api/LpuJournal/GetJournalDetailsforAboutPage?JournalId=' + JournalId);
       return response.data;
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
@@ -208,19 +208,19 @@ class MyAppWebService {
   }
   async GetJournalIssues(JournalId: any) {
     try {
-      const response = await this.apiClient.get('api/LpuJournal/GetJournalIssuesDetails?JournalId='+JournalId);
+      const response = await this.apiClient.get('api/LpuJournal/GetJournalIssuesDetails?JournalId=' + JournalId);
       return response.data;
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
       throw error;
     }
   }
- 
 
- 
 
-  async  AuthoriseUserDetails(loginData: FormData) {
-//GetJournalUserDetailsIdWise
+
+
+  async AuthoriseUserDetails(loginData: FormData) {
+    //GetJournalUserDetailsIdWise
     try {
       const response = await this.apiClient.post('api/LpuJournal/GetUserDetailsIdWise', loginData, {
         headers: {
@@ -246,7 +246,7 @@ class MyAppWebService {
       throw error;
     }
   }
- 
+
   async JournalUpdatePasswordSecure(UpdateUserData: FormData) {
     try {
       const response = await this.apiClient.post('api/LpuJournal/UpdatePasswordWithSecurity', UpdateUserData, {
@@ -262,7 +262,7 @@ class MyAppWebService {
       throw error;
     }
   }
- 
+
   async JournalUpdatePasswordDetails(UpdateUserData: FormData) {
     try {
       const response = await this.apiClient.post('api/LpuJournal/JournalUpdatePasswordDetails', UpdateUserData, {
@@ -278,11 +278,11 @@ class MyAppWebService {
       throw error;
     }
   }
- 
 
-     async GetEditorsDetailsIdWise(Id:any){
-          try {
-      const response = await this.apiClient.get('api/LpuJournal/GetEditorsDetails?JournalId='+Id);
+
+  async GetEditorsDetailsIdWise(Id: any) {
+    try {
+      const response = await this.apiClient.get('api/LpuJournal/GetEditorsDetails?JournalId=' + Id);
       return response.data;
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
@@ -290,9 +290,9 @@ class MyAppWebService {
     }
   }
 
-   async UpdateEditorDetails(UpdateData: FormData){
+  async UpdateEditorDetails(UpdateData: FormData) {
     const Token = this.getUser();
-      try {
+    try {
       const response = await this.apiClient.post('api/LpuJournal/UpdateEditorDetails', UpdateData, {
         headers: {
           'Authorization': `Bearer ${Token}`,
@@ -304,11 +304,11 @@ class MyAppWebService {
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
       throw error;
-    }   
+    }
   }
- async AddEditorDetails(UpdateData: FormData) {
-       const Token = this.getUser();
-      try {
+  async AddEditorDetails(UpdateData: FormData) {
+    const Token = this.getUser();
+    try {
       const response = await this.apiClient.post('api/LpuJournal/InsertNewEditorDetails', UpdateData, {
         headers: {
           'Authorization': `Bearer ${Token}`,
@@ -320,12 +320,12 @@ class MyAppWebService {
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
       throw error;
-    } 
-     
+    }
+
   }
   async DeleteEditorDetails(UpdateData: FormData) {
-       const Token = this.getUser();
-      try {
+    const Token = this.getUser();
+    try {
       const response = await this.apiClient.post('api/LpuJournal/DeleteEditorDetails', UpdateData, {
         headers: {
           'Authorization': `Bearer ${Token}`,
@@ -337,14 +337,13 @@ class MyAppWebService {
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
       throw error;
-    } 
-     
+    }
+
   }
 
-  // NEW METHOD for Manuscript CRUD Operations
-  async ManuscriptCrudOperations(formData: FormData){
-       const Token = this.getUser();
-      try {
+  async ManuscriptCrudOperations(formData: FormData) {
+    const Token = this.getUser();
+    try {
       const response = await this.apiClient.post('api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, {
         headers: {
           'Authorization': `Bearer ${Token}`,
@@ -356,10 +355,40 @@ class MyAppWebService {
     } catch (error) {
       console.error('Error fetching authorized user data:', error);
       throw error;
-    } 
-   
+    }
+
   }
- 
+
+  async GetAllJournalUserDetails(RoleId: any) {
+    try {
+      const response = await this.apiClient.get('api/LpuJournal/GetAllJournalUserDetails?Role=' + RoleId);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+
+  }
+
+
+  async ApproveEditor(dataSoft: FormData) {
+    const Token = this.getUser();
+    try {
+      const response = await this.apiClient.post('api/LpuJournal/ApproveEditor', dataSoft, {
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+
+
+  }
 
 }
 

@@ -1,0 +1,41 @@
+.tableHeight {
+  margin-bottom: 20rem; // Adjusted for modern layouts
+}
+
+.tableContainer {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-top: 2rem;
+}
+
+.customTable {
+  border: 2px solid #343a40 !important;
+  width: 100%;
+
+  thead {
+    background-color: #212529 !important;
+    color: #ffffff !important;
+    text-align: center;
+    
+    th {
+      vertical-align: middle;
+      padding: 12px;
+    }
+  }
+
+  tbody td {
+    border: 1px solid #dee2e6 !important;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background-color: #f8f9fa !important;
+  }
+}
+
+.roleHighlight {
+  color: #dc3545; // Bootstrap text-danger
+  font-weight: bold;
+}
