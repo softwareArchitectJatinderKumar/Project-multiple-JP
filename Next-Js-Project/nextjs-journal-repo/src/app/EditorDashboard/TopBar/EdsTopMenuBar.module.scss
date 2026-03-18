@@ -1,0 +1,44 @@
+// EdsTopMenuBar.module.scss
+.dropDownWidth {
+  margin-top: 1.2rem;
+  margin-left: 1.2rem;
+}
+
+.header {
+  border-bottom: 1px solid rgba(68, 9, 9, 0.07);
+  background-color: #fff;
+
+  .navbar-brand {
+    padding: 0;
+    img {
+      width: 80px; // Adjusted based on your HTML height/width
+      height: 80px;
+    }
+  }
+}
+
+.navLink {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 20px ;
+  border-left: 1px solid #ccc;
+  line-height: 13px;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+
+  &:first-child {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 992px) {
+  .navLink {
+    margin-right: 0;
+    padding: 15px;
+    border-bottom: 1px solid #efefef;
+    border-left: 0;
+  }
+}

@@ -47,7 +47,7 @@ export class EdsTopMenuBarComponent implements OnInit {
     const GetCookieData = this.cookieService.get('authData');
     const status = this.StoragesServices.isLoggedIn();
 
-    // console.log('Cookie:', GetCookieData, 'Session status:', status);
+  
 
     if (GetCookieData && status) {
       try {

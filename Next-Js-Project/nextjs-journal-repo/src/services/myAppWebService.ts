@@ -79,8 +79,6 @@ class MyAppWebService {
     return this.folderUrl;
   }
 
-
-
   clean(): void {
     window.sessionStorage.clear();
   }
@@ -119,8 +117,8 @@ class MyAppWebService {
     }
   }
 
-  async GetEmployeeDetails(token:any) {
-    const Token = storageService.getUser();
+  async GetEmployeeDetails() {
+    const Token = this.getUser();
     try {
       const response = await this.apiClient.get('api/Mou/GetEmployeeDetails', {
         headers: {
@@ -281,6 +279,86 @@ class MyAppWebService {
     }
   }
  
+
+     async GetEditorsDetailsIdWise(Id:any){
+          try {
+      const response = await this.apiClient.get('api/LpuJournal/GetEditorsDetails?JournalId='+Id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }
+  }
+
+   async UpdateEditorDetails(UpdateData: FormData){
+    const Token = this.getUser();
+      try {
+      const response = await this.apiClient.post('api/LpuJournal/UpdateEditorDetails', UpdateData, {
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    }   
+  }
+ async AddEditorDetails(UpdateData: FormData) {
+       const Token = this.getUser();
+      try {
+      const response = await this.apiClient.post('api/LpuJournal/InsertNewEditorDetails', UpdateData, {
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    } 
+     
+  }
+  async DeleteEditorDetails(UpdateData: FormData) {
+       const Token = this.getUser();
+      try {
+      const response = await this.apiClient.post('api/LpuJournal/DeleteEditorDetails', UpdateData, {
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    } 
+     
+  }
+
+  // NEW METHOD for Manuscript CRUD Operations
+  async ManuscriptCrudOperations(formData: FormData){
+       const Token = this.getUser();
+      try {
+      const response = await this.apiClient.post('api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, {
+        headers: {
+          'Authorization': `Bearer ${Token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching authorized user data:', error);
+      throw error;
+    } 
+   
+  }
  
 
 }

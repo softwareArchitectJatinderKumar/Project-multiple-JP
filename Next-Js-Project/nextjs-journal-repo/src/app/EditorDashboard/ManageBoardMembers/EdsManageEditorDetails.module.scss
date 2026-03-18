@@ -1,0 +1,54 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+.crudContainer {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  max-width: 120rem;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.cardWrapper {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.themeTitle {
+  font-weight: 700;
+  color: #0b3c6f;
+  font-size: 2rem;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 15px;
+}
+
+.journalSelectionArea {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: rgba(0, 123, 255, 0.05);
+  border-radius: 8px;
+}
+
+.spinIcon {
+  font-size: 50px;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.fullPageLoader {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
