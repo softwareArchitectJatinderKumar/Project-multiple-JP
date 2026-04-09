@@ -251,7 +251,6 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
     // .set('Content-Type', 'application/json'); // correct for JSON
 
   return this.http.post(
-    // 'https://localhost:7125/api/LpuCIF/GetUserDataIdWise',    loginData,    { headers }
     this.baseUrl + 'api/LpuJournal/GetUserDetailsIdWise',    loginData,    { headers }
   );
 }
@@ -349,7 +348,6 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
       .set('Authorization', 'Bearer ' + token)
     return this.http.get(
       this.baseUrl + 'api/LpuJournal/GetAllReviewersForEditors?UserId=' + UserId, { headers }
-      // 'https://localhost:7125/api/LpuJournal/GetAllReviewersForEditors?UserId=' + UserId, { headers }
     );
   }
 
@@ -616,7 +614,6 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
     let headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + authToken)
     return this.http.post(
-      //  'https://localhost:7125/api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, { headers }
         this.baseUrl +'api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, { headers }
     );
   }
