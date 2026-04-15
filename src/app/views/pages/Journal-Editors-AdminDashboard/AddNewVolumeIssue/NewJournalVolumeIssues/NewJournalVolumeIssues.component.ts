@@ -94,6 +94,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   currentJournalId: any;
   currentJournalTitle: any;
   currentJournalVolume: any;
+  JournalVolumeNo: any;
   setJournalId() {
     let idx = this.journalListsData.find(
       journal => journal.id == this.JournalTitle
@@ -101,7 +102,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     this.currentJournalId = idx.id;
     this.JournalIdString = idx.journalId;
     this.currentJournalTitle = idx.journalTitle;
-    this.currentJournalVolume = idx.volume;
+    this.JournalVolumeNo = this.currentJournalVolume = idx.volume;
   }
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] || null;
@@ -213,7 +214,6 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       )
       .subscribe({
         next: (data) => {
-          // let result = data.item1[0]['returnData'];
           let errorCode = data.item1[0]['returnData'];
 
           if (errorCode > 0) {
@@ -256,7 +256,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       if (value) {
         const splitAuthors = value.split(',').map(a => a.trim()).filter(a => a);
         this.authors.push(...splitAuthors);
-        this.authors = [...new Set(this.authors)]; // Remove duplicates
+        this.authors = [...new Set(this.authors)];
       }
 
       this.authorInput = '';
@@ -265,5 +265,25 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
 
   removeAuthor(index: number): void {
     this.authors.splice(index, 1);
+  }
+
+
+
+  // Added logic on 15-April-26
+  UpdateVolume(): void {
+    if (this.currentJournalVolume >= +this.JournalVolumeNo + 1) {
+      alert('Cannot increase more than 1 above the original volume.');
+    } else {
+      this.currentJournalVolume++;
+    }
+  }
+
+  UpdateVolume2(): void {
+    if (this.currentJournalVolume <= this.JournalVolumeNo) {
+      alert('Cannot reduce below the original volume.');
+      this.currentJournalVolume = this.JournalVolumeNo;
+    } else {
+      this.currentJournalVolume--;
+    }
   }
 }

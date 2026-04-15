@@ -57,8 +57,10 @@
           <div class="col-md-3">
             <label class="form-label fs-5 fw-bolder">Journal Volume No.</label>
           </div>
-          <div class="col-md-6">
-            <label class="form-label fs-6 text-danger fw-bolder"> {{currentJournalVolume}}</label>
+          <div class="col-md-6 d-flex justify-content-start align-items-center">
+            <button type="button" class="btn btn-primary" (click)="UpdateVolume2()" > <i class="bi bi-dash-lg"></i> </button>
+            <label class="form-label fs-6 text-danger fw-bolder m-3 "> {{currentJournalVolume}}</label>
+            <button type="button" class="btn btn-primary" (click)="UpdateVolume()" > <i class="bi bi-plus-lg"></i> </button>
             <!-- <label class="form-label fs-6 text-danger fw-bolder ms-3"> {{"Adding Issue for this Volume"}}</label>  -->
           </div>
         </div>

@@ -2,241 +2,11 @@
 <app-EditorHeader></app-EditorHeader>
 
 <div class="full-page-loader" *ngIf="isLoadingPage" aria-label="Loading">
-    <div class="loader-spinner">
-        <span class="material-icons lg-48 spin-icon">autorenew</span>
-    </div>
-</div>
-
-<div class="vh-150 d-flex p-2 align-items-center justify-content-center" *ngIf="!isLoadingPage">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-                <div class="card-body m-5">
-                    <h1 class="text-center themeClr">All Issues Details</h1>
-                </div>
-                <div class="container-fluid d-flex justify-content-center">
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label fs-3">Select Journal for Action</label>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <select id="reviewerDropdown" class="form-select" [(ngModel)]="JournalTitle" name="journalId" required
-                                (change)="setJournalId()">
-                                <option value="" disabled>Select Journal</option>
-                                <option *ngFor="let journalLists of journalListsData" [value]="journalLists.id">
-                                    {{ journalLists.journalTitle }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="isLoadingJournal" class="d-flex justify-content-center my-5">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading journal issues...</span>
-    </div>
-</div>
-
-<div class="d-flex p-2 align-items-center justify-content-center" *ngIf="!isLoadingPage">
-    <div class="container-fluid" *ngIf="!isLoadingJournal">
-        <div class="row" *ngIf="JournalIssuesData.length > 0; else NoData">
-            <div class="col-md-12 stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive tableHeight">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th *ngFor="let col of displayedEditorColumns">{{ displayedEditorColumnHeaders[col] }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of paginatedJournalIssuesData">
-                                        <td *ngFor="let col of displayedEditorColumns">
-                                            <ng-container [ngSwitch]="col">
-                                                <button *ngSwitchCase="'issueFileName'" class="btn btn-dark btn-sm"
-                                                    (click)="onSelectFileEditorX(row[col])">
-                                                    <i class="bi bi-file-earmark-text"></i> View File
-                                                </button>
-                                                <button *ngSwitchCase="'Action'" class="btn btn-primary btn-sm"
-                                                    (click)="onEditIssue(row)" data-bs-toggle="modal"
-                                                    data-bs-target="#UpdateIssueDetailsModal">
-                                                    <i class="bi bi-pencil-square"></i> Edit Details
-                                                </button>
-                                                <span *ngSwitchDefault>{{ row[col] }}</span>
-                                            </ng-container>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="pagination-controls">
-                                <button (click)="previousPageEditor()" [disabled]="currentPageEditor === 1">Previous</button>
-                                <span>Page {{ currentPageEditor }} of {{ totalPagesEditor }}</span>
-                                <button (click)="nextPageEditor()" [disabled]="currentPageEditor === totalPagesEditor">Next</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ng-template #NoData>
-            <div class="themeClr tableHeight">
-                <h1 class="fs-2 text-center vh-50 p-3 m-4 text-danger">No Volume issues data Found</h1>
-            </div>
-        </ng-template>
-    </div>
-</div>
-
-
-<div class="modal fade" id="UpdateIssueDetailsModal" tabindex="-1" aria-labelledby="UpdateIssueDetailsModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="UpdateIssueDetailsModalLabel">Edit Issue Details (ID: {{ IssueIdToUpdate }})</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="editIssueForm" (ngSubmit)="onUpdateDetails()">
-                    <div class="row mt-3 g-3">
-                        
-                        <div class="row mt-3 g-3">
-                            <div class="col-md-3">
-                                <label class="form-label fs-5 fw-bolder">
-                                    Author Name <span class="text-danger ms-3">*</span>
-                                </label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control" placeholder="Enter author name and press Enter or Comma"
-                                    [(ngModel)]="authorInput" [ngModelOptions]="{ standalone: true }" name="AuthorNameInput"
-                                    (keydown)="handleAuthorKeyDown($event)" (focus)="showBadge = true" />
-
-
-                                <div *ngIf="showBadge" class="mt-1">
-                                    <span class="badge bg-info text-dark">Multiple authors accepted. Press Enter or Comma.</span>
-                                </div>
-
-                                <div *ngIf="authors.length === 0 && isUpdateFormSubmitted" class="text-danger mt-1">
-                                    Please enter at least one author.
-                                </div>
-
-                                <div class="mt-2">
-                                    <span *ngFor="let author of authors; let i = index" class="badge bg-secondary me-1">
-                                        {{ author }}
-                                        <button type="button" class="btn-close btn-close-white btn-sm ms-1" aria-label="Remove"
-                                            (click)="removeAuthor(i)"></button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    
-                    <div class="row mt-3 g-3">
-                        <div class="col-md-3">
-                            <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" id="PageNumber" formControlName="PageNumber" class="form-control"
-                                placeholder="Enter PageNumber"
-                                [ngClass]="{'is-invalid': editFormControls['PageNumber'].invalid && (editFormControls['PageNumber'].touched || isUpdateFormSubmitted)}" />
-                            <div *ngIf="editFormControls['PageNumber'].invalid && (editFormControls['PageNumber'].touched || isUpdateFormSubmitted)"
-                                class="text-danger">
-                                Please enter a valid Page Number.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3 mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label fs-5 fw-bolder">Publication Title<span class="text-danger ms-3 ">*</span></label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" formControlName="IssueTitle" placeholder="Provide Issue Title "
-                                [ngClass]="{'is-invalid': editFormControls['IssueTitle'].invalid && (editFormControls['IssueTitle'].touched || isUpdateFormSubmitted)}">
-                            <div *ngIf="editFormControls['IssueTitle'].invalid && (editFormControls['IssueTitle'].touched || isUpdateFormSubmitted)"
-                                class="text-danger">
-                                Please enter a valid Issue Title.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-3 mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label fs-5 fw-bolder">Publish Date</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" formControlName="PublishDate"
-                                [ngClass]="{'is-invalid': editFormControls['PublishDate'].invalid && (editFormControls['PublishDate'].touched || isUpdateFormSubmitted)}">
-                            <div *ngIf="editFormControls['PublishDate'].invalid && (editFormControls['PublishDate'].touched || isUpdateFormSubmitted)"
-                                class="text-danger">
-                                Please enter a valid Publish Date.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-3 mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label fs-5 fw-bolder">Update Issue File (PDF)</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
-                                placeholder="Issue File" accept=".pdf, *.7z, *.zip, *.rar, *.doc">
-                            <div class="form-text mt-1">
-                                Currently selected file: <strong>{{ IssueFileName || selectedIssueData?.issueFileName || 'No new file selected' }}</strong>
-                            </div>
-                            <div *ngIf="!IssueFileData && isUpdateFormSubmitted && !selectedIssueData?.issueFileName" class="text-danger">
-                                Please select a file for the issue.
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <label class="form-label fs-5 fw-bolder">Issue Description <span
-                                    class="text-danger ms-3 ">*</span></label>
-                        </div>
-                        <div class="col-md-9">
-                            <textarea id="IssueDescription" formControlName="IssueDescription" class="form-control"
-                                placeholder="Enter IssueDescription"
-                                [ngClass]="{'is-invalid': editFormControls['IssueDescription'].invalid && (editFormControls['IssueDescription'].touched || isUpdateFormSubmitted)}"
-                                rows="2"></textarea>
-                            <div *ngIf="editFormControls['IssueDescription'].invalid && (editFormControls['IssueDescription'].touched || isUpdateFormSubmitted)"
-                                class="text-danger">
-                                Please enter a valid Issue Description.
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-success" [disabled]="editIssueForm.invalid || !authors.length || isLoading">
-                            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            {{ isLoading ? 'Updating...' : 'Update Details' }}
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- <app-topslider></app-topslider>
-<app-EditorHeader></app-EditorHeader>
-
- 
-
-<div class="full-page-loader" *ngIf="isLoadingPage" aria-label="Loading">
   <div class="loader-spinner">
     <span class="material-icons lg-48 spin-icon">autorenew</span>
   </div>
 </div>
+
 <div class="vh-150 d-flex p-2 align-items-center justify-content-center" *ngIf="!isLoadingPage">
   <div class="container-fluid">
     <div class="row">
@@ -264,7 +34,7 @@
     </div>
   </div>
 </div>
- 
+
 <div *ngIf="isLoadingJournal" class="d-flex justify-content-center my-5">
   <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading journal issues...</span>
@@ -288,20 +58,15 @@
                   <tr *ngFor="let row of paginatedJournalIssuesData">
                     <td *ngFor="let col of displayedEditorColumns">
                       <ng-container [ngSwitch]="col">
-                        <button *ngSwitchCase="'issueFileName'" class="btn btn-dark"
+                        <button *ngSwitchCase="'issueFileName'" class="btn btn-dark btn-sm"
                           (click)="onSelectFileEditorX(row[col])">
-                          <i class="bi bi-file-earmark-text"></i>
+                          <i class="bi bi-file-earmark-text"></i> 
+                        </button>
+                        <button *ngSwitchCase="'Action'" class="btn btn-primary btn-sm" (click)="onEditIssue(row)"
+                          data-bs-toggle="modal" data-bs-target="#UpdateIssueDetailsModal">
+                          <i class="bi bi-pencil-square"></i> 
                         </button>
                         <span *ngSwitchDefault>{{ row[col] }}</span>
-                          <button *ngSwitchCase="'journalId'" class="btn btn-primary" (click)="onTakeAction(row)"
-                            data-bs-toggle="modal" data-bs-target="#UpdateIssueDetailsModal">
-                            
-                            <i class="bi bi-exclamation-circle"></i>
-                          </button>
-                           
-                          <i class="bi bi-exclamation-circle"></i>
-                         
-
                       </ng-container>
                     </td>
                   </tr>
@@ -326,17 +91,40 @@
 </div>
 
 
-
 <div class="modal fade" id="UpdateIssueDetailsModal" tabindex="-1" aria-labelledby="UpdateIssueDetailsModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="UpdateIssueDetailsModalLabel">Edit Issue Form</h5>
+        <h5 class="modal-title" id="UpdateIssueDetailsModalLabel">Edit Issue Details (ID: {{ IssueIdToUpdate }})</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="journalForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <form [formGroup]="editIssueForm" (ngSubmit)="onUpdateDetails()">
+
+          <div class="row mt-3 g-3">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Volume <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-9 d-flex justify-content-start align-items-center">
+              <button class="btn btn-dark" type="button" (click)="UpdateVolume2()"
+                [disabled]="editIssueForm.get('VolumeId')?.value <= VolumeNumber">
+                <i class="bi bi-dash-lg"></i>
+              </button>
+              <input type="text" id="VolumeId" formControlName="VolumeId" class="form-control w-50 m-3"
+                placeholder="Enter VolumeId"
+                [ngClass]="{' is-invalid': editFormControls['VolumeId'].invalid && (editFormControls['VolumeId'].touched || isUpdateFormSubmitted)}" />
+              <div *ngIf="editFormControls['VolumeId'].invalid && (editFormControls['VolumeId'].touched || isUpdateFormSubmitted)"
+                class="text-danger">
+                Please enter a validVolumeId Number.
+              </div>
+          
+              <button class="btn btn-dark" type="button" (click)="UpdateVolume()"
+                [disabled]="editIssueForm.get('VolumeId')?.value >= (+VolumeNumber + 1)">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </div>
+          </div>
           <div class="row mt-3 g-3">
 
             <div class="row mt-3 g-3">
@@ -345,7 +133,7 @@
                   Author Name <span class="text-danger ms-3">*</span>
                 </label>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-9">
                 <input type="text" class="form-control" placeholder="Enter author name and press Enter or Comma"
                   [(ngModel)]="authorInput" [ngModelOptions]="{ standalone: true }" name="AuthorNameInput"
                   (keydown)="handleAuthorKeyDown($event)" (focus)="showBadge = true" />
@@ -355,7 +143,7 @@
                   <span class="badge bg-info text-dark">Multiple authors accepted. Press Enter or Comma.</span>
                 </div>
 
-                <div *ngIf="authors.length === 0 && isForm1Submitted" class="text-danger mt-1">
+                <div *ngIf="authors.length === 0 && isUpdateFormSubmitted" class="text-danger mt-1">
                   Please enter at least one author.
                 </div>
 
@@ -369,19 +157,21 @@
               </div>
             </div>
 
-
           </div>
+
+
           <div class="row mt-3 g-3">
             <div class="col-md-3">
               <label class="form-label fs-5 fw-bolder">Page Number <span class="text-danger ms-3 ">*</span></label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
               <input type="text" id="PageNumber" formControlName="PageNumber" class="form-control"
                 placeholder="Enter PageNumber"
-                [ngClass]="{'is-invalid': form1['PageNumber'].invalid && (form1['PageNumber'].touched || isForm1Submitted)}" />
-              <div *ngIf="form1['PageNumber'].invalid && (form1['PageNumber'].touched || isForm1Submitted)"
+                [ngClass]="{'is-invalid': editFormControls['PageNumber'].invalid && (editFormControls['PageNumber'].touched || isUpdateFormSubmitted)}" />
+              <div
+                *ngIf="editFormControls['PageNumber'].invalid && (editFormControls['PageNumber'].touched || isUpdateFormSubmitted)"
                 class="text-danger">
-                Please enter a valid PageNumber.
+                Please enter a valid Page Number.
               </div>
             </div>
           </div>
@@ -390,38 +180,46 @@
             <div class="col-md-3">
               <label class="form-label fs-5 fw-bolder">Publication Title<span class="text-danger ms-3 ">*</span></label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
               <input type="text" class="form-control" formControlName="IssueTitle" placeholder="Provide Issue Title "
-                [ngClass]="{'is-invalid': form1['IssueTitle'].invalid && (form1['IssueTitle'].touched || isForm1Submitted)}">
-              <div *ngIf="form1['IssueTitle'].invalid && (form1['IssueTitle'].touched || isForm1Submitted)"
+                [ngClass]="{'is-invalid': editFormControls['IssueTitle'].invalid && (editFormControls['IssueTitle'].touched || isUpdateFormSubmitted)}">
+              <div
+                *ngIf="editFormControls['IssueTitle'].invalid && (editFormControls['IssueTitle'].touched || isUpdateFormSubmitted)"
                 class="text-danger">
                 Please enter a valid Issue Title.
               </div>
             </div>
           </div>
+
           <div class="row mt-3 mb-3">
             <div class="col-md-3">
               <label class="form-label fs-5 fw-bolder">Publish Date</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
               <input type="date" class="form-control" formControlName="PublishDate"
-                [ngClass]="{'is-invalid': form1['PublishDate'].invalid && (form1['PublishDate'].touched || isForm1Submitted)}">
-              <div *ngIf="form1['PublishDate'].invalid && (form1['PublishDate'].touched || isForm1Submitted)"
+                [ngClass]="{'is-invalid': editFormControls['PublishDate'].invalid && (editFormControls['PublishDate'].touched || isUpdateFormSubmitted)}">
+              <div
+                *ngIf="editFormControls['PublishDate'].invalid && (editFormControls['PublishDate'].touched || isUpdateFormSubmitted)"
                 class="text-danger">
-                Please enter a valid PublishDate.
+                Please enter a valid Publish Date.
               </div>
             </div>
           </div>
+
           <div class="row mt-3 mb-3">
             <div class="col-md-3">
-              <label class="form-label fs-5 fw-bolder">Issue File (PDF)<span class="text-danger ms-3 ">*</span></label>
+              <label class="form-label fs-5 fw-bolder">Update Issue File (PDF)</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-9">
               <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
-                placeholder="Issue File" [ngClass]="{'is-invalid': !IssueFileName && isForm1Submitted}"
-                accept=".pdf, *.7z, *.zip, *.rar, *.doc">
-              <div *ngIf="!IssueFileData || (isForm1Submitted)" class="text-danger">
-                Please Provide a valid File.
+                placeholder="Issue File" accept=".pdf, *.7z, *.zip, *.rar, *.doc">
+              <div class="form-text mt-1">
+                Currently selected file: <strong>{{ IssueFileName || selectedIssueData?.issueFileName || 'No new file
+                  selected' }}</strong>
+              </div>
+              <div *ngIf="!IssueFileData && isUpdateFormSubmitted && !selectedIssueData?.issueFileName"
+                class="text-danger">
+                Please select a file for the issue.
               </div>
             </div>
           </div>
@@ -432,12 +230,13 @@
               <label class="form-label fs-5 fw-bolder">Issue Description <span
                   class="text-danger ms-3 ">*</span></label>
             </div>
-            <div class="col-md-6">
-              <textarea type="text" id="IssueDescription" formControlName="IssueDescription" class="form-control"
+            <div class="col-md-9">
+              <textarea id="IssueDescription" formControlName="IssueDescription" class="form-control"
                 placeholder="Enter IssueDescription"
-                [ngClass]="{'is-invalid': form1['IssueDescription'].invalid && (form1['IssueDescription'].touched || isForm1Submitted)}"
+                [ngClass]="{'is-invalid': editFormControls['IssueDescription'].invalid && (editFormControls['IssueDescription'].touched || isUpdateFormSubmitted)}"
                 rows="2"></textarea>
-              <div *ngIf="form1['IssueDescription'].invalid && (form1['IssueDescription'].touched || isForm1Submitted)"
+              <div
+                *ngIf="editFormControls['IssueDescription'].invalid && (editFormControls['IssueDescription'].touched || isUpdateFormSubmitted)"
                 class="text-danger">
                 Please enter a valid Issue Description.
               </div>
@@ -446,11 +245,14 @@
           </div>
 
           <div class="mt-4">
-            <button type="submit" class="btn btn-primary" [disabled]="journalForm.invalid || !IssueFileData">Publish
-              Issues</button>
+            <button type="submit" class="btn btn-success"
+              [disabled]="editIssueForm.invalid || !authors.length || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              {{ isLoading ? 'Updating...' : 'Update Details' }}
+            </button>
           </div>
         </form>
       </div>
     </div>
   </div>
-</div> -->
+</div>

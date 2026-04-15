@@ -549,6 +549,7 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
       .set('Authorization', 'Bearer ' + authToken)
     return this.http.post(
       LOCAL_API_URL + 'api/LpuJournal/UpdateJournalIssueDetails',
+      // 'https://localhost:7125/api/LpuJournal/UpdateJournalIssueDetails',
       dataSoft,
       { headers });
 
