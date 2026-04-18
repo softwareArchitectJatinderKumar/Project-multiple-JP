@@ -74,16 +74,16 @@ export class JournalEditorBoardComponent implements OnInit {
     });
   }
   GetDataforEditors() {
-    const importantRoles = ["head", "dean", "associate dean", "associate professor", "assistant professor"];
+    const importantRoles = ["head", "dean", "associate dean", "associate professor", "assistant professor","professor"];
   
     const getPriority = (designation: string) => {
       designation = designation.toLowerCase();
       for (let i = 0; i < importantRoles.length; i++) {
         if (designation.includes(importantRoles[i])) {
-          return i + 1; // Assign priority based on order in array
+          return i + 1; 
         }
       }
-      return importantRoles.length + 1; // Default priority for others
+      return importantRoles.length + 1; 
     };
   
     const prioritizeByDesignation = (editors: any[]) => 
@@ -99,10 +99,10 @@ export class JournalEditorBoardComponent implements OnInit {
       )
     );
   
-    this.ManagingEditor = prioritizeByDesignation(
+    this.ManagingEditor =  
       this.filteredEditors.filter((item: { editorType: string }) => 
         item.editorType.toLowerCase().includes('managing editor')
-      )
+       
     );
   
     this.EditorialboardmembersReviews = prioritizeByDesignation(

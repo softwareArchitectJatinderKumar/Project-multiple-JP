@@ -22,8 +22,6 @@ export class JournalIssuesDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private journalService: LpujournalbookService,
-    private AuthSession: LoginSessionService,
-    private router: Router,
     private StoragesServices: StorageService,
     private cookieService: CookieService
   ) { }
@@ -65,21 +63,49 @@ export class JournalIssuesDetailsComponent implements OnInit {
   }
 
   groupIssuesByYear(issues: any[]) {
-    const grouped: { [key: string]: any[] } = {};
+  const grouped: { [key: string]: any[] } = {};
 
-    for (const issue of issues) {
-      const year = new Date(issue.publishDate).getFullYear().toString();
-      if (!grouped[year]) {
-        grouped[year] = [];
-      }
-      grouped[year].push(issue);
+  // 1. Group issues by year
+  for (const issue of issues) {
+    const year = new Date(issue.publishDate).getFullYear().toString();
+    if (!grouped[year]) {
+      grouped[year] = [];
     }
-
-    this.groupedIssuesByYear = Object.entries(grouped).map(([year, issues]) => ({
-      year,
-      issues: this.chunkArray(issues, 2)
-    }));
+    grouped[year].push(issue);
   }
+
+  // 2. Convert to array and sort by year descending
+  this.groupedIssuesByYear = Object.entries(grouped)
+    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
+    .map(([year, issueList]) => {
+      
+      // 3. Optional: Sort issues within the year by date descending
+      const sortedIssues = issueList.sort((a, b) => 
+        new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+      );
+
+      return {
+        year,
+        issues: this.chunkArray(sortedIssues, 2)
+      };
+    });
+}
+  // groupIssuesByYear(issues: any[]) {
+  //   const grouped: { [key: string]: any[] } = {};
+
+  //   for (const issue of issues) {
+  //     const year = new Date(issue.publishDate).getFullYear().toString();
+  //     if (!grouped[year]) {
+  //       grouped[year] = [];
+  //     }
+  //     grouped[year].push(issue);
+  //   }
+    
+  //   this.groupedIssuesByYear = Object.entries(grouped).map(([year, issues]) => ({
+  //     year,
+  //     issues: this.chunkArray(issues, 2)
+  //   }));
+  // }
 
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const result: any[][] = [];
@@ -189,9 +215,6 @@ export class JournalIssuesDetailsComponent implements OnInit {
         this.UserRole = roles;
 
         const sortedRoles = [...roles].sort().join(',');
-
-
-
         const roleTextMap: Record<string, string> = {
           '0': 'Editor',
           '1': 'User',
