@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
-//import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 
 
 @Component({

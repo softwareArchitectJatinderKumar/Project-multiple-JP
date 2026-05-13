@@ -21,7 +21,7 @@ export class EditorCrudComponent implements OnInit {
     'Editorial board members National',
     'Associate Editor',
     'Associate Editors',
-    'Editor-in-Chief',
+    'Editor in Chief',
     'Editorial Board',
     'Editorial Board Members International',
     'Editorial Board Members National',
