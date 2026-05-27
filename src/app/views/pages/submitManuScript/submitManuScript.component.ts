@@ -427,17 +427,17 @@ export class SubmitManuScriptComponent implements OnInit {
       return;
     }
 
-    if (this.cartItems.length === 1) {
-      const item = this.cartItems[0];
+    // if (this.cartItems.length === 1) {
+    //   const item = this.cartItems[0];
 
-      this.AllManuScriptType = item.ManuScriptType || 'NA';
-      this.AllSubItemTypes = item.SubItemType === 'Select' ? 'NA' : item.SubItemType;
-      this.AllSubmissionTypes = item.SubmissionType || 'NA';
-    } else {
+    //   this.AllManuScriptType = item.ManuScriptType || 'NA';
+    //   this.AllSubItemTypes = item.SubItemType === 'Select' ? 'NA' : item.SubItemType;
+    //   this.AllSubmissionTypes = item.SubmissionType || 'NA';
+    // } else {
       this.AllManuScriptType = this.cartItems.map(item => item.ManuScriptType || 'NA').join(',');
       this.AllSubItemTypes = this.cartItems.map(item => item.SubItemType === 'Select' ? 'NA' : item.SubItemType).join(',');
       this.AllSubmissionTypes = this.cartItems.map(item => item.SubmissionType || 'NA').join(',');
-    }
+    // }
     const startTime = new Date().getTime();
     const formData = new FormData();
     formData.append('JournalId', this.JournalId);
@@ -472,7 +472,7 @@ export class SubmitManuScriptComponent implements OnInit {
           });
         } else {
           Swal.fire({
-            title: 'Some Technical Issue',
+            title: 'Error Uploading Manuscripts Failed',
             // text: 'error',
             icon: 'error',
           }).then(() => {
@@ -487,11 +487,11 @@ export class SubmitManuScriptComponent implements OnInit {
         }, remainingDelay);
       },
       error: (err) => {
-        Swal.fire({
-          title: 'Error Occurred',
-          text: 'Unable to complete the request. Please try again later.',
-          icon: 'error',
-        });
+        // Swal.fire({
+        //   title: 'Error Occurred',
+        //   text: 'Unable to complete the request. Please try again later.',
+        //   icon: 'error',
+        // });
       }
     });
 
