@@ -40,7 +40,7 @@ getBooksDetail(): void {
         else {
           this.booksData = [];
           this.ServerConnection = 0;
-          this.serverError = true;
+          // this.serverError = true;
         }
       },
       error: (error) => {
