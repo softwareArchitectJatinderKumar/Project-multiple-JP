@@ -10,7 +10,10 @@
         </label>
         <input type="checkbox" id="drop" />
         <ul class="menu">
-            <li class="nextdrop" *ngIf="JournalIssues.length > 0"> <a class="dropa" (click)="VisitUrl(BookId, name, 'GetIssues')"> Published Volume(s) <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ JournalIssues.length }} <span class="visually-hidden">unread issues</span> </span> </span> </a> </li>
+            <li class="nextdrop" *ngIf="JournalIssues.length > 0"> <a class="dropa" (click)="VisitUrl(BookId, name, 'GetIssues')"> Published Issue(s) 
+                <!-- <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ JournalIssues.length }} <span class="visually-hidden">unread issues</span> </span>  -->
+                <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ groupedIssuesByYear?.length }} <span class="visually-hidden">unread issues</span> </span> 
+            </span> </a> </li>
             <li><a (click)="VisitUrl(BookId,name,'About')">About</a></li>
             <li><a (click)="VisitUrl(BookId,name,'EditorialBoard')">Editorial Board</a></li>
             <!-- <li><a [ngStyle]="{'pointer-events': isDisabled ? 'none' : 'auto', 'color': isDisabled ? 'gray' : 'inherit'}" >Indexing</a></li> -->

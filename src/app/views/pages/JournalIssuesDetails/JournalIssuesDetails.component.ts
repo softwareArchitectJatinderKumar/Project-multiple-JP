@@ -118,14 +118,31 @@ export class JournalIssuesDetailsComponent implements OnInit {
   toggleAccordion(itemId: string) {
     this.activeAccordionId = this.activeAccordionId === itemId ? null : itemId;
   }
+formatIssueTitle(title: string, expanded = false): string {
+  if (!title) return '';
 
-  formatIssueTitle(title: string, expanded = false): string {
-    if (!title) return '';
-    const words = title.trim().split(/\s+/);
-    return (!expanded && words.length > 5)
-      ? words.slice(0, 5).join(' ') + '...'
-      : title;
-  }
+  // 1. Separate camelCase safely (only if a lowercase letter is followed by an uppercase letter)
+  // Example: "camelCase" -> "camel Case", but "PURE" stays "PURE"
+  const spacedTitle = title.trim().replace(/([a-z])([A-Z])/g, '$1 $2');
+
+  // 2. Convert everything to lowercase, then capitalize the very first character
+  const sentenceCaseTitle = spacedTitle.charAt(0).toUpperCase() + spacedTitle.slice(1).toLowerCase();
+
+  // 3. Split by standard spaces for the word count truncation
+  const words = sentenceCaseTitle.split(/\s+/);
+  
+  return (!expanded && words.length > 5)
+    ? words.slice(0, 5).join(' ') + '...'
+    : sentenceCaseTitle;
+}
+
+  // formatIssueTitle(title: string, expanded = false): string {
+  //   if (!title) return '';
+  //   const words = title.trim().split(/\s+/);
+  //   return (!expanded && words.length > 5)
+  //     ? words.slice(0, 5).join(' ') + '...'
+  //     : title;
+  // }
 
   toggleTitle(key: string): void {
     if (this.expandedTitles.has(key)) {

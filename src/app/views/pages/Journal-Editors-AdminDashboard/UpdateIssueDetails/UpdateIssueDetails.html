@@ -214,8 +214,7 @@
               <input type="file" (change)="onFileSelectedIssueFile($event)" class="form-control"
                 placeholder="Issue File" accept=".pdf, *.7z, *.zip, *.rar, *.doc">
               <div class="form-text mt-1">
-                Currently selected file: <strong>{{ IssueFileName || selectedIssueData?.issueFileName || 'No new file
-                  selected' }}</strong>
+                Currently selected file: <strong>{{ IssueFileName || selectedIssueData?.issueFileName || 'No new file selected' }}</strong>
               </div>
               <div *ngIf="!IssueFileData && isUpdateFormSubmitted && !selectedIssueData?.issueFileName"
                 class="text-danger">

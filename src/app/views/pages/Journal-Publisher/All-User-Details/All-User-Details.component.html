@@ -34,6 +34,7 @@
                     <!-- <th class="form-label text-danger">Journal Id</th> -->
                     <th class="form-label text-danger">Current Status </th>
                     <th class="form-label text-danger">Action Approve/ Disapprove </th>
+                    <th class="form-label text-danger">Reset Password </th>
 
                   </tr>
                 </thead>
@@ -71,7 +72,12 @@
                           </span>
                         </ng-template>
                       </td>
-                      
+                       <td class="form-label"> 
+                        
+                        <button class="btn btn-success btn-sm me-2" (click)="ResetUserPassword(UsersDataRow)" [ngClass]="'btn-danger'">
+                            <i class="bi bi-key"></i>
+                          </button>
+                       </td>
                     </tr>
                   </ng-container>
                 </tbody>

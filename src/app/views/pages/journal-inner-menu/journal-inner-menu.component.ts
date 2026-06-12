@@ -101,10 +101,16 @@ export class JournalInnerMenuComponent implements OnInit {
 
 
   JournalIssues: any[] = [];
+  activeAccordionId: string | null = null;
   GetAllIssues(JournalId: any) {
     this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssues = dataX.item1 || [];
+
+        if (this.JournalIssues.length > 0) {
+          this.activeAccordionId = `year-0`;
+        }
+        this.groupIssuesByYear(this.JournalIssues);
       },
       error: (error: any) => {
         console.error('Error fetching journal issues', error);
@@ -112,4 +118,43 @@ export class JournalInnerMenuComponent implements OnInit {
     });
   }
 
+  groupedIssuesByYear: { year: string; issues: any[][] }[] = [];
+
+  groupIssuesByYear(issues: any[]) {
+    const grouped: { [key: string]: any[] } = {};
+
+    // 1. Group issues by year
+    for (const issue of issues) {
+      const year = new Date(issue.publishDate).getFullYear().toString();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(issue);
+    }
+
+    // 2. Convert to array and sort by year descending
+    this.groupedIssuesByYear = Object.entries(grouped)
+      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
+      .map(([year, issueList]) => {
+
+        // 3. Optional: Sort issues within the year by date descending
+        const sortedIssues = issueList.sort((a, b) =>
+          new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+        );
+
+        return {
+          year,
+          issues: this.chunkArray(sortedIssues, 2)
+        };
+      });
+  }
+
+
+  chunkArray(arr: any[], chunkSize: number): any[][] {
+    const result: any[][] = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  }
 }

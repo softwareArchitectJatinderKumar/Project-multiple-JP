@@ -17,8 +17,8 @@
                 <div class="col-lg-4 col-md-6">
                     <h2>{{bookData?.journalTitle}} </h2>
                     <ul style="font-weight: 500;">
-                        <li>Volume: <span Class="EditorColor11">{{bookData?.volume == null ? 'NA': bookData.volume }}</span></li>
-                        <li>Year: <span Class="EditorColor11">{{ bookData?.publishDate ? (bookData.publishDate | date:'yyyy') : 'NA' }}</span>
+                        <li class="d-none">Volume: <span Class="EditorColor11">{{bookData?.volume == null ? 'NA': bookData.volume }}</span></li>
+                        <li class="d-none">Year: <span Class="EditorColor11">{{ bookData?.publishDate ? (bookData.publishDate | date:'yyyy') : 'NA' }}</span>
                         </li>
                         <!-- <li >Editor in chief: <span Class="EditorColor1">{{bookData?.editorName}}</span></li> -->
                         <li *ngIf="EditorInChief && EditorInChief.length">
@@ -41,6 +41,7 @@
                         </li> -->
                     </ul>
                     <p>{{bookData?.subTitle}} </p>
+                    <!-- <p [innerHTML]="JournalIntroduction"></p>  -->
                 </div>
                 <div class="col-lg-4">
                     <div class="journal-details">

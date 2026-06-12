@@ -174,7 +174,7 @@ Reason: any;
   
 
   ChangeApproveStatus(rowData: any) {
-    alert(rowData.emailId)
+    // alert(rowData.emailId)
     const formData = new FormData();
     formData.append('UserEmailId', rowData.emailId);
     formData.append('DisapprovalReason', 'Approved ');
@@ -225,4 +225,52 @@ Reason: any;
   }
 
 
+
+
+
+  // Reset Password for Selected user 
+
+Numbers: any;
+  ResetUserPassword(rowData: any) {
+    Swal.fire({
+      title: "Mobile Number to reset password",
+      input: 'text',
+      showCancelButton: true
+    }).then((result) => {
+      if (result.value) {
+        this.Numbers = result.value;
+        const formData = new FormData();
+        formData.append('EmailId', rowData.emailId);
+        formData.append('NewMobileNo', this.Numbers);
+        this.handleResetChange(formData);
+      } else {
+        this.showCancelledSwal();
+      }
+    });
+
+  }
+
+  private handleResetChange(formData: FormData) {
+    this.journalWebApiService.ResetUserPassword(formData).subscribe((data: any) => {
+      // alert(JSON.stringify(data))
+       const responseMessage = data?.item1?.[0]?.msg;
+      if (responseMessage === 'Success') {
+        Swal.fire(
+          ' Reset Password Applied !',
+          '',
+          'success'
+        ).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire(
+          ' Reset Password Failed !',
+          '',
+          'error'
+        );
+      }
+    });
+  }
+
+ 
 }

@@ -191,8 +191,8 @@ export class UpdateIssueDetailsComponent implements OnInit {
             formData.append('IssueFileData', '');
         }
 
-        console.log('Submitting Update Form Data:');
-        formData.forEach((value, key) => console.log(key + ':', value));
+        // console.log('Submitting Update Form Data:');
+        // formData.forEach((value, key) => console.log(key + ':', value));
 
         this.journalWebApiService.UpdateIssueDetails(formData)  
             .pipe(

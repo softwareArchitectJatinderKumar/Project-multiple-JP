@@ -32,7 +32,7 @@ interface Book {
 export class JournalAboutComponent implements OnInit {
   data: any[] =[];    BookId: any;  bookData: any;  JournalDetails: any;  detailsArray: any;
   name: any; JournalTitle: any;
-
+  JournalIntroduction: any; 
   constructor(
     private journalWebApiService: LpujournalbookService, 
     private authService: AuthService,
@@ -64,22 +64,24 @@ export class JournalAboutComponent implements OnInit {
     this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.bookData = response.item1[0];
+
         this.JournalDetails = this.bookData['journalDetails']
+        this.JournalIntroduction = this.bookData['scopeofJournal']
         this.extractDetails();
       }
       else {
         this.bookData = [];
            
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          confirmButtonText: 'Ok'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigateByUrl('/');
-          }
-        });
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Oops...',
+        //   text: 'Something went wrong!',
+        //   confirmButtonText: 'Ok'
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     this.router.navigateByUrl('/');
+        //   }
+        // });
         
       }
     });

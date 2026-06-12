@@ -547,9 +547,10 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
     let authToken = this.storageService.getUser();
     let headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + authToken)
+      .set('Accept', '*/*',);
     return this.http.post(
       LOCAL_API_URL + 'api/LpuJournal/UpdateJournalIssueDetails',
-      // 'https://localhost:7125/api/LpuJournal/UpdateJournalIssueDetails',
+      // 'https://localhost:7135/api/LpuJournal/UpdateJournalIssueDetails',
       dataSoft,
       { headers });
 
@@ -618,4 +619,20 @@ AuthoriseUserDetails(loginData: FormData): Observable<any> {
         this.baseUrl +'api/LpuJournal/JournalManuScriptMasterCrudOperation', formData, { headers }
     );
   }
+
+
+  // Added on 4-June-26
+
+    ResetUserPassword(dataSoft: FormData): Observable<any> {
+    let authToken = this.storageService.getUser();
+    let headers = new HttpHeaders()
+      .set('Authorization', 'Bearer ' + authToken)
+    return this.http.post(
+      // 'https://localhost:7135/api/LpuJournal/ResetUserPassword',
+      this.baseUrl + 'api/LpuJournal/ResetUserPassword',
+      dataSoft,
+      { headers });
+
+  }
+
 }
