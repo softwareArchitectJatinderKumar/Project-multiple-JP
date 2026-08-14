@@ -1,7 +1,14 @@
 <app-topslider></app-topslider>
 <app-journalmenubar></app-journalmenubar>
 <!-- <app-journal-inner-menu></app-journal-inner-menu> -->
-<app-EDEditorHeader></app-EDEditorHeader>
+<app-EDEditorHeader *ngIf="selectedRole == 0 && userRole?.includes('0'); else journalMenu"></app-EDEditorHeader>
+<ng-template #journalMenu>
+    <app-journal-inner-menu></app-journal-inner-menu>
+</ng-template>
+
+<ng-template #journalMenu>
+    <app-journal-inner-menu></app-journal-inner-menu>
+</ng-template>
 <section>
     <div class="container">
         <div class="row">

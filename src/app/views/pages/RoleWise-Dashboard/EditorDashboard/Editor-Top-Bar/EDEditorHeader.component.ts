@@ -181,7 +181,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-EDEditorHeader',
   templateUrl: './EDEditorHeader.component.html',
-  styleUrls: ['./EDEditorHeader.component.scss'], standalone: false
+  styleUrls: ['./EDEditorHeader.component.scss'],
+  standalone: false,
 })
 export class EDEditorHeaderComponent implements OnInit {
   isDisabled: boolean = true;
@@ -210,8 +211,8 @@ export class EDEditorHeaderComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private StoragesServices: StorageService,
-    private cookieService: CookieService
-  ) { }
+    private cookieService: CookieService,
+  ) {}
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -219,32 +220,79 @@ export class EDEditorHeaderComponent implements OnInit {
     var BookId = this.route.snapshot.params['Id'];
     var name = this.route.snapshot.params['name'];
     this.LoginStatus = this.checkUserLogin();
-    if (BookId != undefined && this.LoginStatus == true || this.selectedRole != '-1') {
+    if (
+      (BookId != undefined && this.LoginStatus == true) ||
+      this.selectedRole != '-1'
+    ) {
       this.BookId = BookId;
       this.name = name;
       this.getUserRolesforId();
       this.GetAllIssues(BookId);
-    }
-    else {
+    } else {
       this.BookId = BookId;
       this.name = name;
     }
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
       }
     });
   }
   JournalIssues: any[] = [];
+  activeAccordionId: string | null = null;
   GetAllIssues(JournalId: any) {
     this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssues = dataX.item1 || [];
+
+        if (this.JournalIssues.length > 0) {
+          this.activeAccordionId = `year-0`;
+        }
+        this.groupIssuesByYear(this.JournalIssues);
       },
       error: (error: any) => {
         console.error('Error fetching journal issues', error);
-      }
+      },
     });
+  }
+
+  groupedIssuesByYear: any[] = [];
+  groupIssuesByYear(issues: any[]) {
+    const grouped: { [key: string]: any[] } = {};
+
+    // 1. Group issues by year
+    for (const issue of issues) {
+      const year = new Date(issue.publishDate).getFullYear().toString();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(issue);
+    }
+
+    // 2. Convert to array and sort by year descending
+    this.groupedIssuesByYear = Object.entries(grouped)
+      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
+      .map(([year, issueList]) => {
+        // 3. Optional: Sort issues within the year by date descending
+        const sortedIssues = issueList.sort(
+          (a, b) =>
+            new Date(b.publishDate).getTime() -
+            new Date(a.publishDate).getTime(),
+        );
+
+        return {
+          year,
+          issues: this.chunkArray(sortedIssues, 2),
+        };
+      });
+  }
+
+  chunkArray(arr: any[], chunkSize: number): any[][] {
+    const result: any[][] = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
   }
   // ngOnInit(): void {
   //   this.BookId = this.route.snapshot.params['Id'];
@@ -266,9 +314,8 @@ export class EDEditorHeaderComponent implements OnInit {
 
   goto(val: any): void {
     this.router.navigateByUrl(val);
-    this. scrollToTop();
+    this.scrollToTop();
   }
-
 
   UserRolesData: any;
   UserRolesArray: { value: string; label: string; id: string }[] = [];
@@ -277,7 +324,6 @@ export class EDEditorHeaderComponent implements OnInit {
   reviewerRole: boolean = false;
   publisherRole: boolean = false;
 
-
   availableRoles = [
     { value: '0', label: 'Editor Login' },
     { value: '1', label: 'Author Login' },
@@ -285,8 +331,8 @@ export class EDEditorHeaderComponent implements OnInit {
     { value: '3', label: 'Publisher Login' },
   ];
 
-  selectedRoles: string[] = []; userRole: any;
-
+  selectedRoles: string[] = [];
+  userRole: any;
 
   checkUserLogin(): Boolean | any {
     const GetCookieData = this.cookieService.get('authData');
@@ -294,7 +340,10 @@ export class EDEditorHeaderComponent implements OnInit {
     if (GetCookieData && status == true) {
       try {
         const retrievedCookies = JSON.parse(GetCookieData);
-        this.userRole = retrievedCookies.UserRole?.length > 0 ? retrievedCookies.UserRole : -1;
+        this.userRole =
+          retrievedCookies.UserRole?.length > 0
+            ? retrievedCookies.UserRole
+            : -1;
         this.userId = retrievedCookies.EmailId;
         this.selectedRole = retrievedCookies.SelectedRole;
         // let Token = retrievedCookies.AccessToken;
@@ -303,7 +352,7 @@ export class EDEditorHeaderComponent implements OnInit {
         this.candidateName = retrievedCookies.CandidateName;
         return true;
       } catch (error) {
-        console.log("error");
+        console.log('error');
         return false;
       }
     } else {
@@ -312,30 +361,28 @@ export class EDEditorHeaderComponent implements OnInit {
   }
 
   getUserRolesforId(): void {
-    this.journalWebApiService.GetUserRolesforUser (this.userId).subscribe({
+    this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
       next: (response) => {
         const rolesData = response?.item1?.[0];
-       
+
         if (!rolesData) {
           this.UserRole = [];
           this.userRoleText = '';
           return;
         }
-  
+
         const roles = rolesData.userRole?.split(',') ?? [];
         this.UserRole = roles;
-  
+
         const sortedRoles = [...roles].sort().join(',');
-  
-        
 
         const roleTextMap: Record<string, string> = {
           '0': 'Editor',
           '1': 'User',
           '2': 'Reviewer',
-          '3': 'Publisher'
+          '3': 'Publisher',
         };
-  
+
         if (this.selectedRole && sortedRoles.includes(this.userRole)) {
           this.userRoleText = roleTextMap[this.selectedRole] ?? '';
         } else {
@@ -346,10 +393,9 @@ export class EDEditorHeaderComponent implements OnInit {
         console.error('Error fetching user roles:', err);
         this.UserRole = [];
         this.userRoleText = '';
-      }
+      },
     });
   }
-  
 
   // getUserRolesforId(): void {
   //   this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
@@ -358,7 +404,7 @@ export class EDEditorHeaderComponent implements OnInit {
   //         this.UserRolesData = response.item1[0];
   //         const roles = this.UserRolesData?.userRole?.split(',') ?? [];
   //         // if (this.selectedRole===undefined || this.selectedRole===null ) {
-  //         //   this.Logout(); 
+  //         //   this.Logout();
   //         //  }
   //         alert(roles+this.selectedRole)
   //         this.UserRole = roles;
@@ -380,7 +426,7 @@ export class EDEditorHeaderComponent implements OnInit {
   //         else if (this.selectedRole == '3' && sortedRoles.includes(this.userRole)) {
   //           this.userRoleText = 'Publisher';
   //         }
-         
+
   //       }
   //     },
   //     error: (err) => {
@@ -390,7 +436,6 @@ export class EDEditorHeaderComponent implements OnInit {
   //     }
   //   });
   // }
-
 
   VisitUrl(Id: any, name: any, Sufix: any): void {
     this.router.navigateByUrl(`${Id}/${name}/${Sufix}`);
@@ -437,5 +482,4 @@ export class EDEditorHeaderComponent implements OnInit {
       }, 500);
     });
   }
-
-} 
+}

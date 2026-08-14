@@ -7,7 +7,7 @@ import { StorageService } from 'src/app/_services/storage.service';
 @Component({
   selector: 'app-JournalIssuesDetails',
   templateUrl: './JournalIssuesDetails.component.html',
-  styleUrls: ['./JournalIssuesDetails.component.css']
+  styleUrls: ['./JournalIssuesDetails.component.css'],
 })
 export class JournalIssuesDetailsComponent implements OnInit {
   BookId: string | undefined;
@@ -23,25 +23,27 @@ export class JournalIssuesDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private journalService: LpujournalbookService,
     private StoragesServices: StorageService,
-    private cookieService: CookieService
-  ) { }
+    private cookieService: CookieService,
+  ) {}
 
   ngOnInit(): void {
     var BookId = this.route.snapshot.params['Id'];
     var name = this.route.snapshot.params['name'];
     this.LoginStatus = this.checkUserLogin();
-    if (BookId != undefined && this.LoginStatus == true || this.selectedRole != '-1') {
+    if (
+      (BookId != undefined && this.LoginStatus == true) ||
+      this.selectedRole != '-1'
+    ) {
       this.BookId = BookId;
-      this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
+      this.journalTitle =
+        this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
       this.getUserRolesforId();
-    }
-    else {
+    } else {
       this.BookId = BookId;
-      this.journalTitle = this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
-
+      this.journalTitle =
+        this.route.snapshot.params['name']?.replace(/-/g, ' ') || '';
     }
     this.loadIssues();
-
   }
 
   loadIssues() {
@@ -58,38 +60,39 @@ export class JournalIssuesDetailsComponent implements OnInit {
       error: (error) => {
         console.error('Error loading issues:', error);
         this.isLoading = false;
-      }
+      },
     });
   }
 
   groupIssuesByYear(issues: any[]) {
-  const grouped: { [key: string]: any[] } = {};
+    const grouped: { [key: string]: any[] } = {};
 
-  // 1. Group issues by year
-  for (const issue of issues) {
-    const year = new Date(issue.publishDate).getFullYear().toString();
-    if (!grouped[year]) {
-      grouped[year] = [];
+    // 1. Group issues by year
+    for (const issue of issues) {
+      const year = new Date(issue.publishDate).getFullYear().toString();
+      if (!grouped[year]) {
+        grouped[year] = [];
+      }
+      grouped[year].push(issue);
     }
-    grouped[year].push(issue);
+
+    // 2. Convert to array and sort by year descending
+    this.groupedIssuesByYear = Object.entries(grouped)
+      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
+      .map(([year, issueList]) => {
+        // 3. Optional: Sort issues within the year by date descending
+        const sortedIssues = issueList.sort(
+          (a, b) =>
+            new Date(b.publishDate).getTime() -
+            new Date(a.publishDate).getTime(),
+        );
+
+        return {
+          year,
+          issues: this.chunkArray(sortedIssues, 2),
+        };
+      });
   }
-
-  // 2. Convert to array and sort by year descending
-  this.groupedIssuesByYear = Object.entries(grouped)
-    .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
-    .map(([year, issueList]) => {
-      
-      // 3. Optional: Sort issues within the year by date descending
-      const sortedIssues = issueList.sort((a, b) => 
-        new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
-      );
-
-      return {
-        year,
-        issues: this.chunkArray(sortedIssues, 2)
-      };
-    });
-}
   // groupIssuesByYear(issues: any[]) {
   //   const grouped: { [key: string]: any[] } = {};
 
@@ -100,7 +103,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
   //     }
   //     grouped[year].push(issue);
   //   }
-    
+
   //   this.groupedIssuesByYear = Object.entries(grouped).map(([year, issues]) => ({
   //     year,
   //     issues: this.chunkArray(issues, 2)
@@ -118,23 +121,24 @@ export class JournalIssuesDetailsComponent implements OnInit {
   toggleAccordion(itemId: string) {
     this.activeAccordionId = this.activeAccordionId === itemId ? null : itemId;
   }
-formatIssueTitle(title: string, expanded = false): string {
-  if (!title) return '';
+  formatIssueTitle(title: string, expanded = false): string {
+    if (!title) return '';
 
-  // 1. Separate camelCase safely (only if a lowercase letter is followed by an uppercase letter)
-  // Example: "camelCase" -> "camel Case", but "PURE" stays "PURE"
-  const spacedTitle = title.trim().replace(/([a-z])([A-Z])/g, '$1 $2');
+    // 1. Separate camelCase safely (only if a lowercase letter is followed by an uppercase letter)
+    // Example: "camelCase" -> "camel Case", but "PURE" stays "PURE"
+    const spacedTitle = title.trim().replace(/([a-z])([A-Z])/g, '$1 $2');
 
-  // 2. Convert everything to lowercase, then capitalize the very first character
-  const sentenceCaseTitle = spacedTitle.charAt(0).toUpperCase() + spacedTitle.slice(1).toLowerCase();
+    // 2. Convert everything to lowercase, then capitalize the very first character
+    const sentenceCaseTitle =
+      spacedTitle.charAt(0).toUpperCase() + spacedTitle.slice(1).toLowerCase();
 
-  // 3. Split by standard spaces for the word count truncation
-  const words = sentenceCaseTitle.split(/\s+/);
-  
-  return (!expanded && words.length > 5)
-    ? words.slice(0, 5).join(' ') + '...'
-    : sentenceCaseTitle;
-}
+    // 3. Split by standard spaces for the word count truncation
+    const words = sentenceCaseTitle.split(/\s+/);
+
+    return !expanded && words.length > 5
+      ? words.slice(0, 5).join(' ') + '...'
+      : sentenceCaseTitle;
+  }
 
   // formatIssueTitle(title: string, expanded = false): string {
   //   if (!title) return '';
@@ -165,7 +169,6 @@ formatIssueTitle(title: string, expanded = false): string {
     window.open(this.serverUrl + fileUrl, '_blank');
   }
 
-
   UserRole: any;
   user_Email: any;
   supervisorName: any;
@@ -183,7 +186,6 @@ formatIssueTitle(title: string, expanded = false): string {
   reviewerRole: boolean = false;
   publisherRole: boolean = false;
 
-
   availableRoles = [
     { value: '0', label: 'Editor Login' },
     { value: '1', label: 'Author Login' },
@@ -191,7 +193,8 @@ formatIssueTitle(title: string, expanded = false): string {
     { value: '3', label: 'Publisher Login' },
   ];
 
-  selectedRoles: string[] = []; userRole: any;
+  selectedRoles: string[] = [];
+  userRole: any;
   selectedRole: any;
 
   checkUserLogin(): Boolean | any {
@@ -200,7 +203,10 @@ formatIssueTitle(title: string, expanded = false): string {
     if (GetCookieData && status == true) {
       try {
         const retrievedCookies = JSON.parse(GetCookieData);
-        this.userRole = retrievedCookies.UserRole?.length > 0 ? retrievedCookies.UserRole : -1;
+        this.userRole =
+          retrievedCookies.UserRole?.length > 0
+            ? retrievedCookies.UserRole
+            : -1;
         this.userId = retrievedCookies.EmailId;
         this.selectedRole = retrievedCookies.SelectedRole;
         this.supervisorName = retrievedCookies.SupervisorName;
@@ -208,14 +214,13 @@ formatIssueTitle(title: string, expanded = false): string {
         this.candidateName = retrievedCookies.CandidateName;
         return true;
       } catch (error) {
-        console.log("error");
+        console.log('error');
         return false;
       }
     } else {
       return false;
     }
   }
-
 
   getUserRolesforId(): void {
     this.journalService.GetUserRolesforUser(this.userId).subscribe({
@@ -236,12 +241,11 @@ formatIssueTitle(title: string, expanded = false): string {
           '0': 'Editor',
           '1': 'User',
           '2': 'Reviewer',
-          '3': 'Publisher'
+          '3': 'Publisher',
         };
 
         if (this.selectedRole && sortedRoles.includes(this.userRole)) {
           this.userRoleText = roleTextMap[this.selectedRole] ?? '';
-
         } else {
           this.userRoleText = '';
         }
@@ -250,8 +254,7 @@ formatIssueTitle(title: string, expanded = false): string {
         console.error('Error fetching user roles:', err);
         this.UserRole = [];
         this.userRoleText = '';
-      }
+      },
     });
   }
 }
-

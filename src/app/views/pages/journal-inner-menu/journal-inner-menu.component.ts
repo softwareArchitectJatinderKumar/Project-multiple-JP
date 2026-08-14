@@ -9,12 +9,13 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-journal-inner-menu',
   templateUrl: './journal-inner-menu.component.html',
-  standalone: false, 
-  styleUrls: ['./journal-inner-menu.component.scss']
+  standalone: false,
+  styleUrls: ['./journal-inner-menu.component.scss'],
 })
 export class JournalInnerMenuComponent implements OnInit {
   isDisabled = true;
-  BookId: any; name: any;
+  BookId: any;
+  name: any;
   UserRole: any;
   user_Email: any;
   supervisorName: any;
@@ -26,11 +27,15 @@ export class JournalInnerMenuComponent implements OnInit {
     private AuthSession: LoginSessionService,
     private StoragesServices: StorageService,
 
-    private router: Router, private route: ActivatedRoute,
-    private cookieService: CookieService) { this.router.onSameUrlNavigation = 'ignore'; }
+    private router: Router,
+    private route: ActivatedRoute,
+    private cookieService: CookieService,
+  ) {
+    this.router.onSameUrlNavigation = 'ignore';
+  }
 
   VisitUrls(event: Event, Id: any, name: any, Sufix: any) {
-    event.preventDefault();  // This is the key line to prevent blink
+    event.preventDefault(); // This is the key line to prevent blink
     this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
 
@@ -39,7 +44,10 @@ export class JournalInnerMenuComponent implements OnInit {
   }
   navigateToIssues(event: MouseEvent, bookId: string, name: string): void {
     event.preventDefault(); // Prevent default anchor behavior
-    this.router.navigate(['/your-route', { bookId, name, action: 'GetIssues' }]); // Adjust the route as needed
+    this.router.navigate([
+      '/your-route',
+      { bookId, name, action: 'GetIssues' },
+    ]); // Adjust the route as needed
   }
 
   scrollToTop() {
@@ -53,12 +61,10 @@ export class JournalInnerMenuComponent implements OnInit {
     if (BookId != undefined && this.LoginStatus == true) {
       this.BookId = BookId;
       this.name = name;
-    }
-    else {
+    } else {
       this.BookId = BookId;
       this.name = name;
     }
-
   }
   checkUserLogin() {
     const GetCookieData = this.cookieService.get('authData');
@@ -100,7 +106,6 @@ export class JournalInnerMenuComponent implements OnInit {
     });
   }
 
-
   JournalIssues: any[] = [];
   activeAccordionId: string | null = null;
   GetAllIssues(JournalId: any) {
@@ -115,7 +120,7 @@ export class JournalInnerMenuComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error fetching journal issues', error);
-      }
+      },
     });
   }
 
@@ -137,19 +142,19 @@ export class JournalInnerMenuComponent implements OnInit {
     this.groupedIssuesByYear = Object.entries(grouped)
       .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
       .map(([year, issueList]) => {
-
         // 3. Optional: Sort issues within the year by date descending
-        const sortedIssues = issueList.sort((a, b) =>
-          new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+        const sortedIssues = issueList.sort(
+          (a, b) =>
+            new Date(b.publishDate).getTime() -
+            new Date(a.publishDate).getTime(),
         );
 
         return {
           year,
-          issues: this.chunkArray(sortedIssues, 2)
+          issues: this.chunkArray(sortedIssues, 2),
         };
       });
   }
-
 
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const result: any[][] = [];
