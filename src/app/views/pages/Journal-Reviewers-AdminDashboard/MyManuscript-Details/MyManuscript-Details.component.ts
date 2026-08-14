@@ -425,8 +425,6 @@ currentJournalTitle: any;
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -506,16 +504,12 @@ currentJournalTitle: any;
             title: 'Reviewer Assiged ',
             text: data.item1[0]['msg'],
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },

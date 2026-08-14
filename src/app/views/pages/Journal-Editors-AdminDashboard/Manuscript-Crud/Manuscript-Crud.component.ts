@@ -478,8 +478,6 @@ export class ManuscriptCrudComponent implements OnInit {
               title: 'Reviewer Assigned',
               text: data.item1[0]['msg'],
               icon: 'success',
-            }).then(() => {
-              window.location.reload();
             });
           } else {
             Swal.fire('Technical Issue', result, 'error');
@@ -522,12 +520,10 @@ export class ManuscriptCrudComponent implements OnInit {
               title: 'External Reviewers Assigned',
               text: 'All external reviewers have been assigned successfully.',
               icon: 'success',
-            }).then(() => {
-              window.location.reload();
             });
           } else {
             Swal.fire('Partial Success', 'Some reviewers may not have been assigned. Please check console logs.', 'warning')
-              .then(() => window.location.reload());
+              ;
           }
         },
         error: (err) => {

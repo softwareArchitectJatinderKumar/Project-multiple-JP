@@ -382,16 +382,12 @@ export class SubmitManuScriptComponent implements OnInit {
             title: 'Manuscripts Uploaded Successfully',
             text: 'Your manuscripts have been saved successfully.',
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             // text: 'error',
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
         const elapsed = new Date().getTime() - startTime;
@@ -817,8 +813,6 @@ export class SubmitManuScriptComponent implements OnInit {
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -1250,9 +1244,7 @@ export class SubmitManuScriptComponent implements OnInit {
           Swal.close();
 
           if (result && result === 'success') {
-            Swal.fire('Reviewers Assigned', 'The assignment was successfully completed.', 'success').then(() => {
-              window.location.reload();
-            });
+            Swal.fire('Reviewers Assigned', 'The assignment was successfully completed.', 'success');
           } else {
             const apiMsg = data.item1?.[0]?.['msg'] || 'Reviewer assignment failed on the server.';
             Swal.fire('Assignment Failed', apiMsg, 'error');
@@ -1350,16 +1342,12 @@ export class SubmitManuScriptComponent implements OnInit {
             title: 'Reviewer Assiged ',
             text: data.item1[0]['msg'],
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
         setTimeout(() => {
@@ -1394,13 +1382,13 @@ export class SubmitManuScriptComponent implements OnInit {
             title: 'Reviewer Assigned',
             text: data.item1[0]['msg'],
             icon: 'success',
-          }).then(() => window.location.reload());
+          });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => window.location.reload());
+          });
         }
       },
       error: () => {
@@ -1662,9 +1650,7 @@ export class SubmitManuScriptComponent implements OnInit {
           ' Approved/Disapproved successfully !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }
@@ -1817,17 +1803,13 @@ export class SubmitManuScriptComponent implements OnInit {
           ' Action Applied !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       } else {
         Swal.fire(
           'Action Failed !',
           '',
           'error'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }

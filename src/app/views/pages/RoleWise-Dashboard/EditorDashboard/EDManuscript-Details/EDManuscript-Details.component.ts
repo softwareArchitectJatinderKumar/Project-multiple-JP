@@ -457,16 +457,12 @@ assignInternalReviewer(data:any){
           title: 'Reviewer Assiged ',
           text: data.item1[0]['msg'],
           icon: 'success',
-        }).then(() => {
-          window.location.reload();
         });
       } else {
         Swal.fire({
           title: 'Some Technical Issue',
           text: result,
           icon: 'error',
-        }).then(() => {
-          window.location.reload();
         });
       }
     },
@@ -498,13 +494,13 @@ assignExternalReviewer(data:any){
           title: 'Reviewer Assigned',
           text: data.item1[0]['msg'],
           icon: 'success',
-        }).then(() => window.location.reload());
+        });
       } else {
         Swal.fire({
           title: 'Some Technical Issue',
           text: result,
           icon: 'error',
-        }).then(() => window.location.reload());
+        });
       }
     },
     error: () => {
@@ -718,17 +714,13 @@ removeExternalReviewer(index: number) {
           ' Action Applied !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       } else {
         Swal.fire(
           'Action Failed !',
           '',
           'error'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }

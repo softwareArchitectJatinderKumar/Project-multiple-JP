@@ -28,9 +28,7 @@ export class JournalmenubarComponent implements OnInit {
   showSearchForm: boolean = false; show: boolean = true; isSearchOpen: boolean = false;
 
   VisitUrl(Id: any, name: any, Sufix: any) {
-    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
 
   ngOnInit(): void {

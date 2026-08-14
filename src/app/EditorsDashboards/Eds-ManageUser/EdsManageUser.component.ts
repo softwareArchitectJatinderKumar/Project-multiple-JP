@@ -205,9 +205,7 @@ Reason: any;
           ' Approved/Disapproved successfully !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }

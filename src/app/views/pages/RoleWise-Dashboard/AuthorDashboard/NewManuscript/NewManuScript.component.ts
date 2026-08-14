@@ -368,15 +368,11 @@ isLoading: any=false;
             title: 'Manuscripts Uploaded Successfully',
             text: 'Your manuscripts have been saved successfully.',
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },

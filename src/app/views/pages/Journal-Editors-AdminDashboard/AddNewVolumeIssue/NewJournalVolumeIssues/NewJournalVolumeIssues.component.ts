@@ -221,17 +221,11 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
               title: 'Issues are uploaded successfully ',
               text: "",
               icon: 'success',
-            }).then(() => {
-              window.location.reload();
             });
           } else if (errorCode == -1) {
-            Swal.fire({ title: 'Max issues are already uploaded', icon: 'error' }).then(() => {
-              window.location.reload();
-            });
+            Swal.fire({ title: 'Max issues are already uploaded', icon: 'error' });
           } else {
-            Swal.fire({ title: 'Some Technical Issue', text: "", icon: 'error' }).then(() => {
-              window.location.reload();
-            });
+            Swal.fire({ title: 'Some Technical Issue', text: "", icon: 'error' });
           }
         },
         error: () => {

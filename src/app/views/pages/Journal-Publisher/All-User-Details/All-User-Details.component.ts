@@ -209,9 +209,7 @@ Reason: any;
           ' Approved/Disapproved successfully !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }
@@ -259,9 +257,7 @@ Numbers: any;
           ' Reset Password Applied !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       } else {
         Swal.fire(
           ' Reset Password Failed !',

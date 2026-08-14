@@ -214,9 +214,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
           'Rejected successfully !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }

@@ -393,23 +393,17 @@ export class EDEditorHeaderComponent implements OnInit {
 
 
   VisitUrl(Id: any, name: any, Sufix: any): void {
-    this.router.navigateByUrl(`${Id}/${name}/${Sufix}`).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(`${Id}/${name}/${Sufix}`);
     this.scrollToTop();
   }
   VisitUserPage(Menu: any, Id: any, Sufix: any): void {
-    this.router.navigateByUrl(`${Menu}/${Id}/${Sufix}`).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(`${Menu}/${Id}/${Sufix}`);
 
     this.scrollToTop();
   }
 
   VisitPage(Page: any): void {
-    this.router.navigateByUrl(Page).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(Page);
     this.scrollToTop();
   }
 

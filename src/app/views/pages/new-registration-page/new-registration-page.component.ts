@@ -158,9 +158,7 @@ export class NewRegistrationPageComponent implements OnInit {
   }
 
   VisitUrl(Id: any, name: any, Sufix: any) {
-    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
   isLoading: boolean = false;
 
@@ -223,13 +221,9 @@ export class NewRegistrationPageComponent implements OnInit {
                 this.router.navigateByUrl(this.BookId + '/' + this.name + '/' + 'ExternalLogin');
               });
             } else if (result === 'Failed') {
-              Swal.fire({ title: 'User Already Exists', icon: 'error' }).then(() => {
-                window.location.reload();
-              });
+              Swal.fire({ title: 'User Already Exists', icon: 'error' });
             } else {
-              Swal.fire({ title: 'Some Technical Issue', text: result, icon: 'error' }).then(() => {
-                window.location.reload();
-              });
+              Swal.fire({ title: 'Some Technical Issue', text: result, icon: 'error' });
             }
           },
           error: () => {

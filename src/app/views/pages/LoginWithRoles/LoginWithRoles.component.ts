@@ -142,9 +142,7 @@ export class LoginWithRolesComponent implements OnInit {
 
 
   VisitUrl(Id: any, name: any, Sufix: any) {
-    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
 
   Message: any;

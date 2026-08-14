@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-journal-inner-menu',
   templateUrl: './journal-inner-menu.component.html',
-  standalone: false, styleUrls: ['./journal-inner-menu.component.scss']
+  standalone: false, 
+  styleUrls: ['./journal-inner-menu.component.scss']
 })
 export class JournalInnerMenuComponent implements OnInit {
   isDisabled = true;

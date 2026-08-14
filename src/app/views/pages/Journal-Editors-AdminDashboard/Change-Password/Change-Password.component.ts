@@ -63,9 +63,7 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
   VisitUrl(Id: any, name: any, Sufix: any) {
-    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix).then(() => {
-      window.location.reload();
-    });;
+    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);;
   }
 
 
@@ -179,15 +177,11 @@ export class ChangePasswordComponent implements OnInit {
               swal.fire({
                 title: 'Unable to Update Details Try Again Later ',
                 icon: 'error'
-              }).then(() => {
-                window.location.reload();
               });
             } else {
               swal.fire({
                 title: 'Something Went Wrong, Try again later',
                 icon: 'error'
-              }).then(() => {
-                window.location.reload();
               });
             }
           },
@@ -196,8 +190,6 @@ export class ChangePasswordComponent implements OnInit {
               title: 'Error',
               text: 'Failed to Update.',
               icon: 'error'
-            }).then(() => {
-              window.location.reload();
             });
           },
           complete: () => {

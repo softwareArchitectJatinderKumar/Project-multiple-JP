@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { ContactusComponent } from './views/pages/contactus/contactus.component';
 import { JournalAboutComponent } from './views/pages/journal-about/journal-about.component';
 import { submitManuScriptComponentModule } from './views/pages/submitManuScript/submitManuScript.module';
@@ -11,316 +11,518 @@ const routes: Routes = [
     children: [
       // added on 26-Feb-26
       {
-        path:'EditorsLogin',
-        loadChildren: ()=> import('./EditorsDashboards/Eds-LoginPage/Eds-LoginPage.module').then(m=>m.EdsLoginModule)
-      },      
-      {
-        path:'EdsEditorDashboard',
-        loadChildren: ()=> import('./EditorsDashboards/Eds-ManageEditorDetails/EdsManageEditorDetails.module').then(m=>m.EdsManageEditorDetailsModule)
-      },
-       {
-        path: ":Menu/:Role/EdsManageUser",
-        loadChildren: () => import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(m=>m.EdsManageUserModule)
+        path: 'EditorsLogin',
+        loadChildren: () =>
+          import('./EditorsDashboards/Eds-LoginPage/Eds-LoginPage.module').then(
+            (m) => m.EdsLoginModule,
+          ),
       },
       {
-        path: "EdsManageUser",
-        loadChildren: () => import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(m=>m.EdsManageUserModule)
+        path: 'EdsEditorDashboard',
+        loadChildren: () =>
+          import('./EditorsDashboards/Eds-ManageEditorDetails/EdsManageEditorDetails.module').then(
+            (m) => m.EdsManageEditorDetailsModule,
+          ),
       },
       {
-        path: "EdsManageManuscript",
-        loadChildren: () => import('./EditorsDashboards/Eds-ManageManuscripts/EdsManageManuscripts.module').then(m=>m.EdsManageManuscriptsModule)
+        path: ':Menu/:Role/EdsManageUser',
+        loadChildren: () =>
+          import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(
+            (m) => m.EdsManageUserModule,
+          ),
+      },
+      {
+        path: 'EdsManageUser',
+        loadChildren: () =>
+          import('./EditorsDashboards/Eds-ManageUser/EdsManageUser.module').then(
+            (m) => m.EdsManageUserModule,
+          ),
+      },
+      {
+        path: 'EdsManageManuscript',
+        loadChildren: () =>
+          import('./EditorsDashboards/Eds-ManageManuscripts/EdsManageManuscripts.module').then(
+            (m) => m.EdsManageManuscriptsModule,
+          ),
       },
 
       {
-        path: ":Id/:name/SecurityIssue",
-        loadChildren: () => import('./views/pages/SecurePasswordChange/SecurePasswordChange.module').then(m => m.SecurePasswordChangeComponentModule),
+        path: ':Id/:name/SecurityIssue',
+        loadChildren: () =>
+          import('./views/pages/SecurePasswordChange/SecurePasswordChange.module').then(
+            (m) => m.SecurePasswordChangeComponentModule,
+          ),
       },
       {
-        path: "NewJournalForms",
+        path: 'NewJournalForms',
         component: JournalFormComponent,
       },
       {
-        path: "signup",
-        loadChildren: () => import('./views/pages/new-registration-page/new-registration-page.module').then(m => m.NewRegistrationPageModule)
+        path: 'signup',
+        loadChildren: () =>
+          import('./views/pages/new-registration-page/new-registration-page.module').then(
+            (m) => m.NewRegistrationPageModule,
+          ),
       },
       {
-        path: ":Id/:name/signup",
-        loadChildren: () => import('./views/pages/new-registration-page/new-registration-page.module').then(m => m.NewRegistrationPageModule)
+        path: ':Id/:name/signup',
+        loadChildren: () =>
+          import('./views/pages/new-registration-page/new-registration-page.module').then(
+            (m) => m.NewRegistrationPageModule,
+          ),
       },
       {
         path: ':Id/:name/ExternalLogin',
-        loadChildren: () => import('./views/pages/externalUser-login/externalUser-login.module').then(m => m.externalUserloginModule)
+        loadChildren: () =>
+          import('./views/pages/externalUser-login/externalUser-login.module').then(
+            (m) => m.externalUserloginModule,
+          ),
         // loadChildren: ()=> import('./views/pages/LoginWithRoles/LoginWithRoles.module').then(m=>m.LoginWithRolesModule)
       },
       {
         path: 'ExternalLogin',
-        loadChildren: () => import('./views/pages/externalUser-login/externalUser-login.module').then(m => m.externalUserloginModule)
+        loadChildren: () =>
+          import('./views/pages/externalUser-login/externalUser-login.module').then(
+            (m) => m.externalUserloginModule,
+          ),
       },
       {
         path: 'Login',
-        loadChildren: () => import('./views/pages/internalUser-login/internalUser-login.module').then(m => m.InternalUserLoginModule)
+        loadChildren: () =>
+          import('./views/pages/internalUser-login/internalUser-login.module').then(
+            (m) => m.InternalUserLoginModule,
+          ),
       },
       {
         path: ':Id/:name/Login',
-        loadChildren: () => import('./views/pages/internalUser-login/internalUser-login.module').then(m => m.InternalUserLoginModule)
+        loadChildren: () =>
+          import('./views/pages/internalUser-login/internalUser-login.module').then(
+            (m) => m.InternalUserLoginModule,
+          ),
       },
       {
         path: '',
-        loadChildren: () => import('./views/pages/journalhome/jouralhome.module').then(m => m.JournalhomeComponentModule)
+        loadChildren: () =>
+          import('./views/pages/journalhome/jouralhome.module').then(
+            (m) => m.JournalhomeComponentModule,
+          ),
       },
       {
-        path: 'Home', redirectTo: ''
+        path: 'Home',
+        redirectTo: '',
       },
       {
         path: 'Research',
-        loadChildren: () => import('./views/pages/journalresearch/journalresearch.module').then(m => m.JournalresearchComponentModule)
+        loadChildren: () =>
+          import('./views/pages/journalresearch/journalresearch.module').then(
+            (m) => m.JournalresearchComponentModule,
+          ),
       },
       {
         path: 'Conferences',
-        loadChildren: () => import('./views/pages/journalconferences/journalconferences.module').then(m => m.JournalconferencesComponentModule)
+        loadChildren: () =>
+          import('./views/pages/journalconferences/journalconferences.module').then(
+            (m) => m.JournalconferencesComponentModule,
+          ),
       },
       {
         path: 'Contactus',
-        component:ContactusComponent,
+        component: ContactusComponent,
         // loadChildren: () => import('./views/pages/contactus/contactus.module').then(m => m.ContactusComponentModule)
       },
       {
         path: ':Id/:name/About',
         // component:JournalAboutComponent,
-        loadChildren: () => import('./views/pages/journal-about/journal-about.component.mdoule').then(m => m.JournalAboutComponentModule)
+        loadChildren: () =>
+          import('./views/pages/journal-about/journal-about.component.mdoule').then(
+            (m) => m.JournalAboutComponentModule,
+          ),
       },
       {
         path: ':Id/:name/GetIssues',
         // component:JournalAboutComponent,
-        loadChildren: () => import('./views/pages/JournalIssuesDetails/JournalIssuesDetails.module').then(m => m.JournalIssuesDetailsModule)
+        loadChildren: () =>
+          import('./views/pages/JournalIssuesDetails/JournalIssuesDetails.module').then(
+            (m) => m.JournalIssuesDetailsModule,
+          ),
       },
       {
-        path: ":Id/:name/EditorialBoard",
-        loadChildren: () => import('./views/pages/journal-editor-board/journal-editor-board.component.module').then(m => m.JournalEditorBoardComponentModule)
+        path: ':Id/:name/EditorialBoard',
+        loadChildren: () =>
+          import('./views/pages/journal-editor-board/journal-editor-board.component.module').then(
+            (m) => m.JournalEditorBoardComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/AuthorGuidelines/ManuScriptPrepare",
-        loadChildren: () => import('./views/pages/AuthorGuidelines/manuscript-preparation/manuscript-preparation.component.module').then(m => m.ManuScriptPreparationComponentModule)
+        path: ':Id/:name/AuthorGuidelines/ManuScriptPrepare',
+        loadChildren: () =>
+          import('./views/pages/AuthorGuidelines/manuscript-preparation/manuscript-preparation.component.module').then(
+            (m) => m.ManuScriptPreparationComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/AuthorGuidelines/ManuScriptWorkFlow",
-        loadChildren: () => import('./views/pages/AuthorGuidelines/manuscript-workflow/manuscript-workflow.component.module').then(m => m.ManuScriptWorkflowComponentModule)
+        path: ':Id/:name/AuthorGuidelines/ManuScriptWorkFlow',
+        loadChildren: () =>
+          import('./views/pages/AuthorGuidelines/manuscript-workflow/manuscript-workflow.component.module').then(
+            (m) => m.ManuScriptWorkflowComponentModule,
+          ),
       },
       // Policies Routes
       {
-        path: ":Id/:name/Policies/EditorialPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/editorial-policy/editorial-policy.component.module').then(m => m.EditorialPolicyComponentModule)
+        path: ':Id/:name/Policies/EditorialPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/editorial-policy/editorial-policy.component.module').then(
+            (m) => m.EditorialPolicyComponentModule,
+          ),
       },
 
       {
-        path: ":Id/:name/Policies/PeerReviewPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/peer-review-policy/peer-review-policy.component.module').then(m => m.PeerReviewPolicyComponentModule)
+        path: ':Id/:name/Policies/PeerReviewPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/peer-review-policy/peer-review-policy.component.module').then(
+            (m) => m.PeerReviewPolicyComponentModule,
+          ),
       },
 
       {
-        path: ":Id/:name/Policies/OpenAccessPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/open-access-policy/open-access-policy.component.module').then(m => m.OpenAccessPolicyComponentModule)
+        path: ':Id/:name/Policies/OpenAccessPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/open-access-policy/open-access-policy.component.module').then(
+            (m) => m.OpenAccessPolicyComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/Policies/PlagiarismPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/plagriasm-policy/plagrism-policy.component.module').then(m => m.PlagriasmPolicyComponentModule)
+        path: ':Id/:name/Policies/PlagiarismPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/plagriasm-policy/plagrism-policy.component.module').then(
+            (m) => m.PlagriasmPolicyComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/Policies/PublicationChargePolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/publication-charge-policy/publication-charge-policy.component.module').then(m => m.PublicationChargePolicyComponentModule)
-      },
-
-      {
-        path: ":Id/:name/Policies/ComplaintPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/complaint-policy/complaint-policy.component.module').then(m => m.ComplaintPolicyComponentModule)
-      },
-      {
-        path: ":Id/:name/Policies/CopyrightPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/copyrightand-licensingpolicy/copyrightand-licensingpolicy.component.module').then(m => m.CopyrightandLicensingpolicyComponentModule)
-      },
-      {
-        path: ":Id/:name/Policies/ConflictInterestPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/interest-confilict-policy/interest-conflict-policy.component.module').then(m => m.InterestConfilictPolicyComponentModule)
+        path: ':Id/:name/Policies/PublicationChargePolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/publication-charge-policy/publication-charge-policy.component.module').then(
+            (m) => m.PublicationChargePolicyComponentModule,
+          ),
       },
 
       {
-        path: ":Id/:name/Policies/CorrectionsRetractionPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/corection-retraction-policy/corection-retraction-policy.component.module').then(m => m.CorectionRetractionPolicyComponentModule)
+        path: ':Id/:name/Policies/ComplaintPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/complaint-policy/complaint-policy.component.module').then(
+            (m) => m.ComplaintPolicyComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/Policies/CrossMarkPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/cross-mark-policy/cross-mark-policy.component.module').then(m => m.CrossMarkPolicyComponentModule)
+        path: ':Id/:name/Policies/CopyrightPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/copyrightand-licensingpolicy/copyrightand-licensingpolicy.component.module').then(
+            (m) => m.CopyrightandLicensingpolicyComponentModule,
+          ),
+      },
+      {
+        path: ':Id/:name/Policies/ConflictInterestPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/interest-confilict-policy/interest-conflict-policy.component.module').then(
+            (m) => m.InterestConfilictPolicyComponentModule,
+          ),
       },
 
       {
-        path: ":Id/:name/Policies/DigitalandSelfPolicy",
-        loadChildren: () => import('./views/pages/JournalPolicies/digital-self-archiving-policy/digital-self-archiving-policy.component.module').then(m => m.DigitalSelfArchivingPolicyComponentModule)
+        path: ':Id/:name/Policies/CorrectionsRetractionPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/corection-retraction-policy/corection-retraction-policy.component.module').then(
+            (m) => m.CorectionRetractionPolicyComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/SubmitManuScript",
+        path: ':Id/:name/Policies/CrossMarkPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/cross-mark-policy/cross-mark-policy.component.module').then(
+            (m) => m.CrossMarkPolicyComponentModule,
+          ),
+      },
+
+      {
+        path: ':Id/:name/Policies/DigitalandSelfPolicy',
+        loadChildren: () =>
+          import('./views/pages/JournalPolicies/digital-self-archiving-policy/digital-self-archiving-policy.component.module').then(
+            (m) => m.DigitalSelfArchivingPolicyComponentModule,
+          ),
+      },
+      {
+        path: ':Id/:name/SubmitManuScript',
         // component:SubmitManuScriptComponentModule
-        loadChildren: () => import('./views/pages/submitManuScript/submitManuScript.module').then(m => m.submitManuScriptComponentModule)
+        loadChildren: () =>
+          import('./views/pages/submitManuScript/submitManuScript.module').then(
+            (m) => m.submitManuScriptComponentModule,
+          ),
       },
       {
-        path: ":Id/:name/MyManuScript",
+        path: ':Id/:name/MyManuScript',
         component: ManuScriptReportComponent,
         // component:SubmitManuScriptComponentModule
         // loadChildren: () => import('./views/pages/SubmitManuScript/SubmitManuScript.module').then(m => m.SubmitManuScriptComponentModule)
       },
 
-
       // Publisher Dashboard
-    
+
       {
-        path:'AdvancedLogin',
-        loadChildren: ()=> import('./views/pages/internalUser-login/internalUser-login.module').then(m=>m.InternalUserLoginModule)
+        path: 'AdvancedLogin',
+        loadChildren: () =>
+          import('./views/pages/internalUser-login/internalUser-login.module').then(
+            (m) => m.InternalUserLoginModule,
+          ),
       },
-       //  // Journal WebAdmin Panel
-       {
-        path:'UpdateJournalsDetails',
-        loadChildren:()=> import('./views/pages/Journal-Publisher/update-journal-details/update-journal-details.module').then(m=> m.UpdateJournalDetailsModule)
-      },
+      //  // Journal WebAdmin Panel
       {
-        path: "PublisherDashboard",
-        loadChildren: () => import('./views/pages/Journal-Publisher/Publisher-Dashboard/Publisher-Dashboard.module').then(m=>m.PublisherDashboardModule)
-      },
-      {
-        path: "AllJournals",
-        loadChildren: () => import('./views/pages/Journal-Publisher/All-Journals-Details/All-Journals-Details.module').then(m=>m.AllJournalsDetailsModule)
+        path: 'UpdateJournalsDetails',
+        loadChildren: () =>
+          import('./views/pages/Journal-Publisher/update-journal-details/update-journal-details.module').then(
+            (m) => m.UpdateJournalDetailsModule,
+          ),
       },
       {
-        path: ":Menu/:Role/AllUsersDetails",
-        loadChildren: () => import('./views/pages/Journal-Publisher/All-User-Details/All-User-Details.module').then(m=>m.AllUserDetailsModule)
+        path: 'PublisherDashboard',
+        loadChildren: () =>
+          import('./views/pages/Journal-Publisher/Publisher-Dashboard/Publisher-Dashboard.module').then(
+            (m) => m.PublisherDashboardModule,
+          ),
       },
       {
-        path: "AllUsersDetails",
-        loadChildren: () => import('./views/pages/Journal-Publisher/All-User-Details/All-User-Details.module').then(m=>m.AllUserDetailsModule)
+        path: 'AllJournals',
+        loadChildren: () =>
+          import('./views/pages/Journal-Publisher/All-Journals-Details/All-Journals-Details.module').then(
+            (m) => m.AllJournalsDetailsModule,
+          ),
+      },
+      {
+        path: ':Menu/:Role/AllUsersDetails',
+        loadChildren: () =>
+          import('./views/pages/Journal-Publisher/All-User-Details/All-User-Details.module').then(
+            (m) => m.AllUserDetailsModule,
+          ),
+      },
+      {
+        path: 'AllUsersDetails',
+        loadChildren: () =>
+          import('./views/pages/Journal-Publisher/All-User-Details/All-User-Details.module').then(
+            (m) => m.AllUserDetailsModule,
+          ),
       },
 
-
-// Editors Dashboard 
+      // Editors Dashboard
       {
-        path: "ManuscriptCrudDashboard",
-        loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/Manuscript-Crud.module').then(m=>m.ManuscriptCrudModule)
+        path: 'ManuscriptCrudDashboard',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/Manuscript-Crud.module').then(
+            (m) => m.ManuscriptCrudModule,
+          ),
       },
       {
-        path: "EditorDashboard",
-        loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Details/Manuscript-Details.module').then(m=>m.ManuscriptDetailsModule)
+        path: 'EditorDashboard',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Details/Manuscript-Details.module').then(
+            (m) => m.ManuscriptDetailsModule,
+          ),
         // loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Crud/manuscript-crud.module').then(m=>m.ManuscriptCrudModule)
       },
       {
-        path: "ReviewersRemarks",
-        loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/ReviewersRemarks-Details/ReviewersRemarks-Details.module').then(m=>m.ReviewersRemarksDetailsModule)
+        path: 'ReviewersRemarks',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/ReviewersRemarks-Details/ReviewersRemarks-Details.module').then(
+            (m) => m.ReviewersRemarksDetailsModule,
+          ),
       },
 
       {
-        path: "UpdateKey",
-        loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Change-Password/Change-Password.module').then(m=>m.ChangePasswordComponentModule)
+        path: 'UpdateKey',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/Change-Password/Change-Password.module').then(
+            (m) => m.ChangePasswordComponentModule,
+          ),
       },
       {
-        path:"NewVolume",
-        loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/NewJournalVolumeIssues.module').then(m=>m.NewJournalVolumeIssuesModule)
+        path: 'NewVolume',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/NewJournalVolumeIssues.module').then(
+            (m) => m.NewJournalVolumeIssuesModule,
+          ),
       },
       {
-        path:"AllVolumesIssues",
-        loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/ViewAllJournalIssues/ViewAllJournalIssues.module').then(m=>m.ViewAllJournalIssuesModule)
+        path: 'AllVolumesIssues',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/ViewAllJournalIssues/ViewAllJournalIssues.module').then(
+            (m) => m.ViewAllJournalIssuesModule,
+          ),
       },
       {
-        path:"EditIssueDetails",
-        loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/UpdateIssueDetails/UpdateIssueDetails.module').then(m=>m.UpdateIssueDetailsModule)
+        path: 'EditIssueDetails',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/UpdateIssueDetails/UpdateIssueDetails.module').then(
+            (m) => m.UpdateIssueDetailsModule,
+          ),
       },
       {
-        path:"ManageEditorDetails",
-        loadChildren:() => import('./views/pages/Journal-Editors-AdminDashboard/Crud-Editor-Details/editor-crud.module').then(m=>m.EditorCrudModule)
+        path: 'ManageEditorDetails',
+        loadChildren: () =>
+          import('./views/pages/Journal-Editors-AdminDashboard/Crud-Editor-Details/editor-crud.module').then(
+            (m) => m.EditorCrudModule,
+          ),
       },
 
-
-      // Reviewers Dashboard 
+      // Reviewers Dashboard
       {
-        path: "ReviewersDashboard",
-        loadChildren: () => import('./views/pages/Journal-Reviewers-AdminDashboard/MyManuscript-Details/MyManuscript-Details.module').then(m=>m.MyManuscriptDetailsModule)
+        path: 'ReviewersDashboard',
+        loadChildren: () =>
+          import('./views/pages/Journal-Reviewers-AdminDashboard/MyManuscript-Details/MyManuscript-Details.module').then(
+            (m) => m.MyManuscriptDetailsModule,
+          ),
       },
       {
-        path: "MyReviews",
-        loadChildren: () => import('./views/pages/Journal-Reviewers-AdminDashboard/MyRemarks-Details/MyRemarks-Details.module').then(m=>m.MyRemarksDetailsModule)
+        path: 'MyReviews',
+        loadChildren: () =>
+          import('./views/pages/Journal-Reviewers-AdminDashboard/MyRemarks-Details/MyRemarks-Details.module').then(
+            (m) => m.MyRemarksDetailsModule,
+          ),
       },
-
-
 
       // Recover Password
       {
-        path: ":Id/:name/RecoverPasswordReset",
+        path: ':Id/:name/RecoverPasswordReset',
         // loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Details/Manuscript-Details.module').then(m=>m.ManuscriptDetailsModule)
-        loadChildren: () => import('./views/pages/recover-account/recover-account.module').then(m=>m.RecoverAccountComponentModule),
-      }, 
-
+        loadChildren: () =>
+          import('./views/pages/recover-account/recover-account.module').then(
+            (m) => m.RecoverAccountComponentModule,
+          ),
+      },
 
       // // Recover Password
       // {
       //    path: ":Id/:name/RecoverPasswordReset",
       //   // loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/Manuscript-Details/Manuscript-Details.module').then(m=>m.ManuscriptDetailsModule)
       //   loadChildren: () => import('./views/pages/recover-account/recover-account.module').then(m=>m.RecoverAccountComponentModule),
-      // }, 
-
+      // },
 
       // User Editor Dashboard  added on 12-May-25
       {
-        path:':Id/:name/RolewiseLogin',
-        loadChildren: ()=> import('./views/pages/LoginWithRoles/LoginWithRoles.module').then(m=>m.LoginWithRolesModule)
+        path: ':Id/:name/RolewiseLogin',
+        loadChildren: () =>
+          import('./views/pages/LoginWithRoles/LoginWithRoles.module').then(
+            (m) => m.LoginWithRolesModule,
+          ),
       },
       {
-        path: ":Id/:name/UserED",
-        loadChildren: () => import('./views/pages/RoleWise-Dashboard/EditorDashboard/EDManuscript-Details/EDManuscript-Details.module').then(m=>m.EDManuscriptDetailsModule)
+        path: ':Id/:name/UserED',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/EditorDashboard/EDManuscript-Details/EDManuscript-Details.module').then(
+            (m) => m.EDManuscriptDetailsModule,
+          ),
       },
       {
-        path: ":Id/:name/UserRRD",
-        loadChildren: () => import('./views/pages/RoleWise-Dashboard/EditorDashboard/EDReviewersRemarks-Details/EDReviewersRemarks-Details.module').then(m=>m.EDReviewersRemarksDetailsModule)
+        path: ':Id/:name/UserRRD',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/EditorDashboard/EDReviewersRemarks-Details/EDReviewersRemarks-Details.module').then(
+            (m) => m.EDReviewersRemarksDetailsModule,
+          ),
       },
       {
-        path: ":Id/:name/EDNewIssue",
+        path: ':Id/:name/EDNewIssue',
         // loadChildren: () => import('./views/pages/RoleWise-Dashboard/EditorDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/EDNewJournalVolume.module').then(m=>m.EDNewJournalVolumeModule)
-        loadChildren: () => import('./views/pages/RoleWise-Dashboard/EditorDashboard/AddNewVolumeIssue/NewLogic-AddNewIssue/AddNewIssuePage.module').then(m=>m.AddNewIssuePageModule)
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/EditorDashboard/AddNewVolumeIssue/NewLogic-AddNewIssue/AddNewIssuePage.module').then(
+            (m) => m.AddNewIssuePageModule,
+          ),
       },
       {
-        path: ":Id/:name/EDAllssues",
-        loadChildren: () => import('./views/pages/RoleWise-Dashboard/EditorDashboard/ViewAllJournalIssues/EDAllJournalVolumes.module').then(m=>m.EDAllJournalVolumesModule)
+        path: ':Id/:name/EDAllssues',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/EditorDashboard/ViewAllJournalIssues/EDAllJournalVolumes.module').then(
+            (m) => m.EDAllJournalVolumesModule,
+          ),
       },
       // {
       //   path: "ReviewersRemarks",
       //   loadChildren: () => import('./views/pages/Journal-Editors-AdminDashboard/ReviewersRemarks-Details/ReviewersRemarks-Details.module').then(m=>m.ReviewersRemarksDetailsModule)
       // },
 
-
-      // User Author Dashboard 
+      // User Author Dashboard
       {
-        path :":Id/:name/AuthorDashboard",
-        loadChildren:()=> import('./views/pages/RoleWise-Dashboard/AuthorDashboard/NewManuscript/NewManuScript.module').then(m=>m.NewManuScriptModule)
+        path: ':Id/:name/AuthorDashboard',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/AuthorDashboard/NewManuscript/NewManuScript.module').then(
+            (m) => m.NewManuScriptModule,
+          ),
       },
       {
-        path :":Id/:name/ViewManuscripts",
-        loadChildren:()=> import('./views/pages/RoleWise-Dashboard/AuthorDashboard/ManuScriptReport/ViewAllManuscripts.module').then(m=>m.ViewAllManuscriptsModule)
+        path: ':Id/:name/ViewManuscripts',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/AuthorDashboard/ManuScriptReport/ViewAllManuscripts.module').then(
+            (m) => m.ViewAllManuscriptsModule,
+          ),
       },
-      // Reviewers Dashboard 
+      // Reviewers Dashboard
       {
-        path :":Id/:name/ReviewerDashboard",
-        loadChildren:()=> import('./views/pages/RoleWise-Dashboard/ReviewersDashboard/RDManuscript-Details/RDManuscript-Details.module').then(m=>m.RDManuscriptDetailsModule)
+        path: ':Id/:name/ReviewerDashboard',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/ReviewersDashboard/RDManuscript-Details/RDManuscript-Details.module').then(
+            (m) => m.RDManuscriptDetailsModule,
+          ),
       },
       {
-        path :":Id/:name/ReviewersRemarks",
-        loadChildren:()=> import('./views/pages/RoleWise-Dashboard/ReviewersDashboard/RDRemarksDetails/RDRemarksDetails.module').then(m=>m.RDRemarksDetailsModule)
+        path: ':Id/:name/ReviewersRemarks',
+        loadChildren: () =>
+          import('./views/pages/RoleWise-Dashboard/ReviewersDashboard/RDRemarksDetails/RDRemarksDetails.module').then(
+            (m) => m.RDRemarksDetailsModule,
+          ),
       },
       {
-        path :":Id/:name/ForgotPassword",
+        path: ':Id/:name/ForgotPassword',
         // loadChildren: () => import('./views/pages/recover-account/recover-account.module').then(m=>m.RecoverAccountComponentModule),
-        loadChildren: () => import('./views/pages/ForgotPassword/ForgotPassword.module').then(m=>m.ForgotPasswordModule),
+        loadChildren: () =>
+          import('./views/pages/ForgotPassword/ForgotPassword.module').then(
+            (m) => m.ForgotPasswordModule,
+          ),
       },
-      
-    ]
-  }
+      {
+        path: 'error',
+        loadChildren: () =>
+          import('./views/pages/journalhome/jouralhome.module').then(
+            (m) => m.JournalhomeComponentModule,
+          ),
+      },
+      {
+        path: 'error/:type',
+        loadChildren: () =>
+          import('./views/pages/journalhome/jouralhome.module').then(
+            (m) => m.JournalhomeComponentModule,
+          ),
+      },
+      {
+        path: '**',
+        redirectTo: 'Home',
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'top',
+      useHash: true,
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+
+//     ]
+//   }
+// ];
+
+// @NgModule({
+//   imports: [RouterModule.forRoot(routes)],
+//   exports: [RouterModule]
+// })
+export class AppRoutingModule {}

@@ -166,15 +166,11 @@ export class SecurePasswordChangeComponent implements OnInit {
                       swal.fire({
                         title: 'Unable to Update Details Try Again Later ',
                         icon: 'error'
-                      }).then(() => {
-                        window.location.reload();
                       });
                     } else {
                       swal.fire({
                         title: 'Something Went Wrong, Try again later',
                         icon: 'error'
-                      }).then(() => {
-                        window.location.reload();
                       });
                     }
 
@@ -189,12 +185,12 @@ export class SecurePasswordChangeComponent implements OnInit {
             title: 'Update Failed',
             text: 'Please try again later.',
             icon: 'error'
-          }).then(() => window.location.reload());
+          });
         }
       },
       error: () => {
         swal.fire('Error', 'Failed to update password.', 'error')
-          .then(() => window.location.reload());
+          ;
       }
     });
   }

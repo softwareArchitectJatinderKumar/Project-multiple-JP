@@ -507,9 +507,7 @@ addReviewerFromDropdown(): void {
                     Swal.close(); 
 
                     if (result && result === 'success') {
-                        Swal.fire('Reviewers Assigned', 'The assignment was successfully completed.', 'success').then(() => {
-                            window.location.reload();
-                        });
+                        Swal.fire('Reviewers Assigned', 'The assignment was successfully completed.', 'success');
                     } else {
                         const apiMsg = data.item1?.[0]?.['msg'] || 'Reviewer assignment failed on the server.';
                         Swal.fire('Assignment Failed', apiMsg, 'error');

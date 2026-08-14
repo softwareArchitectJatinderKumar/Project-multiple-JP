@@ -121,9 +121,7 @@ export class ExternalUserLoginComponent implements OnInit {
   submitted: boolean = false;
 
   VisitUrl(Id: any, name: any, Sufix: any) {
-    this.router.navigateByUrl(Id + '/' + name + '/' + Sufix).then(() => {
-      window.location.reload();
-    });
+    this.router.navigateByUrl('/' + Id + '/' + name + '/' + Sufix);
   }
 
   // new logic for login with create token
@@ -187,11 +185,6 @@ export class ExternalUserLoginComponent implements OnInit {
       text: 'Check if you have selected the same Journal!',
       icon: 'warning',
       confirmButtonText: 'OK'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.AuthSession.addToSession(this.UserData);
-        this.VisitUrl(this.BookId, this.name, 'ExternalLogin')
-      }
     });
   }
 
@@ -293,7 +286,7 @@ export class ExternalUserLoginComponent implements OnInit {
     }
   }
 
-  // new code for user roles 
+  // new code for user roles
   UserRolesData: any;
   UserRolesArray: { value: string; label: string; id: string }[] = [];
   editorRole: boolean = false;

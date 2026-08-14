@@ -401,8 +401,6 @@ export class SubmitManuScriptComponent implements OnInit {
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -687,8 +685,6 @@ TakeActionAs() {
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },

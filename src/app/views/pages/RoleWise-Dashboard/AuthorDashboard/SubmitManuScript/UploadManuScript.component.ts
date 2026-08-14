@@ -532,16 +532,12 @@ export class UploadManuScriptComponent implements OnInit {
             title: 'Manuscripts Uploaded Successfully',
             text: 'Your manuscripts have been saved successfully.',
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             // text: 'error',
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -827,8 +823,6 @@ export class UploadManuScriptComponent implements OnInit {
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -930,16 +924,12 @@ export class UploadManuScriptComponent implements OnInit {
             title: 'Reviewer Assiged ',
             text: data.item1[0]['msg'],
             icon: 'success',
-          }).then(() => {
-            window.location.reload();
           });
         } else {
           Swal.fire({
             title: 'Some Technical Issue',
             text: result,
             icon: 'error',
-          }).then(() => {
-            window.location.reload();
           });
         }
       },
@@ -1229,9 +1219,7 @@ export class UploadManuScriptComponent implements OnInit {
           ' Approved/Disapproved successfully !',
           '',
           'success'
-        ).then(() => {
-          window.location.reload();
-        });
+        );
       }
     });
   }
