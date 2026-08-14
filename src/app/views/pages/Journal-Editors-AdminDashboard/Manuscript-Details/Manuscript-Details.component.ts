@@ -507,7 +507,9 @@ addReviewerFromDropdown(): void {
                     Swal.close(); 
 
                     if (result && result === 'success') {
+                        this.closeModal();
                         Swal.fire('Reviewers Assigned', 'The assignment was successfully completed.', 'success');
+                        this.showEditorData(this.currentJournalId); // Refresh the table
                     } else {
                         const apiMsg = data.item1?.[0]?.['msg'] || 'Reviewer assignment failed on the server.';
                         Swal.fire('Assignment Failed', apiMsg, 'error');
@@ -527,14 +529,21 @@ addReviewerFromDropdown(): void {
     private closeModal(reopen: boolean = false): void {
         const modalElement = document.getElementById('assignReviewerModal');
         if (modalElement) {
-            const modal = bootstrap.Modal.getInstance(modalElement);
+            let modal = bootstrap.Modal.getInstance(modalElement);
             if (modal) {
                 modal.hide();
-                if (reopen) {
-                    setTimeout(() => {
-                         new bootstrap.Modal(modalElement).show();
-                    }, 500);
+            } else {
+                // Fallback for modals opened via data-bs-toggle
+                const closeBtn = modalElement.querySelector('.btn-close') as HTMLElement;
+                if (closeBtn) {
+                    closeBtn.click();
                 }
+            }
+            
+            if (reopen) {
+                setTimeout(() => {
+                     new bootstrap.Modal(modalElement).show();
+                }, 500);
             }
         }
     }

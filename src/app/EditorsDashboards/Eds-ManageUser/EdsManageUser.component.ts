@@ -41,18 +41,20 @@ export class EdsManageUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.serverUrl = 'https://files.lpu.in/umsweb/Journal/';
-    let Role = this.route.snapshot.params['Role'];
-    this.MenuBar = this.route.snapshot.params['Menu'];
-    // let name  = this.route.snapshot.params['name'];
-    // alert(name+"in Page ")
-    let loginStatus = this.checkUserLogin();
-   
-    this.getUsersDetails(Role);
-    if (Role != undefined && loginStatus ) {
-      this.Role = Role;
-      this.JournalTitle = name;
+    
+    this.route.params.subscribe(params => {
+      let Role = params['Role'];
+      this.MenuBar = params['Menu'];
+      
+      let loginStatus = this.checkUserLogin();
+      
       this.getUsersDetails(Role);
-    }
+      if (Role != undefined && loginStatus) {
+        this.Role = Role;
+        // this.JournalTitle = params['name']; // (Left commented out if not used)
+        this.getUsersDetails(Role);
+      }
+    });
   }
 
   checkUserLogin() {
