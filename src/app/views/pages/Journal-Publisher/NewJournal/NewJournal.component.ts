@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray,FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -84,7 +85,7 @@ LoadForm(): void {
 
 
 getBooksDetail(): void {
-  this.journalService.GetAllBooksDetails().subscribe((response) => {
+  this.commonService.GetAllBooksDetails().subscribe((response) => {
     if (response.item1 && response.item1.length > 0) {
       this.AllJournalsDetails = response.item1;
       this.TempAllJournalsDetails = this.AllJournalsDetails;       
@@ -95,7 +96,7 @@ getBooksDetail(): void {
   });
 }
 GetJournalProperties(): void {
-  this.journalService.GetJournalProperties().subscribe((response) => {
+  this.commonService.GetJournalProperties().subscribe((response) => {
     if (response.item1.length > 0) {
       this.PropertiesData = response.item1;
       
@@ -153,7 +154,7 @@ LoginFailed(_NewError: any) {
     'Journal Editor Details'
   ];
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private fb: FormBuilder,
     private journalService: LpujournalbookService,
     private router: Router, private authService: AuthService,

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { finalize } from 'rxjs'
 import { ActivatedRoute } from '@angular/router';
@@ -24,7 +25,7 @@ export class AddNewIssuePageComponent implements OnInit {
 
   Journals: any;
   LoginStatus: boolean | undefined;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private fb: FormBuilder, private route: ActivatedRoute,
     private journalWebApiService: LpujournalbookService
   ) { }
@@ -69,7 +70,7 @@ export class AddNewIssuePageComponent implements OnInit {
   //   this.isLoading = true;
   //   const minLoadingTime = 1500; // 2.5 seconds
   //   const startTime = Date.now();
-  //   this.journalWebApiService.GetAllBooksDetails().pipe(
+  //   this.commonService.GetAllBooksDetails().pipe(
   //     finalize(() => {
   //       const elapsed = Date.now() - startTime;
   //       const remaining = Math.max(minLoadingTime - elapsed, 0);
@@ -99,7 +100,7 @@ export class AddNewIssuePageComponent implements OnInit {
     this.isLoading = true;
     const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
-    this.journalWebApiService.GetAllBooksDetails().pipe(
+    this.commonService.GetAllBooksDetails().pipe(
       finalize(() => {
         const elapsed = Date.now() - startTime;
         const remaining = Math.max(minLoadingTime - elapsed, 0);

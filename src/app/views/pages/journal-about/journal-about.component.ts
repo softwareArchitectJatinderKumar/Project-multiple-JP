@@ -16,6 +16,7 @@ import { MouDocumentsService } from 'src/app/_services/mou-documents.service';
 
  
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { DatePipe } from '@angular/common';
 
 interface Book {
@@ -33,7 +34,7 @@ export class JournalAboutComponent implements OnInit {
   data: any[] =[];    BookId: any;  bookData: any;  JournalDetails: any;  detailsArray: any;
   name: any; JournalTitle: any;
   JournalIntroduction: any; 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private journalWebApiService: LpujournalbookService, 
     private authService: AuthService,
     public formBuilder: UntypedFormBuilder,
@@ -61,7 +62,7 @@ export class JournalAboutComponent implements OnInit {
   }
   imageLoadError: boolean = false;
   GetJournalDetailsAbout(JournalId: any): void {
-    this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
+    this.commonService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.bookData = response.item1[0];
 
@@ -114,7 +115,7 @@ export class JournalAboutComponent implements OnInit {
   editorData: any;
   filteredEditors: any;
   GetJournalEditorsDetailsByBookId(BookId: any): void {
-    this.journalWebApiService.GetAllJournalEditorsDetails().subscribe((response) => {
+    this.commonService.GetAllJournalEditorsDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.editorData = response.item1;        
       this.filteredEditors = this.editorData.filter((item: { journalId: any }) => item.journalId === BookId);

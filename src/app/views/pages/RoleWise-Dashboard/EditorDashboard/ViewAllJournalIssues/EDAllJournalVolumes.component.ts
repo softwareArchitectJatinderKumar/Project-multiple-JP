@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
@@ -48,7 +49,7 @@ export class EDAllJournalVolumesComponent implements OnInit {
   currentJournalVolume: any; // Added to store the current journal volume
   name: any;
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -69,7 +70,7 @@ export class EDAllJournalVolumesComponent implements OnInit {
 
   loadJournals() {
     this.isLoadingPage = true; // Show loading spinner
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.journalListsData = dataX.item1 || [];
         this.setJournalId(); // Set journal ID after loading journals
@@ -96,7 +97,7 @@ export class EDAllJournalVolumesComponent implements OnInit {
   }
 
   GetAllIssues(JournalId: any) {
-    this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+    this.commonService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssuesData = dataX.item1 || [];
         this.calculateTotalPagesEditor();
@@ -216,7 +217,7 @@ export class EDAllJournalVolumesComponent implements OnInit {
 //   }
 
 //   GetAllIssues(JournalId: any) {
-//     this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+//     this.commonService.GetJournalIssues(JournalId).subscribe({
 //       next: (dataX: any) => {
 //         this.JournalIssuesData = dataX.item1 || [];
 //         this.calculateTotalPagesEditor();

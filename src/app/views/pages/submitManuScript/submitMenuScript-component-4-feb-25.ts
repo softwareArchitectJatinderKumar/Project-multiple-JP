@@ -12,6 +12,7 @@
 // import { StorageService } from 'src/app/_services/storage.service';
 // import { Validators } from '@angular/forms';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import Swal from 'sweetalert2';
 // import { LoginSessionService } from 'src/app/_services/login-session.service';
 // import { CookieService } from 'ngx-cookie-service';
@@ -59,7 +60,7 @@
 //   UserRolesData: any;
 
 
-//   constructor(
+//   constructor(private commonService: LpujournalCommonService, 
 //     private storageService: StorageService,
 //     private authService: AuthService,
 //     private AuthSession: LoginSessionService,
@@ -111,7 +112,7 @@
 //   }
 //   getUserRolesforId()
 //   {
-//     this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe((response) => {
+//     this.commonService.GetUserRolesforUser(this.userId).subscribe((response) => {
 //       if (response.item1 && response.item1.length > 0) {
 //         this.UserRolesData = response.item1[0];
 //         // this.UserRoles = this.UserRolesData.userRole;
@@ -147,7 +148,7 @@
 //   }
 
 //   GetJournalDetailsAbout(JournalId: any): void {
-//     this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
+//     this.commonService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
 //       if (response.item1 && response.item1.length > 0) {
 //         this.bookData = response.item1[0];
 //         // console.log(JSON.stringify(this.bookData))
@@ -165,7 +166,7 @@
  
 
 //   showData() {
-//     this.journalWebApiService.GetAllBooksDetails().subscribe({
+//     this.commonService.GetAllBooksDetails().subscribe({
 //       next: (dataX: any) => {
 //         this.dataSource = dataX.item1;
 //         this.dataLoaded = true;

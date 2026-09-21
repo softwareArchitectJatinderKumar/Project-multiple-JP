@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
  import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { finalize } from 'rxjs';
 import { Router } from '@angular/router';
@@ -68,7 +69,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         issueFileName: 'Issue File',
         Action: 'Action'
     };
-    constructor(
+    constructor(private commonService: LpujournalCommonService, 
         private router: Router, private fb: FormBuilder,
         private cookieService: CookieService,
         private journalWebApiService: LpujournalbookService,  
@@ -284,7 +285,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
 
     loadJournals() {
         this.isLoadingPage = true;
-        this.journalWebApiService.GetAllBooksDetails().subscribe({
+        this.commonService.GetAllBooksDetails().subscribe({
             next: (dataX: any) => {
                 this.journalListsData = dataX.item1;
                 this.delayHideLoader('page');
@@ -307,7 +308,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
 
  
     GetAllIssues(JournalId: any) {
-        this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+        this.commonService.GetJournalIssues(JournalId).subscribe({
             next: (dataX: any) => {
                 this.JournalIssuesData = dataX.item1 || [];
                 //  console.log("IssueData"+JSON.stringify(this.JournalIssuesData))

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { StorageService } from 'src/app/_services/storage.service';
 @Component({
@@ -19,7 +20,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
   groupedIssuesByYear: { year: string; issues: any[][] }[] = [];
   expandedTitles: Set<string> = new Set<string>();
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private route: ActivatedRoute,
     private journalService: LpujournalbookService,
     private StoragesServices: StorageService,
@@ -48,7 +49,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
 
   loadIssues() {
     this.isLoading = true;
-    this.journalService.GetJournalIssues(this.BookId).subscribe({
+    this.commonService.GetJournalIssues(this.BookId).subscribe({
       next: (response: any) => {
         this.issues = response.item1 || [];
         if (this.issues.length > 0) {
@@ -128,16 +129,32 @@ export class JournalIssuesDetailsComponent implements OnInit {
     // Example: "camelCase" -> "camel Case", but "PURE" stays "PURE"
     const spacedTitle = title.trim().replace(/([a-z])([A-Z])/g, '$1 $2');
 
-    // 2. Convert everything to lowercase, then capitalize the very first character
-    const sentenceCaseTitle =
-      spacedTitle.charAt(0).toUpperCase() + spacedTitle.slice(1).toLowerCase();
+    // 2. Split by standard spaces
+    const words = spacedTitle.split(/\s+/);
+    if (words.length === 0 || !words[0]) return '';
 
-    // 3. Split by standard spaces for the word count truncation
-    const words = sentenceCaseTitle.split(/\s+/);
+    // 3. If the first word is of short length (like IT, UI, length <= 2), capitalize it fully;
+    // otherwise, capitalize only the first character (sentence case)
+    const firstWord = words[0];
+    const cleanFirstWord = firstWord.replace(/[^a-zA-Z0-9]/g, '');
+
+    if (cleanFirstWord.length > 0 && cleanFirstWord.length <= 2) {
+      words[0] = firstWord.toUpperCase();
+    } else {
+      words[0] =
+        firstWord.charAt(0).toUpperCase() + firstWord.slice(1).toLowerCase();
+    }
+
+    // Convert the remaining words to lowercase
+    for (let i = 1; i < words.length; i++) {
+      words[i] = words[i].toLowerCase();
+    }
+
+    const formattedTitle = words.join(' ');
 
     return !expanded && words.length > 5
       ? words.slice(0, 5).join(' ') + '...'
-      : sentenceCaseTitle;
+      : formattedTitle;
   }
 
   // formatIssueTitle(title: string, expanded = false): string {
@@ -223,7 +240,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
   }
 
   getUserRolesforId(): void {
-    this.journalService.GetUserRolesforUser(this.userId).subscribe({
+    this.commonService.GetUserRolesforUser(this.userId).subscribe({
       next: (response) => {
         const rolesData = response?.item1?.[0];
 

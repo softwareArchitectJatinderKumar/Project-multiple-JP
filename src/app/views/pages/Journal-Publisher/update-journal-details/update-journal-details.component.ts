@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { StorageService } from 'src/app/_services/storage.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class UpdateJournalDetailsComponent implements OnInit {
 
   isForm1Submitted: Boolean | undefined; isForm2Submitted: Boolean | undefined;
   form1: any;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private LpujournalbookService: LpujournalbookService,
     private router: Router,
     private storageService: StorageService, private authService: AuthService,
@@ -42,7 +43,7 @@ export class UpdateJournalDetailsComponent implements OnInit {
   }
 
   getBooksDetail(): void {
-    this.LpujournalbookService.GetAllBooksDetails().subscribe((response) => {
+    this.commonService.GetAllBooksDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.AllJournalsDetails = response.item1;
         this.TempAllJournalsDetails = this.AllJournalsDetails;

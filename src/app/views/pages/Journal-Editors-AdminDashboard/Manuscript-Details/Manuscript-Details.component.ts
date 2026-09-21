@@ -4,6 +4,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/_services/storage.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -142,7 +143,7 @@ export class ManuscriptDetailsComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription = new Subscription(); 
 
-    constructor(
+    constructor(private commonService: LpujournalCommonService, 
         private storageService: StorageService,
         private router: Router,
         private AuthSession: LoginSessionService,
@@ -202,7 +203,7 @@ export class ManuscriptDetailsComponent implements OnInit, OnDestroy {
     // --- JOURNAL/MANUSCRIPT LOADING ---
     loadJournals(): void {
         this.subscriptions.add(
-            this.journalWebApiService.GetAllBooksDetails().subscribe({
+            this.commonService.GetAllBooksDetails().subscribe({
                 next: (dataX: any) => {
                     this.journalListsData = dataX.item1 || [];
                 },
@@ -426,7 +427,7 @@ addReviewerFromDropdown(): void {
 
         // 1. API Call: Create new account (API call names remain unchanged as requested)
         this.subscriptions.add(
-            this.journalWebApiService.AssignExternalReviewerForJournal(formData).subscribe({
+            this.commonService.AssignExternalReviewerForJournal(formData).subscribe({
                 next: (res: any) => {
                     const apiResponse = res.item1?.[0];
                     const msg = apiResponse?.['msg'] || '';
@@ -766,7 +767,7 @@ addReviewerFromDropdown(): void {
 //     // --- JOURNAL/MANUSCRIPT LOADING (Omitting body for brevity, assume correct) ---
 //     loadJournals(): void {
 //         this.subscriptions.add(
-//             this.journalWebApiService.GetAllBooksDetails().subscribe({
+//             this.commonService.GetAllBooksDetails().subscribe({
 //                 next: (dataX: any) => {
 //                     this.journalListsData = dataX.item1 || [];
 //                 },
@@ -978,7 +979,7 @@ addReviewerFromDropdown(): void {
 
 //         // 1. API Call: Create new account
 //         this.subscriptions.add(
-//             this.journalWebApiService.AssignExternalReviewerForJournal(formData).subscribe({
+//             this.commonService.AssignExternalReviewerForJournal(formData).subscribe({
 //                 next: (res: any) => {
 //                     // 🎯 FIX: Check the 'msg' property for the literal value 'Success'
 //                     const apiResponse = res.item1?.[0];

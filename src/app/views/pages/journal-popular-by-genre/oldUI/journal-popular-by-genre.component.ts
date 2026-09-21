@@ -6,6 +6,7 @@ import { ViewChild } from '@angular/core';
 import { UntypedFormBuilder  } from '@angular/forms';
 import { Router } from '@angular/router';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -34,7 +35,7 @@ export class JournalPopularByGenreComponent implements OnInit, AfterViewInit {
   @ViewChild('paginator2') paginator2: MatPaginator | any;
   @ViewChild('sort2') sort2: MatSort| any;
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private route: ActivatedRoute,
     private journalWebApiService: LpujournalbookService,
     public formBuilder: UntypedFormBuilder,
@@ -49,7 +50,7 @@ export class JournalPopularByGenreComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
   getBooksDataWithEditorDetails(): void {
-    this.journalWebApiService.GetBooksDataWithEditorDetails().subscribe((response) => {
+    this.commonService.GetBooksDataWithEditorDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.booksDataWithEditorInfo = response.item1;
         this.dataSource = new MatTableDataSource(this.booksDataWithEditorInfo);

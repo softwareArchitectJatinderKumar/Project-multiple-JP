@@ -8,6 +8,7 @@
 // import { LoginSessionService } from 'src/app/_services/login-session.service';
 // import { CookieService } from 'ngx-cookie-service';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import { AuthService } from 'src/app/_services/auth.service';
 // import { StorageService } from 'src/app/_services/storage.service';
 
@@ -25,7 +26,7 @@
 //   JournalTitle: any;
 //   UserLoginForm!: FormGroup; formdata: FormGroup;
 //   Email: any;
-//   constructor(
+//   constructor(private commonService: LpujournalCommonService, 
 //     public formBuilder: UntypedFormBuilder,
 //     private AuthSession: LoginSessionService,
 //     private authService: AuthService,
@@ -140,7 +141,7 @@
 //       next: data => {
 
 //         this.storageService.saveUser(data);
-//         this.lpuWebServices.AuthoriseUserDetails(Id, Key, this.BookId).subscribe({
+//         this.commonService.AuthoriseUserDetails(Id, Key, this.BookId).subscribe({
 //           next: response => {
 //             if (response.item1 && response.item1.length > 0) {
 //               this.UserData = response.item1;
@@ -211,7 +212,7 @@
 //   //   new Logic to create token 
 
 // //   AuthoriseUserNewWay(Id: any, Key: any): void {   
-// //         this.lpuWebServices.AuthoriseUserDetails(Id, Key, this.BookId ).subscribe({
+// //         this.commonService.AuthoriseUserDetails(Id, Key, this.BookId ).subscribe({
 // //           next: response => {
 // //             if (response.item1 && response.item1.length > 0) {
 // //               this.Email = response.item1[0].email;
@@ -296,7 +297,7 @@
 // //   }
 
 // AuthoriseUserNewWay(Id: any, Key: any): void {   
-//   this.lpuWebServices.AuthoriseUserDetails(Id, Key, this.BookId).subscribe({
+//   this.commonService.AuthoriseUserDetails(Id, Key, this.BookId).subscribe({
 //     next: response => {
 //       if (response.item1 && response.item1.length > 0) {
 //         this.Email = response.item1[0].email;
@@ -416,7 +417,7 @@
 //        '3': 'Publisher'
 //      };
    
-//      this.lpuWebServices.GetUserRolesforUser(this.EmailId).subscribe({
+//      this.commonService.GetUserRolesforUser(this.EmailId).subscribe({
 //        next: (response) => {
 //          if (response?.item1?.length > 0) {
 //            this.UserRolesData = response.item1[0];

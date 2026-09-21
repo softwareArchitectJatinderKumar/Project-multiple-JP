@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -14,7 +15,7 @@ export class JournalhomeComponent implements OnInit {
 
   booksData: any; ServerConnection: any; serverError: boolean = false;
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private journalWebApiService: LpujournalbookService,
     private storageService: StorageService,
     private authService: AuthService,
@@ -29,7 +30,7 @@ export class JournalhomeComponent implements OnInit {
  
 
 getBooksDetail(): void {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (response) => {
         if (response.item1 && response.item1.length > 0) {
           this.booksData = response.item1;

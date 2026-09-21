@@ -17,6 +17,7 @@ import { MouDocumentsService } from 'src/app/_services/mou-documents.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 
 
 
@@ -44,6 +45,7 @@ export class ForgotPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private cookieService: CookieService,
     private journalWebApiService: LpujournalbookService,
+    private journalCommonService: LpujournalCommonService,
     private fb: FormBuilder,
     private http: HttpClient
   ) {
@@ -98,7 +100,7 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
   
-    this.journalWebApiService.JournalGetUserDetails(email).subscribe(
+    this.journalCommonService.JournalGetUserDetails(email).subscribe(
       (response: any) => {
         if (response?.item1?.length > 0) {
           const user = response.item1[0];
@@ -161,7 +163,7 @@ export class ForgotPasswordComponent implements OnInit {
     formData.append('UserId', this.verifiedEmail); // Or use this.UserId
     formData.append('Password', NewPassword);
   
-    this.journalWebApiService.JournalUpdatePasswordDetails(formData)
+    this.journalCommonService.JournalUpdatePasswordDetails(formData)
       .pipe(
         finalize(() => {
           const elapsed = Date.now() - startTime;

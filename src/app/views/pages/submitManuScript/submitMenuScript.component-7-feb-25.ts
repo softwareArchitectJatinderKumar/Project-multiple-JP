@@ -12,6 +12,7 @@
 // import { StorageService } from 'src/app/_services/storage.service';
 // import { Validators } from '@angular/forms';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import Swal from 'sweetalert2';
 // import { LoginSessionService } from 'src/app/_services/login-session.service';
 // import { CookieService } from 'ngx-cookie-service';
@@ -69,7 +70,7 @@
 //   }
 //   dataSourceMat: any;
 
-//   constructor(
+//   constructor(private commonService: LpujournalCommonService, 
 //     private storageService: StorageService,
 //     private authService: AuthService,
 //     private AuthSession: LoginSessionService,
@@ -146,7 +147,7 @@
 //       '2': 'Reviewer',
 //       '3': 'Guest'
 //     };
-//     this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe((response) => {
+//     this.commonService.GetUserRolesforUser(this.userId).subscribe((response) => {
 //       if (response.item1 && response.item1.length > 0) {
 //         this.UserRolesData = response.item1[0];
 //         this.UserRolesArray = this.UserRolesData.userRole.split(',').map((role: string | number) => ({

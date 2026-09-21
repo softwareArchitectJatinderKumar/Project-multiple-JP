@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -105,7 +106,7 @@ export class ManuscriptCrudComponent implements OnInit {
   LoginStatus: boolean = false;
 
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -508,7 +509,7 @@ export class ManuscriptCrudComponent implements OnInit {
         formData.append('SubmissionType', this.submissionType);
         formData.append('AuthorEmailId', this.AssignedById);
 
-        return this.journalWebApiService.AssignExternalReviewerForJournal(formData);
+        return this.commonService.AssignExternalReviewerForJournal(formData);
       });
 
       forkJoin(requests).subscribe({
@@ -556,7 +557,7 @@ export class ManuscriptCrudComponent implements OnInit {
   }
 
   loadJournals() {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.dataSource = dataX.item1;
         this.journalListsData = dataX.item1;

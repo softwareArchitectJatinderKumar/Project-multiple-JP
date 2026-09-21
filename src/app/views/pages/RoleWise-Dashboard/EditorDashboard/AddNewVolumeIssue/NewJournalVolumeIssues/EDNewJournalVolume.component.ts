@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -33,7 +34,7 @@ export class EDNewJournalVolumeComponent implements OnInit {
   LoginStatus: boolean | undefined;
   currentJournalTitle: any;
   currentJournalVolume: any;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -73,7 +74,7 @@ export class EDNewJournalVolumeComponent implements OnInit {
     this.isLoading = true;
     const minLoadingTime = 1500; // 2.5 seconds
     const startTime = Date.now();
-    this.journalWebApiService.GetAllBooksDetails().pipe(
+    this.commonService.GetAllBooksDetails().pipe(
       finalize(() => {
         const elapsed = Date.now() - startTime;
         const remaining = Math.max(minLoadingTime - elapsed, 0);

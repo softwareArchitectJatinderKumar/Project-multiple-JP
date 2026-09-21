@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 
@@ -31,7 +32,7 @@ export class LoginWithRolesComponent implements OnInit {
   JournalUserAccountForm!: FormGroup;
 
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     public formBuilder: UntypedFormBuilder,
     private AuthSession: LoginSessionService,
     private authService: AuthService,
@@ -154,7 +155,7 @@ export class LoginWithRolesComponent implements OnInit {
     fd.append('PasswordText', Key);
     fd.append('JournalId', this.BookId);
 
-    this.lpuWebServices.AuthoriseUserDetails(fd).subscribe({
+    this.commonService.AuthoriseUserDetails(fd).subscribe({
       next: (response) => {
         const userDetails = response?.item1;
         if (userDetails && userDetails.length > 0) {
@@ -314,7 +315,7 @@ export class LoginWithRolesComponent implements OnInit {
       '3': 'Publisher'
     };
 
-    this.lpuWebServices.GetUserRolesforUser(this.EmailId).subscribe({
+    this.commonService.GetUserRolesforUser(this.EmailId).subscribe({
       next: (response) => {
         if (response?.item1?.length > 0) {
           this.UserRolesData = response.item1[0];

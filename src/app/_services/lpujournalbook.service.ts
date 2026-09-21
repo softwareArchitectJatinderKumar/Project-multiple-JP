@@ -4,8 +4,10 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
 // const AUTH_API = 'https://localhost:7125/';//'https://projectsapi.lpu.in/';
 // const LOCAL_API_URL = 'https://localhost:7125/';//'https://localhost:7125/';
-const AUTH_API = 'https://projectsapi.lpu.in/';//'https://projectsapi.lpu.in/';
-const LOCAL_API_URL = 'https://projectsapi.lpu.in/';//'https://localhost:7125/'; 
+// const AUTH_API = 'https://projectsapi.lpu.in/';//'https://projectsapi.lpu.in/';
+// const LOCAL_API_URL = 'https://projectsapi.lpu.in/';//'https://localhost:44362/'; 
+const AUTH_API = 'https://localhost:44362/';//'https://projectsapi.lpu.in/';
+const LOCAL_API_URL = 'https://localhost:44362/';//'https://localhost:44362/'; 
 
 @Injectable({
   providedIn: 'root'

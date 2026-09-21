@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -42,7 +43,7 @@ export class MyRemarksDetailsComponent implements OnInit {
   Journals: any;
   tableColumns: any;
   pageSize: any;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private AuthSession: LoginSessionService,
@@ -91,7 +92,7 @@ export class MyRemarksDetailsComponent implements OnInit {
 
   journalListsData: any[] = [];
   loadJournals() {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.dataSource = dataX.item1;
         this.journalListsData = dataX.item1;

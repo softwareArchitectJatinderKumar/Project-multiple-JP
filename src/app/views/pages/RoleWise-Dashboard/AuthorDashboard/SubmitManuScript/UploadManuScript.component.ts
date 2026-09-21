@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 declare var bootstrap: any;
 import { LoginSessionService } from 'src/app/_services/login-session.service';
@@ -61,7 +62,7 @@ export class UploadManuScriptComponent implements OnInit {
   Reason: any;
 
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private AuthSession: LoginSessionService,
@@ -125,7 +126,7 @@ export class UploadManuScriptComponent implements OnInit {
       '3': 'Publisher'
     };
 
-    this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+    this.commonService.GetUserRolesforUser(this.userId).subscribe({
       next: (response) => {
         if (response?.item1?.length > 0) {
           this.UserRolesData = response.item1[0];
@@ -180,7 +181,7 @@ export class UploadManuScriptComponent implements OnInit {
   //     '3': 'Publisher'
   //   };
 
-  //   this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+  //   this.commonService.GetUserRolesforUser(this.userId).subscribe({
   //     next: (response) => {
   //       if (response?.item1?.length > 0) {
   //         this.UserRolesData = response.item1[0];
@@ -241,7 +242,7 @@ export class UploadManuScriptComponent implements OnInit {
   }
 
   GetJournalDetailsAbout(JournalId: any): void {
-    this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
+    this.commonService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.bookData = response.item1[0];
         this.JournalDetails = this.bookData['journalDetails']
@@ -258,7 +259,7 @@ export class UploadManuScriptComponent implements OnInit {
 
 
   showData() {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.dataSource = dataX.item1;
         this.dataLoaded = true;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import swal from 'sweetalert2';
 
 @Component({
@@ -21,7 +22,7 @@ export class JournalEditorBoardComponent implements OnInit {
   LoadingData: boolean = false;
   filteredEditors: any;
   JournalTitle: any;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private journalWebApiService: LpujournalbookService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
@@ -50,7 +51,7 @@ export class JournalEditorBoardComponent implements OnInit {
   }
 
   GetJournalEditorsDetailsByBookId(BookId: any): void {
-    this.journalWebApiService.GetAllJournalEditorsDetails().subscribe((response) => {
+    this.commonService.GetAllJournalEditorsDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.editorData = response.item1;        
       this.filteredEditors = this.editorData.filter((item: { journalId: any }) => item.journalId === BookId);

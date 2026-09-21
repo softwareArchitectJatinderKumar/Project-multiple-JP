@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -48,19 +49,6 @@ export class RDManuscriptDetailsComponent implements OnInit {
   detailsArray: any;
   user_Email: string ='';
   
-  // constructor(
-  //   private storageService: StorageService,
-  //   private authService: AuthService,
-  //   private AuthSession: LoginSessionService,
-  //   private fb: FormBuilder,
-  //   private router: Router,
-  //   private route: ActivatedRoute, private cookieService: CookieService,
-  //   private journalWebApiService: LpujournalbookService  ,
-
-  //   private StoragesServices: StorageService,
-  // ) {
-    
-  // }
   tableColumns: any;
   pageSize: any;
 
@@ -73,6 +61,7 @@ export class RDManuscriptDetailsComponent implements OnInit {
   LoginStatus: boolean | undefined;
 
   constructor(
+    private commonService: LpujournalCommonService,
     private storageService: StorageService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -282,7 +271,7 @@ export class RDManuscriptDetailsComponent implements OnInit {
  
     
   GetJournalDetailsAbout(JournalId: any): void {
-    this.journalWebApiService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
+    this.commonService.GetJournalDetailsforAboutPage(JournalId).subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.bookData = response.item1[0];
         this.JournalDetails = this.bookData['journalDetails']
@@ -450,7 +439,7 @@ export class RDManuscriptDetailsComponent implements OnInit {
   selectedAction: string = '';
 
   showData() {
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.dataSource = dataX.item1;
         this.dataLoaded = true;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { finalize } from 'rxjs';
 
@@ -39,7 +40,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
   pageSize: number = 8;
   pageNumber: number = 1;
 
-  constructor(private fb: FormBuilder,
+  constructor(private commonService: LpujournalCommonService, private fb: FormBuilder,
     private journalWebApiService: LpujournalbookService) { }
 
   ngOnInit(): void {
@@ -66,7 +67,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     const minLoadingTime = 400;
     const startTime = Date.now();
 
-    this.journalWebApiService.GetAllBooksDetails().pipe(
+    this.commonService.GetAllBooksDetails().pipe(
       finalize(() => {
         const elapsed = Date.now() - startTime;
         const remaining = Math.max(minLoadingTime - elapsed, 0);
@@ -109,7 +110,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.journalWebApiService.GetEditorsDetailsIdWise(journalId).pipe(
+    this.commonService.GetEditorsDetailsIdWise(journalId).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: (res: any) => {

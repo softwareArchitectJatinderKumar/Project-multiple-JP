@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import Swal from 'sweetalert2';
 @Component({
@@ -22,7 +23,7 @@ export class JournalInnerMenuComponent implements OnInit {
   departmentName: any;
   candidateName: any;
   LoginStatus: boolean = false;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private journalWebApiService: LpujournalbookService,
     private AuthSession: LoginSessionService,
     private StoragesServices: StorageService,
@@ -109,7 +110,7 @@ export class JournalInnerMenuComponent implements OnInit {
   JournalIssues: any[] = [];
   activeAccordionId: string | null = null;
   GetAllIssues(JournalId: any) {
-    this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+    this.commonService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssues = dataX.item1 || [];
 

@@ -8,6 +8,7 @@ import { Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { CookieService } from 'ngx-cookie-service';
 import { finalize } from 'rxjs';
 
@@ -30,7 +31,7 @@ export class NewRegistrationPageComponent implements OnInit {
   BookId: any; JournalId: any;
   name: any; JournalTitle: any;
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private LpuWebService: LpujournalbookService,
     private fb: FormBuilder, private router: Router,
     private route: ActivatedRoute,
@@ -197,7 +198,7 @@ export class NewRegistrationPageComponent implements OnInit {
         formData.append("UserType[]", role);
       });
 
-      this.LpuWebService.AddJournalUserAccount(formData)
+      this.commonService.AddJournalUserAccount(formData)
         .pipe(
           finalize(() => {
             const elapsed = Date.now() - startTime;

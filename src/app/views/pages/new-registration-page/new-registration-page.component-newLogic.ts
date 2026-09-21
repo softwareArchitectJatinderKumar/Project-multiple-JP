@@ -8,6 +8,7 @@ import { Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 
 @Component({
   selector: 'app-new-registration-page',
@@ -27,7 +28,7 @@ export class NewRegistrationPageComponent implements OnInit {
   BookId: any;
   name: any;
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private LpuWebService: LpujournalbookService,
     private fb: FormBuilder,    private router: Router,
     private route: ActivatedRoute,
@@ -134,7 +135,7 @@ export class NewRegistrationPageComponent implements OnInit {
       formData.append("UserType[]", role);
     });
   
-    this.LpuWebService.AddJournalUserAccount(formData).subscribe({
+    this.commonService.AddJournalUserAccount(formData).subscribe({
       next: (data) => {
         let result = data.item1[0]['msg'];
         let errorCode = data.item1[0]['returnId'];

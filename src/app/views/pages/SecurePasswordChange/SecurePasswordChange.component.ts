@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -42,7 +43,7 @@ export class SecurePasswordChangeComponent implements OnInit {
    BookId: any; name: any; JournalTitle:any; JournalId: any;
   idProofType: string = '';
   idProofNumber: string = '';
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -150,7 +151,7 @@ export class SecurePasswordChangeComponent implements OnInit {
     formData.append('UserId', this.userEmail);
     formData.append('Password', newPassword);
 
-    this.lpuWebServices.JournalUpdatePasswordSecure(formData).subscribe({
+    this.commonService.JournalUpdatePasswordSecure(formData).subscribe({
       next: (data: any) => {
         const result = data.item1[0]['msg'];
 
@@ -365,7 +366,7 @@ export class SecurePasswordChangeComponent implements OnInit {
 //     formData.append('UserId', this.UserEmail);
 //     formData.append('Password', newPassword);
 
-//     this.lpuWebServices.JournalUpdatePasswordSecure(formData).subscribe({
+//     this.commonService.JournalUpdatePasswordSecure(formData).subscribe({
 //       next: (data: any) => {
 //         const result = data.item1[0]['msg'];
 //         if (result === 'Success') {

@@ -6,6 +6,7 @@ import swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { finalize } from 'rxjs';
@@ -25,7 +26,7 @@ export class ExternalUserLoginComponent implements OnInit {
   JournalTitle: any; errorMessage: any;
   UserLoginForm!: FormGroup; formdata: FormGroup;
   Email: any;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     public formBuilder: UntypedFormBuilder,
     private AuthSession: LoginSessionService,
     private authService: AuthService,
@@ -138,7 +139,7 @@ export class ExternalUserLoginComponent implements OnInit {
     fd.append('PasswordText', Key);
     fd.append('JournalId', this.BookId);
 
-    this.lpuWebServices.AuthoriseUserDetails(fd)
+    this.commonService.AuthoriseUserDetails(fd)
       .pipe(
         finalize(() => {
           const elapsed = Date.now() - startTime;
@@ -302,7 +303,7 @@ export class ExternalUserLoginComponent implements OnInit {
       '3': 'Publisher'
     };
 
-    this.lpuWebServices.GetUserRolesforUser(this.EmailId).subscribe({
+    this.commonService.GetUserRolesforUser(this.EmailId).subscribe({
       next: (response) => {
         if (response?.item1?.length > 0) {
           this.UserRolesData = response.item1[0];

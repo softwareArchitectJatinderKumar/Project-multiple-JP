@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class JournalcarouselComponent {
   }
 
 
-  constructor(private journalWebApiService: LpujournalbookService,
+  constructor(private commonService: LpujournalCommonService, private journalWebApiService: LpujournalbookService,
     private router: Router,) { }
 
   ngOnInit(): void {
@@ -74,7 +75,7 @@ export class JournalcarouselComponent {
   slickCarousel: any;
 
   getBooksDetail(): void {
-    this.journalWebApiService.GetAllBooksDetails().subscribe((response) => {
+    this.commonService.GetAllBooksDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         this.booksData = response.item1;
         this.slides = this.booksData;

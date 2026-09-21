@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import Swal from 'sweetalert2';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -43,7 +44,7 @@ export class EDManuscriptDetailsComponent implements OnInit {
   ];
   Journals: any;
   LoginStatus: boolean | undefined;
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private storageService: StorageService,
     private authService: AuthService,
     private fb: FormBuilder,
@@ -484,7 +485,7 @@ assignInternalReviewer(data:any){
 
 assignExternalReviewer(data:any){
   if (!this.isReviewerFormValid()) return;
-  this.journalWebApiService.AssignExternalReviewerForJournal(data).subscribe({
+  this.commonService.AssignExternalReviewerForJournal(data).subscribe({
     next: (data) => {
       let result = data.item1[0]['returnData'];
       let errorCode = data.item1[0]['returnId'];

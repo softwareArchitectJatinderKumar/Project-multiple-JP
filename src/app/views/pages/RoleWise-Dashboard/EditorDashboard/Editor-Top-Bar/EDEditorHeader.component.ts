@@ -4,6 +4,7 @@
 // import { CookieService } from 'ngx-cookie-service';
 // import { LoginSessionService } from 'src/app/_services/login-session.service';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import { StorageService } from 'src/app/_services/storage.service';
 // import Swal from 'sweetalert2';
 // @Component({
@@ -47,7 +48,7 @@
 
 //   selectedRoles: string[] = [];
 
-//   constructor(
+//   constructor(private commonService: LpujournalCommonService, 
 //     private journalWebApiService: LpujournalbookService,
 //     private AuthSession: LoginSessionService,
 //     private router: Router,
@@ -117,7 +118,7 @@
 
 //   getUserRolesforId(): Promise<void> {
 //     return new Promise((resolve, reject) => {
-//       this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+//       this.commonService.GetUserRolesforUser(this.userId).subscribe({
 //         next: (response) => {
 //           if (response?.item1?.length > 0) {
 //             this.UserRolesData = response.item1[0];
@@ -206,6 +207,7 @@ export class EDEditorHeaderComponent implements OnInit {
   userRoleText: any;
 
   constructor(
+    private commonService: LpujournalCommonService,
     private journalWebApiService: LpujournalbookService,
     private AuthSession: LoginSessionService,
     private router: Router,
@@ -241,7 +243,7 @@ export class EDEditorHeaderComponent implements OnInit {
   JournalIssues: any[] = [];
   activeAccordionId: string | null = null;
   GetAllIssues(JournalId: any) {
-    this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+    this.commonService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssues = dataX.item1 || [];
 
@@ -361,7 +363,7 @@ export class EDEditorHeaderComponent implements OnInit {
   }
 
   getUserRolesforId(): void {
-    this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+    this.commonService.GetUserRolesforUser(this.userId).subscribe({
       next: (response) => {
         const rolesData = response?.item1?.[0];
 
@@ -398,7 +400,7 @@ export class EDEditorHeaderComponent implements OnInit {
   }
 
   // getUserRolesforId(): void {
-  //   this.journalWebApiService.GetUserRolesforUser(this.userId).subscribe({
+  //   this.commonService.GetUserRolesforUser(this.userId).subscribe({
   //     next: (response) => {
   //       if (response?.item1?.length > 0) {
   //         this.UserRolesData = response.item1[0];

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import Swal from 'sweetalert2';
 import { StorageService } from 'src/app/_services/storage.service';
@@ -49,7 +50,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
     // id:'Event Id'
   };
 
-  constructor(
+  constructor(private commonService: LpujournalCommonService, 
     private router: Router,
     private cookieService: CookieService,
     private journalWebApiService: LpujournalbookService,
@@ -74,7 +75,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
 
   loadJournals() {
     this.isLoadingPage = true;
-    this.journalWebApiService.GetAllBooksDetails().subscribe({
+    this.commonService.GetAllBooksDetails().subscribe({
       next: (dataX: any) => {
         this.journalListsData = dataX.item1;
         this.delayHideLoader('page');
@@ -95,7 +96,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
   }
 
   GetAllIssues(JournalId: any) {
-    this.journalWebApiService.GetJournalIssues(JournalId).subscribe({
+    this.commonService.GetJournalIssues(JournalId).subscribe({
       next: (dataX: any) => {
         this.JournalIssuesData = dataX.item1 || [];
         // console.log(JSON.stringify(this.JournalIssuesData))

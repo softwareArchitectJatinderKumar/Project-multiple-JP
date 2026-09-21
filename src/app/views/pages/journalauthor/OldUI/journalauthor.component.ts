@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
+import { LpujournalCommonService } from 'src/app/_services/lpujournalCommon.service';
 // import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service'
 })
 export class JournalauthorComponent {
   authorDetails: any;
-  constructor( 
+  constructor(private commonService: LpujournalCommonService,  
     private route: ActivatedRoute,
     private journalWebApiService: LpujournalbookService,
     private router: Router,) { }
@@ -20,7 +21,7 @@ export class JournalauthorComponent {
     this.getAuthorDetails();
   }
   getAuthorDetails(): void {
-    this.journalWebApiService.GetJournalAuthorDetails().subscribe((response) => {
+    this.commonService.GetJournalAuthorDetails().subscribe((response) => {
       if (response.item1 && response.item1.length > 0) {
         //  this.uploadedDocList = response.item1.filter((item: { stage: number; filePath: string; }) => item.stage === 7 && item.filePath !== null);
         // this.authorDetails = response.item1.filter((item: { id: number }, index: number) => {

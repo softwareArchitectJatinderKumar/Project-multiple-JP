@@ -177,59 +177,55 @@ export class InternalUserLoginComponent implements OnInit {
             var SecretKey = DataX.password ?? '';
 
 
-            if(this.EmployeeCode !='31309')
-          {
-            this.isLoginFailed = true;
-            Swal.fire({
-              title: 'Not Authorised ',
-              text: 'This Dashboard is only for Authorised Users ! ',
-              icon: 'warning',
-            });
-          }
-          else
-          {
+            if (this.EmployeeCode != '31309') {
+              this.isLoginFailed = true;
+              Swal.fire({
+                title: 'Not Authorised ',
+                text: 'This Dashboard is only for Authorised Users ! ',
+                icon: 'warning',
+              });
+            }
+            else {
+              const userCookiesData = {
+                CandidateName: this.CandidateName,
+                UserId: this.UserId,
+                Department: this.Department,
+                DepartmentName: this.DepartmentName,
+                Designation: this.Designation,
+                EmailId: this.EmailId,
+                MobileNo: this.MobileNo,
+                UserRole: this.UserRole,
+                SupervisorName: this.SupervisorName,
+                ProofNumber: this.MobileNo,
+                ProofName: 'Mobile ',
+                PasswordText: SecretKey,
+              };
+              this.cookieService.set('authData', JSON.stringify(userCookiesData));
 
-            const userCookiesData = {
-              CandidateName: this.CandidateName,
-              UserId: this.UserId,
-              Department: this.Department,
-              DepartmentName: this.DepartmentName,
-              Designation: this.Designation,
-              EmailId: this.EmailId,
-              MobileNo: this.MobileNo,
-              UserRole: this.UserRole,
-              SupervisorName: this.SupervisorName,
-              ProofNumber:this.MobileNo,
-              ProofName: 'Mobile ',
-              PasswordText: SecretKey,
-            };
-            this.cookieService.set('authData', JSON.stringify(userCookiesData));
+              Swal.fire({
+                text: 'Login details are Valid!',
+                icon: 'success',
+              })
+              this.AuthSession.addToSession(this.EmployeeDetails);
+              switch (this.selectedRole) {
+                case '0':
+                  this.router.navigateByUrl('EditorDashboard')
+                  break;
+                case '1':
+                  alert('Under Construction');
+                  this.loadForm();
+                  break;
+                case '2':
+                  this.router.navigateByUrl('ReviewersDashboard')
+                  this.loadForm();
+                  break;
+                case '3':
+                  // this.router.navigateByUrl('PublisherDashboard')
+                  this.router.navigateByUrl('AllJournals');
+                  break;
+              }
 
-          Swal.fire({
-            text: 'Login details are Valid!',
-            icon: 'success',
-          })
-          this.AuthSession.addToSession(this.EmployeeDetails);
-          switch(this.selectedRole)
-          {
-            case '0':
-              this.router.navigateByUrl('EditorDashboard')
-              break;
-            case '1':
-              alert('Under Construction');
-              this.loadForm();
-              break;
-            case '2': 
-                this.router.navigateByUrl('ReviewersDashboard')
-                this.loadForm();
-              break;  
-            case '3':
-            // this.router.navigateByUrl('PublisherDashboard')
-            this.router.navigateByUrl('AllJournals');
-            break;
-          }
-          
-          } 
+            } 
         }
         else {
             this.EmployeeDetails = [];
