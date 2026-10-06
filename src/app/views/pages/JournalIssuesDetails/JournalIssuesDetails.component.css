@@ -319,3 +319,62 @@ footer {
         gap: 0.5rem;
     }
 }
+
+/* --- Sub Accordion Item Styling (Matching User Screenshot) --- */
+
+.vi-container {
+    margin-bottom: 0.5rem;
+}
+
+.vi-header {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.vi-header:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* Active state matching screenshot: Light blue background tint + light blue border outline */
+.vi-header.active-vi {
+    background-color: #f0f7ff !important;
+    border: 1.5px solid #90caf9 !important;
+    box-shadow: 0 2px 6px rgba(13, 110, 253, 0.08);
+}
+
+.badge-vol {
+    background-color: #0d6efd !important; /* Blue pill */
+    color: #ffffff !important;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.badge-issue {
+    background-color: #6c757d !important; /* Dark grey pill */
+    color: #ffffff !important;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.pub-count {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

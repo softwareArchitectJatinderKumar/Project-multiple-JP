@@ -4,6 +4,19 @@ import { CookieService } from 'ngx-cookie-service';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 import { LoginSessionService } from 'src/app/_services/login-session.service';
 import { StorageService } from 'src/app/_services/storage.service';
+
+export interface VolumeIssueGroup {
+  volume: string;
+  issueNumber: string;
+  totalPublications: number;
+  issues: any[][];
+}
+
+export interface YearGroup {
+  year: string;
+  volumeIssueGroups: VolumeIssueGroup[];
+}
+
 @Component({
   selector: 'app-JournalIssuesDetails',
   templateUrl: './JournalIssuesDetails.component.html',
@@ -14,10 +27,13 @@ export class JournalIssuesDetailsComponent implements OnInit {
   journalTitle: string = '';
   issues: any[] = [];
   isLoading: boolean = true;
-  activeAccordionId: string | null = null;
   serverUrl: string = 'https://files.lpu.in/umsweb/Journal/';
-  groupedIssuesByYear: { year: string; issues: any[][] }[] = [];
+
+  groupedIssuesByYear: YearGroup[] = [];
   expandedTitles: Set<string> = new Set<string>();
+
+  openYearIds: Set<string> = new Set<string>();
+  openVolumeIssueIds: Set<string> = new Set<string>();
 
   constructor(
     private route: ActivatedRoute,
@@ -50,10 +66,8 @@ export class JournalIssuesDetailsComponent implements OnInit {
     this.isLoading = true;
     this.journalService.GetJournalIssues(this.BookId).subscribe({
       next: (response: any) => {
+        console.log('Issues response:', response.item1);
         this.issues = response.item1 || [];
-        if (this.issues.length > 0) {
-          this.activeAccordionId = `year-0`;
-        }
         this.groupIssuesByYear(this.issues);
         this.isLoading = false;
       },
@@ -64,51 +78,123 @@ export class JournalIssuesDetailsComponent implements OnInit {
     });
   }
 
-  groupIssuesByYear(issues: any[]) {
-    const grouped: { [key: string]: any[] } = {};
+  parseNumber(val: any): number {
+    if (val === null || val === undefined) return 0;
+    if (typeof val === 'number') return val;
+    const str = String(val).trim();
+    const num = Number(str);
+    if (!isNaN(num)) return num;
+    const matches = str.match(/\d+(\.\d+)?/);
+    return matches ? parseFloat(matches[0]) : 0;
+  }
 
-    // 1. Group issues by year
+  groupIssuesByYear(issues: any[]) {
+    const yearMap: { [year: string]: any[] } = {};
+
     for (const issue of issues) {
-      const year = new Date(issue.publishDate).getFullYear().toString();
-      if (!grouped[year]) {
-        grouped[year] = [];
+      const year = issue.publishDate
+        ? new Date(issue.publishDate).getFullYear().toString()
+        : 'N/A';
+      if (!yearMap[year]) {
+        yearMap[year] = [];
       }
-      grouped[year].push(issue);
+      yearMap[year].push(issue);
     }
 
-    // 2. Convert to array and sort by year descending
-    this.groupedIssuesByYear = Object.entries(grouped)
-      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
-      .map(([year, issueList]) => {
-        // 3. Optional: Sort issues within the year by date descending
-        const sortedIssues = issueList.sort(
-          (a, b) =>
-            new Date(b.publishDate).getTime() -
-            new Date(a.publishDate).getTime(),
-        );
+    const sortedYears = Object.keys(yearMap).sort(
+      (a, b) => Number(b) - Number(a)
+    );
 
-        return {
-          year,
-          issues: this.chunkArray(sortedIssues, 2),
-        };
+    this.openYearIds.clear();
+    this.openVolumeIssueIds.clear();
+
+    this.groupedIssuesByYear = sortedYears.map((year, yearIndex) => {
+      const yearIssues = yearMap[year];
+      const yearId = `year-${yearIndex}`;
+
+      const viMap: {
+        [key: string]: { volume: string; issueNumber: string; list: any[] };
+      } = {};
+
+      for (const issue of yearIssues) {
+        const vol =
+          issue.volume !== null &&
+          issue.volume !== undefined &&
+          String(issue.volume).trim() !== ''
+            ? String(issue.volume).trim()
+            : 'N/A';
+        const issueNum =
+          issue.issueNumber !== null &&
+          issue.issueNumber !== undefined &&
+          String(issue.issueNumber).trim() !== ''
+            ? String(issue.issueNumber).trim()
+            : 'N/A';
+
+        const key = `${vol}___${issueNum}`;
+        if (!viMap[key]) {
+          viMap[key] = { volume: vol, issueNumber: issueNum, list: [] };
+        }
+        viMap[key].list.push(issue);
+      }
+
+      // Sort combinations: Volume descending, then Issue Number descending
+      const sortedKeys = Object.keys(viMap).sort((keyA, keyB) => {
+        const itemA = viMap[keyA];
+        const itemB = viMap[keyB];
+
+        const volA = this.parseNumber(itemA.volume);
+        const volB = this.parseNumber(itemB.volume);
+        if (volB !== volA) {
+          return volB - volA;
+        }
+
+        const issueNumA = this.parseNumber(itemA.issueNumber);
+        const issueNumB = this.parseNumber(itemB.issueNumber);
+        if (issueNumB !== issueNumA) {
+          return issueNumB - issueNumA;
+        }
+
+        return 0;
       });
+
+      const volumeIssueGroups: VolumeIssueGroup[] = sortedKeys.map(
+        (key, viIndex) => {
+          const item = viMap[key];
+          const viId = `vi-${yearIndex}-${viIndex}`;
+
+          item.list.sort((a, b) => {
+            const dateA = a.publishDate
+              ? new Date(a.publishDate).getTime()
+              : 0;
+            const dateB = b.publishDate
+              ? new Date(b.publishDate).getTime()
+              : 0;
+            return dateB - dateA;
+          });
+
+          if (yearIndex === 0 && viIndex === 0) {
+            this.openVolumeIssueIds.add(viId);
+          }
+
+          return {
+            volume: item.volume,
+            issueNumber: item.issueNumber,
+            totalPublications: item.list.length,
+            issues: this.chunkArray(item.list, 2),
+          };
+        }
+      );
+
+      if (yearIndex === 0) {
+        this.openYearIds.add(yearId);
+      }
+
+      return {
+        year,
+        volumeIssueGroups,
+      };
+    });
   }
-  // groupIssuesByYear(issues: any[]) {
-  //   const grouped: { [key: string]: any[] } = {};
-
-  //   for (const issue of issues) {
-  //     const year = new Date(issue.publishDate).getFullYear().toString();
-  //     if (!grouped[year]) {
-  //       grouped[year] = [];
-  //     }
-  //     grouped[year].push(issue);
-  //   }
-
-  //   this.groupedIssuesByYear = Object.entries(grouped).map(([year, issues]) => ({
-  //     year,
-  //     issues: this.chunkArray(issues, 2)
-  //   }));
-  // }
 
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const result: any[][] = [];
@@ -118,35 +204,40 @@ export class JournalIssuesDetailsComponent implements OnInit {
     return result;
   }
 
-  toggleAccordion(itemId: string) {
-    this.activeAccordionId = this.activeAccordionId === itemId ? null : itemId;
+  toggleYear(yearId: string): void {
+    if (this.openYearIds.has(yearId)) {
+      this.openYearIds.delete(yearId);
+    } else {
+      this.openYearIds.add(yearId);
+    }
   }
+
+  isYearOpen(yearId: string): boolean {
+    return this.openYearIds.has(yearId);
+  }
+
+  toggleVolumeIssue(viId: string): void {
+    if (this.openVolumeIssueIds.has(viId)) {
+      this.openVolumeIssueIds.delete(viId);
+    } else {
+      this.openVolumeIssueIds.add(viId);
+    }
+  }
+
+  isVolumeIssueOpen(viId: string): boolean {
+    return this.openVolumeIssueIds.has(viId);
+  }
+
   formatIssueTitle(title: string, expanded = false): string {
     if (!title) return '';
-
-    // 1. Separate camelCase safely (only if a lowercase letter is followed by an uppercase letter)
-    // Example: "camelCase" -> "camel Case", but "PURE" stays "PURE"
     const spacedTitle = title.trim().replace(/([a-z])([A-Z])/g, '$1 $2');
-
-    // 2. Convert everything to lowercase, then capitalize the very first character
     const sentenceCaseTitle =
       spacedTitle.charAt(0).toUpperCase() + spacedTitle.slice(1).toLowerCase();
-
-    // 3. Split by standard spaces for the word count truncation
     const words = sentenceCaseTitle.split(/\s+/);
-
     return !expanded && words.length > 5
       ? words.slice(0, 5).join(' ') + '...'
       : sentenceCaseTitle;
   }
-
-  // formatIssueTitle(title: string, expanded = false): string {
-  //   if (!title) return '';
-  //   const words = title.trim().split(/\s+/);
-  //   return (!expanded && words.length > 5)
-  //     ? words.slice(0, 5).join(' ') + '...'
-  //     : title;
-  // }
 
   toggleTitle(key: string): void {
     if (this.expandedTitles.has(key)) {

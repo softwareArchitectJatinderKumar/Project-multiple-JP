@@ -104,7 +104,7 @@ export class ViewAllJournalIssuesComponent implements OnInit {
         this.delayHideLoader('journal');  // Delay hiding the journal loader
       },
       error: (error: any) => {
-        console.error('Error fetching journal issues', error);
+        // console.error('Error fetching journal issues', error);
         this.delayHideLoader('journal');  // Delay hiding the journal loader if error occurs
       }
     });

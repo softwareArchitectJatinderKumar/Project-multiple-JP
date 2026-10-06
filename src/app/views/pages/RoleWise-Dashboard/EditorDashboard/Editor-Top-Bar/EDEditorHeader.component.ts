@@ -257,12 +257,22 @@ export class EDEditorHeaderComponent implements OnInit {
   }
 
   groupedIssuesByYear: any[] = [];
+  parseNumber(val: any): number {
+    if (val === null || val === undefined) return 0;
+    if (typeof val === 'number') return val;
+    const str = String(val).trim();
+    const num = Number(str);
+    if (!isNaN(num)) return num;
+    const matches = str.match(/\d+(\.\d+)?/);
+    return matches ? parseFloat(matches[0]) : 0;
+  }
+
   groupIssuesByYear(issues: any[]) {
     const grouped: { [key: string]: any[] } = {};
 
     // 1. Group issues by year
     for (const issue of issues) {
-      const year = new Date(issue.publishDate).getFullYear().toString();
+      const year = issue.publishDate ? new Date(issue.publishDate).getFullYear().toString() : 'N/A';
       if (!grouped[year]) {
         grouped[year] = [];
       }
@@ -271,14 +281,26 @@ export class EDEditorHeaderComponent implements OnInit {
 
     // 2. Convert to array and sort by year descending
     this.groupedIssuesByYear = Object.entries(grouped)
-      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA)) // Sort years: 2024, 2023...
+      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
       .map(([year, issueList]) => {
-        // 3. Optional: Sort issues within the year by date descending
-        const sortedIssues = issueList.sort(
-          (a, b) =>
-            new Date(b.publishDate).getTime() -
-            new Date(a.publishDate).getTime(),
-        );
+        // 3. Sort issues within the year: Volume descending, then Issue number descending, then publishDate descending
+        const sortedIssues = issueList.sort((a, b) => {
+          const volA = this.parseNumber(a.volume);
+          const volB = this.parseNumber(b.volume);
+          if (volB !== volA) {
+            return volB - volA;
+          }
+
+          const issueNumA = this.parseNumber(a.issueNumber);
+          const issueNumB = this.parseNumber(b.issueNumber);
+          if (issueNumB !== issueNumA) {
+            return issueNumB - issueNumA;
+          }
+
+          const dateA = a.publishDate ? new Date(a.publishDate).getTime() : 0;
+          const dateB = b.publishDate ? new Date(b.publishDate).getTime() : 0;
+          return dateB - dateA;
+        });
 
         return {
           year,

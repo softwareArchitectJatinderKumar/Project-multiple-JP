@@ -63,7 +63,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
 
   loadJournals() {
     this.isLoading = true;
-    const minLoadingTime = 1500; // 2.5 seconds
+    const minLoadingTime = 100; // 2.5 seconds
     const startTime = Date.now();
     this.journalWebApiService.GetAllBooksDetails().pipe(
       finalize(() => {
@@ -95,6 +95,8 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   currentJournalTitle: any;
   currentJournalVolume: any;
   JournalVolumeNo: any;
+  currentIssueNumber: any = 1;
+  JournalIssueNo: any = 1;
   setJournalId() {
     let idx = this.journalListsData.find(
       journal => journal.id == this.JournalTitle
@@ -103,6 +105,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     this.JournalIdString = idx.journalId;
     this.currentJournalTitle = idx.journalTitle;
     this.JournalVolumeNo = this.currentJournalVolume = idx.volume;
+    this.JournalIssueNo = this.currentIssueNumber = idx.issueNumber || idx.issue || 1;
   }
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] || null;
@@ -149,7 +152,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
 
     this.IssueFileData = file;
     this.IssueFileStatus = true;
-    // alert(10);  
+    // alert(10);
     if (file) {
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -174,12 +177,12 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   onSubmit(): void {
     if (this.journalForm.invalid) return;
     this.isLoading = true;
-    const minLoadingTime = 1500; // 2.5 seconds
+    const minLoadingTime = 100; // 2.5 seconds
     const startTime = Date.now();
     const formData = new FormData();
     const formValue = this.journalForm.value;
 
-    // this.AuthorName: 
+    // this.AuthorName:
     // for (const key in formValue) {
     //   if (formValue.hasOwnProperty(key)) {
     //     formData.append(key, formValue[key]);
@@ -191,6 +194,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     formData.append('PageNumber', formValue.PageNumber);
     formData.append('JournalTitle', this.currentJournalTitle);
     formData.append('Volume', this.currentJournalVolume);
+    formData.append('IssueNumber', this.currentIssueNumber);
     formData.append('PublishDate', formValue.PublishDate);
     formData.append('IssueTitle', formValue.IssueTitle);
     formData.append('IssueFileName', this.IssueFileName);
@@ -278,6 +282,24 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       this.currentJournalVolume = this.JournalVolumeNo;
     } else {
       this.currentJournalVolume--;
+    }
+  }
+
+  // Added logic on 01-Oct-26
+  UpdateIssueNumber(): void {
+    if (this.currentIssueNumber >= +this.JournalIssueNo + 1) {
+      alert('Cannot increase more than 1 above the original issue number.');
+    } else {
+      this.currentIssueNumber++;
+    }
+  }
+
+  UpdateIssueNumber2(): void {
+    if (this.currentIssueNumber <= this.JournalIssueNo) {
+      alert('Cannot reduce below the original issue number.');
+      this.currentIssueNumber = this.JournalIssueNo;
+    } else {
+      this.currentIssueNumber--;
     }
   }
 }
