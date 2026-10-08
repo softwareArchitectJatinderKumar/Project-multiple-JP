@@ -126,6 +126,29 @@
             </div>
           </div>
           <div class="row mt-3 g-3">
+            <div class="col-md-3">
+              <label class="form-label fs-5 fw-bolder">Issue Number <span class="text-danger ms-3 ">*</span></label>
+            </div>
+            <div class="col-md-9 d-flex justify-content-start align-items-center">
+              <button class="btn btn-dark" type="button" (click)="UpdateVolume2()"
+                [disabled]="editIssueForm.get('issueNumber')?.value <= issueNumber">
+                <i class="bi bi-dash-lg"></i>
+              </button>
+              <input type="text" id="issueNumber" formControlName="IssueNumber" class="form-control w-50 m-3"
+                placeholder="Enter issueNumber"
+                [ngClass]="{' is-invalid': editFormControls['IssueNumber'].invalid && (editFormControls['IssueNumber'].touched || isUpdateFormSubmitted)}" />
+              <div *ngIf="editFormControls['IssueNumber'].invalid && (editFormControls['IssueNumber'].touched || isUpdateFormSubmitted)"
+                class="text-danger">
+                Please enter a valid Issue Number.
+              </div>
+          
+              <button class="btn btn-dark" type="button" (click)="UpdateVolume()"
+                [disabled]="editIssueForm.get('issueNumber')?.value >= (+issueNumber + 1)">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row mt-3 g-3">
 
             <div class="row mt-3 g-3">
               <div class="col-md-3">

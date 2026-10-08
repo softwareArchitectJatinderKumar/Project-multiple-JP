@@ -1,32 +1,46 @@
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LpujournalbookService } from 'src/app/_services/lpujournalbook.service';
 import Swal from 'sweetalert2';
-import { finalize } from 'rxjs'
-
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-NewJournalVolumeIssues',
   templateUrl: './NewJournalVolumeIssues.component.html',
-  styleUrls: ['./NewJournalVolumeIssues.component.css']
+  styleUrls: ['./NewJournalVolumeIssues.component.css'],
 })
 export class NewJournalVolumeIssuesComponent implements OnInit {
   journalForm!: FormGroup;
-  JournalIdString: any
+  JournalIdString: any;
   selectedFile: File | null = null;
-  dataSource: any[] = []; dataX: any; booksData: any; dataShowing: any = false;
-  userRole: any; BookId: any; JournalId: any; JournalTitle: any = ''; name: any;
-  userId: any; serverUrl: any; supervisorName: any; departmentName: any;
+  dataSource: any[] = [];
+  dataX: any;
+  booksData: any;
+  dataShowing: any = false;
+  userRole: any;
+  BookId: any;
+  JournalId: any;
+  JournalTitle: any = '';
+  name: any;
+  userId: any;
+  serverUrl: any;
+  supervisorName: any;
+  departmentName: any;
   candidateName: any;
 
   Journals: any;
   LoginStatus: boolean | undefined;
   constructor(
     private fb: FormBuilder,
-    private journalWebApiService: LpujournalbookService
-  ) { }
+    private journalWebApiService: LpujournalbookService,
+  ) {}
 
   ngOnInit(): void {
     this.LoadForm();
@@ -42,15 +56,16 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     });
   }
   journalListsData: any[] = [];
-  isForm1Submitted: boolean = false; isSubmitted = false;
+  isForm1Submitted: boolean = false;
+  isSubmitted = false;
 
   get form1() {
     return this.journalForm.controls;
   }
 
-
-
-  validateAuthor: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  validateAuthor: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
     const value = control.value;
     if (!value || value.trim() === '') {
       return { authorRequired: true }; // invalid
@@ -65,31 +80,32 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     this.isLoading = true;
     const minLoadingTime = 100; // 2.5 seconds
     const startTime = Date.now();
-    this.journalWebApiService.GetAllBooksDetails().pipe(
-      finalize(() => {
-        const elapsed = Date.now() - startTime;
-        const remaining = Math.max(minLoadingTime - elapsed, 0);
-        setTimeout(() => {
-          this.isLoading = false;
-        }, remaining);
-      })
-    ).subscribe({
-      next: (dataX: any) => {
-        this.dataSource = dataX.item1;
-        this.journalListsData = dataX.item1;
-        // console.info(JSON.stringify(this.journalListsData))
-
-      },
-      error: (error: any) => {
-        this.dataShowing = false;
-        console.error('Error fetching data', error);
-        // this.LoginFalied();
-      },
-      complete: () => {
-        this.dataShowing = true;
-      }
-    });
-
+    this.journalWebApiService
+      .GetAllBooksDetails()
+      .pipe(
+        finalize(() => {
+          const elapsed = Date.now() - startTime;
+          const remaining = Math.max(minLoadingTime - elapsed, 0);
+          setTimeout(() => {
+            this.isLoading = false;
+          }, remaining);
+        }),
+      )
+      .subscribe({
+        next: (dataX: any) => {
+          this.dataSource = dataX.item1;
+          this.journalListsData = dataX.item1;
+          // console.info(JSON.stringify(this.journalListsData))
+        },
+        error: (error: any) => {
+          this.dataShowing = false;
+          console.error('Error fetching data', error);
+          // this.LoginFalied();
+        },
+        complete: () => {
+          this.dataShowing = true;
+        },
+      });
   }
   currentJournalId: any;
   currentJournalTitle: any;
@@ -99,20 +115,21 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   JournalIssueNo: any = 1;
   setJournalId() {
     let idx = this.journalListsData.find(
-      journal => journal.id == this.JournalTitle
+      (journal) => journal.id == this.JournalTitle,
     );
     this.currentJournalId = idx.id;
     this.JournalIdString = idx.journalId;
     this.currentJournalTitle = idx.journalTitle;
     this.JournalVolumeNo = this.currentJournalVolume = idx.volume;
-    this.JournalIssueNo = this.currentIssueNumber = idx.issueNumber || idx.issue || 1;
+    this.JournalIssueNo = this.currentIssueNumber =
+      idx.issueNumber || idx.issue || 1;
   }
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] || null;
   }
 
-
-  IssueFileData: any = ''; IssueFileStatus: boolean = false;
+  IssueFileData: any = '';
+  IssueFileStatus: boolean = false;
   IssueFileName: any = '';
   onFileSelectedIssueFile(event: any): void {
     const reader = new FileReader();
@@ -122,7 +139,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       Swal.fire({
         title: 'File size exceeds 3MB. Please upload a smaller file.',
         text: 'Invalid File size',
-        icon: 'warning'
+        icon: 'warning',
       });
       target.value = '';
       return;
@@ -161,8 +178,7 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
         this.IssueFileData = ssssArray[1];
         this.IssueFileName = file.name;
       };
-    }
-    else {
+    } else {
       this.IssueFileName = ''; // Reset if no file is selected
       this.IssueFileData = null;
     }
@@ -172,22 +188,24 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   AuthorName: any;
   PageNumber: any;
 
-
-
   onSubmit(): void {
+    if (this.authorInput && this.authorInput.trim()) {
+      const splitAuthors = this.authorInput
+        .trim()
+        .split(',')
+        .map((a) => a.trim())
+        .filter((a) => a);
+      this.authors.push(...splitAuthors);
+      this.authors = [...new Set(this.authors)];
+      this.authorInput = '';
+    }
+
     if (this.journalForm.invalid) return;
     this.isLoading = true;
     const minLoadingTime = 100; // 2.5 seconds
     const startTime = Date.now();
     const formData = new FormData();
     const formValue = this.journalForm.value;
-
-    // this.AuthorName:
-    // for (const key in formValue) {
-    //   if (formValue.hasOwnProperty(key)) {
-    //     formData.append(key, formValue[key]);
-    //   }
-    // }
 
     formData.append('JournalId', this.currentJournalId);
     formData.append('AuthorName', this.authors.join(', '));
@@ -206,7 +224,8 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
     //   console.log(key + ':', value);
     // });
 
-    this.journalWebApiService.AddNewIssuesDetails(formData)
+    this.journalWebApiService
+      .AddNewIssuesDetails(formData)
       .pipe(
         finalize(() => {
           const elapsed = Date.now() - startTime;
@@ -214,33 +233,48 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
           setTimeout(() => {
             this.isLoading = false;
           }, remaining);
-        })
+        }),
       )
       .subscribe({
         next: (data) => {
-          let errorCode = data.item1[0]['returnData'];
+          let errorCode =
+            data?.item1?.[0]?.['returnData'] ??
+            data?.item1?.[0]?.['ReturnData'];
 
           if (errorCode > 0) {
             Swal.fire({
               title: 'Issues are uploaded successfully ',
-              text: "",
+              text: '',
               icon: 'success',
             });
           } else if (errorCode == -1) {
-            Swal.fire({ title: 'Max issues are already uploaded', icon: 'error' });
+            Swal.fire({
+              title: 'Max issues are already uploaded',
+              icon: 'error',
+            });
           } else {
-            Swal.fire({ title: 'Some Technical Issue', text: "", icon: 'error' });
+            Swal.fire({
+              title: 'Some Technical Issue',
+              text: '',
+              icon: 'error',
+            });
           }
         },
-        error: () => {
+        error: (err: any) => {
+          console.error('AddNewIssuesDetails API error:', err);
+          const statusText = err?.status ? ` (Status ${err.status})` : '';
+          const detailMsg =
+            err?.error?.title ||
+            err?.error?.message ||
+            err?.message ||
+            'Unable to complete the request. Please try again later.';
           Swal.fire({
-            title: 'Error Occurred',
-            text: 'Unable to complete the request. Please try again later.',
+            title: `Error Occurred${statusText}`,
+            text: detailMsg,
             icon: 'error',
           });
-        }
+        },
       });
-
   }
   authorInput: string = '';
   authors: string[] = [];
@@ -252,7 +286,10 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
       const value = this.authorInput.trim();
 
       if (value) {
-        const splitAuthors = value.split(',').map(a => a.trim()).filter(a => a);
+        const splitAuthors = value
+          .split(',')
+          .map((a) => a.trim())
+          .filter((a) => a);
         this.authors.push(...splitAuthors);
         this.authors = [...new Set(this.authors)];
       }
@@ -264,8 +301,6 @@ export class NewJournalVolumeIssuesComponent implements OnInit {
   removeAuthor(index: number): void {
     this.authors.splice(index, 1);
   }
-
-
 
   // Added logic on 15-April-26
   UpdateVolume(): void {

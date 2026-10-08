@@ -15,6 +15,7 @@ interface JournalIssue {
     issueId: number;
     volume: string;
     issueTitle: string;
+    issueNumber: number;
     authorName: string; 
     pageNumber: string;
     publishDate: string;
@@ -51,9 +52,11 @@ export class UpdateIssueDetailsComponent implements OnInit {
 
     editIssueForm!: FormGroup;
 
+    issueNumber: any;
     displayedEditorColumns: string[] = [
         'volume',
         'issueTitle',
+        'issueNumber',
         'authorName',
         'pageNumber',
         'issueFileName',
@@ -63,6 +66,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
     displayedEditorColumnHeaders: { [key: string]: string } = {
         volume: 'Journal Volume',
         issueTitle: 'Issue Title',
+        issueNumber: 'Issue Number',
         authorName: 'Author Name',
         pageNumber: 'Page Number',
         issueFileName: 'Issue File',
@@ -94,6 +98,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
             IssueDescription: ['', Validators.required],
             PublishDate: ['', Validators.required],
             IssueTitle: ['', Validators.required],
+            IssueNumber: ['', Validators.required],
             PageNumber: ['', Validators.required],
            
         });
@@ -110,14 +115,15 @@ export class UpdateIssueDetailsComponent implements OnInit {
         this.isLoading = false;
         this.selectedIssueData = rowData;
         this.IssueIdToUpdate = rowData.issueId;
-        console.log(JSON.stringify(rowData))
 
         // 1. Pre-fill Authors (comma-separated string to array)
         this.authors = rowData.authorName ? rowData.authorName.split(',').map(a => a.trim()).filter(a => a.length > 0) : [];
         this.VolumeNumber= rowData.volume;
+        this.issueNumber= rowData.issueNumber;
         // 2. Pre-fill other form fields
         this.editIssueForm.patchValue({
             VolumeId: rowData.volume,
+            IssueNumber: rowData.issueNumber,
             IssueDescription: rowData.issueDescription,
             // Format date for date input field (assuming date is in a compatible format like 'YYYY-MM-DD')
             PublishDate: this.formatDate(rowData.publishDate),
@@ -165,7 +171,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         }
 
         this.isLoading = true;
-        const minLoadingTime = 1500;
+        const minLoadingTime = 100;
         const startTime = Date.now();
         const formData = new FormData();
         const formValue = this.editIssueForm.value;
@@ -177,6 +183,7 @@ export class UpdateIssueDetailsComponent implements OnInit {
         formData.append('PageNumber', formValue.PageNumber);
         formData.append('PublishDate', formValue.PublishDate);
         formData.append('IssueTitle', formValue.IssueTitle);
+        formData.append('IssueNumber', formValue.IssueNumber);
         formData.append('IssueDescription', formValue.IssueDescription);
         formData.append('UpdatedBy', this.user_Email); // Assuming you want to track who updated it
 

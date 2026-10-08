@@ -2,10 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { StorageService } from './storage.service';
-// const AUTH_API = 'https://localhost:7125/';//'https://projectsapi.lpu.in/';
-// const LOCAL_API_URL = 'https://localhost:7125/';//'https://localhost:7125/';
-const AUTH_API = 'https://projectsapi.lpu.in/'; //'https://projectsapi.lpu.in/';
-const LOCAL_API_URL = 'https://projectsapi.lpu.in/'; //'https://localhost:44362/';
+const AUTH_API = 'https://projectsapi.lpu.in/'; //'https://projectsapi.lpu.in/'; //'https://projectsapi.lpu.in/';
+const LOCAL_API_URL = 'https://projectsapi.lpu.in/';
+const AUTH_API_LOCALs = 'https://projectsapi.lpu.in/'; //'https://localhost:44362/';
+const AUTH_API_LOCAs = 'https://projectsapi.lpu.in/'; //'https://localhost:44362/';
+
+// const AUTH_API = 'https://localhost:44362/'; //'https://projectsapi.lpu.in/'; //'https://projectsapi.lpu.in/';
+// const LOCAL_API_URL = 'https://localhost:44362/';
+// const AUTH_API_LOCALs = 'https://localhost:44362/'; //'https://localhost:44362/';
+// const AUTH_API_LOCAs = 'https://localhost:44362/'; //'https://localhost:44362/';
 
 @Injectable({
   providedIn: 'root',
@@ -592,8 +597,8 @@ export class LpujournalbookService {
   // on 29-Sep-25
 
   AddNewIssuesDetails(NewIssueData: FormData): Observable<any> {
-    let token = this.storageService.getUser();
-    let headers = new HttpHeaders()
+    const token = this.storageService.getUser() || this.authToken;
+    const headers = new HttpHeaders()
       .set('Authorization', 'Bearer ' + token)
       .set('Accept', '*/*');
     return this.http.post(
@@ -611,8 +616,9 @@ export class LpujournalbookService {
       }),
     };
     return this.http.get<any>(
-      `https://localhost:44362/api/LpuJournal/GetJournalIssuesDetails?JournalId=` +   JournalId,
-      // `${LOCAL_API_URL}api/LpuJournal/GetJournalIssuesDetails?JournalId=` +   JournalId,
+      // `https://localhost:44362/api/LpuJournal/GetJournalIssuesDetails?JournalId=` +   JournalId,
+      `${LOCAL_API_URL}api/LpuJournal/GetJournalIssuesDetails?JournalId=` +
+        JournalId,
       httpOptions,
     );
   }
