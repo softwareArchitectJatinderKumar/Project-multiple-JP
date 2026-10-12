@@ -1,0 +1,267 @@
+================================================================================
+                    PROJECT TASK LIST & ACTIVITIES PERFORMED
+                            Based on Git Commit History
+================================================================================
+Project Name  : LpuJournalWeb (Journal Publication & Editorial Portal)
+Workspace     : e:\2025\Projects\Journal
+Current Branch: 8-Oct-26
+Generated Date: October 12, 2026
+Author/Dev    : Er. Jatinder Kumar / Jatinder Kumars
+================================================================================
+
+--------------------------------------------------------------------------------
+SECTION 1: LATEST COMMIT HIGHLIGHTS & ACTIVITIES COMPLETED
+--------------------------------------------------------------------------------
+
+1. Commit: 9f71dc86e41388b56910cde3a4a9b63906660072 (Branch: 8-Oct-26)
+   Message: "feat: add components, service, and views for managing journal volumes and issues in admin dashboard"
+   Activities Done:
+   [x] Implemented Journal Volume & Issue Management in Editor Dashboard.
+   [x] Created AddNewVolumeIssue / NewJournalVolumeIssues component:
+       - Reactive Form for Issue upload (Title, Description, PublishDate, PageNumber).
+       - File upload handling with validation (file size limit <= 3MB, sanitized filenames).
+       - Base64 payload encoding & FormData submission.
+       - Multi-author comma-separated input parsing with duplicate filtering.
+   [x] Added ViewAllJournalIssues component for grid/table visualization of journal issues.
+   [x] Added UpdateIssueDetails component for modifying published volume and issue information.
+   [x] Integrated Web API service calls in LpujournalbookService:
+       - AddNewIssuesDetails (POST api/LpuJournal/AddNewJournalIssueData)
+       - GetJournalIssues (GET api/LpuJournal/GetJournalIssuesDetails)
+       - UpdateIssueDetails (POST api/LpuJournal/UpdateJournalIssueDetails)
+       - DisableIssue (POST api/LpuJournal/UpdateJournalIssueStatus)
+   [x] Configured Angular routing in app-routing.module.ts:
+       - /NewVolume -> NewJournalVolumeIssuesModule
+       - /AllVolumesIssues -> ViewAllJournalIssuesModule
+       - /EditIssueDetails -> UpdateIssueDetailsModule
+
+2. Commit: b46698a2b347111e579aa920752b52883f930ebb (Branch: 6-Oct-26)
+   Message: "feat: add journal issues details components, services, and admin dashboard views"
+   Activities Done:
+   [x] Created JournalIssuesDetails component & module for public-facing issue browsing.
+   [x] Configured public routing route: ':Id/:name/GetIssues'.
+   [x] Integrated dynamic issue fetching and display logic.
+
+--------------------------------------------------------------------------------
+SECTION 2: MODULE-WISE TASK BREAKDOWN & COMPLETED ACTIVITIES
+--------------------------------------------------------------------------------
+
+A. JOURNAL VOLUMES & ISSUES MANAGEMENT
+   - [x] Designed and created Volume/Issue creation UI with validation and error alerts.
+   - [x] Added file upload with 3MB size restriction and filename regex validation.
+   - [x] Implemented API integration to upload new journal issue data.
+   - [x] Implemented issue listing and status toggle (Active/Disabled).
+   - [x] Implemented issue update form and API integration.
+   - [x] Created public-facing JournalIssuesDetails view and connected with routing.
+
+B. MANUSCRIPT SUBMISSION & REVIEW SYSTEM
+   - [x] Created manuscript submission workflow and form (submitManuScript).
+   - [x] Refactored submitManuScript to utilize LpujournalCommonService / LpujournalbookService.
+   - [x] Added support for assigning manuscripts to multiple external reviewers.
+   - [x] Fixed external reviewer assignment bugs and table rendering.
+   - [x] Created Reviewers Remarks component and module for editor review tracking.
+   - [x] Built Manuscript CRUD management page for editors with responsive data table.
+   - [x] Added new file download method with updated API authentication token.
+
+C. EDITORIAL BOARD & ADMIN DASHBOARDS
+   - [x] Built Editor Dashboard containing editorial board member management and user controls.
+   - [x] Implemented Manage Editorial Board CRUD pages and resolved icon rendering issues.
+   - [x] Implemented Publisher Dashboard with publication details and user listings.
+   - [x] Ensured mobile-friendly responsiveness across Editor Dashboard and tables.
+
+D. JOURNAL POLICIES & ROUTING SYSTEM
+   - [x] Implemented full suite of journal policy components and lazy-loaded routes:
+         * Editorial Policy
+         * Peer Review Policy
+         * Open Access Policy
+         * Plagiarism Policy
+         * Publication Charge Policy
+         * Complaint Policy
+         * Copyright & Licensing Policy
+         * Conflict of Interest Policy
+         * Correction & Retraction Policy
+         * CrossMark Policy
+         * Digital & Self-Archiving Policy
+   - [x] Implemented Author Guidelines (Manuscript Preparation & Workflow).
+
+E. AUTHENTICATION, SECURITY & UI OPTIMIZATIONS
+   - [x] Resolved External User login issues and registration form bugs.
+   - [x] Implemented secure password change functionality (JournalUpdatePasswordSecure).
+   - [x] Cleaned up legacy code: eliminated unwanted window.location.reload() calls across pages.
+   - [x] Removed residual debug console.log statements (e.g., paperIssue).
+   - [x] Added Service Unavailable fallback cards to handle API down states gracefully.
+   - [x] Resolved console errors on navigation and site menus.
+
+F. NEXT.JS EVALUATION & DASHBOARD PROTOTYPING
+   - [x] Initialized Next.js project directory with initial 3 pages.
+   - [x] Expanded Next.js pages to evaluate modern SSR architecture for journal dashboard.
+   - [x] Ported Editor Dashboard and Editorial Board / User Management to Next.js prototype.
+
+--------------------------------------------------------------------------------
+SECTION 3: COMPLETE CHRONOLOGICAL GIT COMMIT ACTIVITY LOG
+--------------------------------------------------------------------------------
+
+Commit 1  | 684ce7b | Branch: master -> 17-11-2025
+Task/Activity:
+- Initial project setup with Angular CLI, base structure, and dependencies.
+
+Commit 2  | 7fa755f | Branch: 18-Nov-25
+Task/Activity:
+- Created Journal Publication CRUD Page structure and initial form components.
+
+Commit 3  | 47e8d23 | Branch: 19-Nov-25
+Task/Activity:
+- Connected Journal Publication CRUD page with live Web API backend services.
+
+Commit 4  | c0a03de | Branch: 21-Nov-25
+Task/Activity:
+- Fixed bugs in External User login and registration pages; refined CRUD API integration.
+
+Commit 5  | 39d1e48 | Branch: 24-NOV-25
+Task/Activity:
+- Fixed icon display and UI rendering defects in Editor CRUD Page.
+
+Commit 6  | b0fe815 | Branch: 24-NOV-25
+Task/Activity:
+- Code cleanup: Deleted debug console.log statements in paperIssue module.
+
+Commit 7  | 92b4366 | Branch: 5-Dec-25
+Task/Activity:
+- Added functionality to assign multiple external reviewers within Submit Manuscript page.
+
+Commit 8  | 4fa3013 | Branch: 6-Dec-25
+Task/Activity:
+- Developed Manuscript CRUD management interface.
+
+Commit 9  | a4c1da3 | Branch: 8-dec-25
+Task/Activity:
+- Fixed table data display and column formatting in Manuscript CRUD view.
+
+Commit 10 | a4807f1 | Branch: 10-dec-25
+Task/Activity:
+- Fixed reviewer assignment logic for external reviewers.
+
+Commit 11 | bd3dc2a | Branch: 11-Dec-25
+Task/Activity:
+- Follow-up bug fixes in Assign External Reviewer component.
+
+Commit 12 | e06ec61 | Branch: 12-Dec-25
+Task/Activity:
+- Enhanced Editor Dashboard: fixed reviewer assignment and ensured mobile responsiveness.
+
+Commit 13 | a95bf1f | Branch: 15-Dec-25
+Task/Activity:
+- Implemented updated workflow for manuscript submission.
+
+Commit 14 | dd6812a | Branch: 12-Feb-26
+Task/Activity:
+- Implemented new method for file downloads and updated API authorization token.
+
+Commit 15 | d6da653 | Branch: 12-Feb-26
+Task/Activity:
+- Fixed Web API server communication errors.
+
+Commit 16 | 69c8dd7 | Branch: 12-Feb-26
+Task/Activity:
+- Conducted local testing and verified generated production builds.
+
+Commit 17-19 | 1e13ef2 / 7154a4b / 948c8fa | Branch: 18-Feb-26
+Task/Activity:
+- Designed and added "Service Unavailable" alert card component to handle API outages gracefully.
+
+Commit 20 | 70fffee | Branch: 26-Feb-26
+Task/Activity:
+- Fixed console errors and warnings across the main website pages.
+
+Commit 21 | 04d2cbd | Branch: 26-Feb-26
+Task/Activity:
+- Fixed validation and submission bugs on External User login page.
+
+Commit 22 | 4f80db6 | Branch: 26-Feb-26
+Task/Activity:
+- Enhanced Editor Dashboard with Editorial Board management and Manuscript management views.
+
+Commit 23-26 | 6574cb4 / 5f0a3ea / 458b4e3 / 3c80bc9 / f666724 | Branch: March 2026
+Task/Activity:
+- Created and iteratively developed Next.js project with Editor Dashboard, Editorial Board, and User Management.
+
+Commit 27 | c3d2015 | Branch: 15-4-26
+Task/Activity:
+- Added logic for New Publication and Update Publication details in Editor Dashboard.
+
+Commit 28-29 | b39b1d7 / fc8a68a | Branch: 18-April-26
+Task/Activity:
+- Applied minor bug fixes and styling corrections to Editorial Page.
+
+Commit 30-31 | a828c91 / 61407c5 | Branch: 27-5-26
+Task/Activity:
+- Fixed file upload and data validation issues in Upload Manuscript section.
+
+Commit 32 | ce247f8 | Branch: 27-5-26
+Task/Activity:
+- Resolved multiple UI and data binding defects in About page, GetIssuePage, and navigation menu bar.
+
+Commit 33 | 97c0781 | Branch: Delete-Location-Reload-function-14-Aug-26
+Task/Activity:
+- Code cleanup: Removed hard page reloads (window.location.reload) across all application pages to preserve Angular SPA state.
+
+Commit 34 | e81e2cf | Branch: Delete-Location-Reload-function-14-Aug-26
+Task/Activity:
+- Implemented journal issue details page and added new policy components with corresponding routing logic.
+
+Commit 35 | 0b8992b | Branch: Delete-Location-Reload-function-14-Aug-26
+Task/Activity:
+- Fixed issues in Assign Reviewer component and resolved menu bar rendering glitches in Editor Dashboard.
+
+Commit 36 | ac90078 | Branch: 21-sep-2026
+Task/Activity:
+- Refactored submitManuScript component to standardize API calls using the common service layer.
+
+Commit 37 | 75f5f23 | Branch: 21-sep-26
+Task/Activity:
+- Consolidated and committed completed changes for the September 21 release.
+
+Commit 38 | b46698a | Branch: 6-Oct-26
+Task/Activity:
+- Added journal issues details components, services, and admin dashboard views.
+
+Commit 39 | 9f71dc86 | Branch: 8-Oct-26
+Message: feat: add components, service, and views for managing journal volumes and issues in admin dashboard
+Activities & Detailed Breakdown:
+  1. Component: NewJournalVolumeIssues (Create & Publish Journal Issues)
+     - Location: src/app/views/pages/Journal-Editors-AdminDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/
+     - Form: Reactive FormGroup with controls (IssueDescription, PublishDate, IssueTitle, PageNumber).
+     - Stepper Logic: UpdateVolume() & UpdateIssueNumber() with strict upper/lower bound checks (+1 max).
+     - Author Management: Dynamic multi-author input with Enter/comma parsing, chip UI, and deduplication.
+     - File Upload: 3MB limit, regex sanitization (/^[a-zA-Z0-9._-]+$/), and base64 conversion via FileReader.
+     - API Integration: Submits multipart/form-data to AddNewIssuesDetails() with SweetAlert2 status handling.
+
+  2. Component: ViewAllJournalIssues (List, Paginate & Reject Issues)
+     - Location: src/app/views/pages/Journal-Editors-AdminDashboard/ViewAllJournalIssues/
+     - Table Grid: Displays journal title, volume, publish date, issue number/title, author, and page number.
+     - Pagination: Client-side 10 items/page pagination with Previous/Next controls.
+     - Dual-Phase Loading: Separate indicators for page initialization and journal issue data loading.
+     - Disapprove Workflow: DisapproveStatus() SweetAlert2 input prompt capturing rejection reason; calls DisableIssue().
+
+  3. Component: UpdateIssueDetails (Interactive Issue Editing)
+     - Location: src/app/views/pages/Journal-Editors-AdminDashboard/UpdateIssueDetails/
+     - Modal: Integrated with Bootstrap 5 Modal (#UpdateIssueDetailsModal).
+     - Form Pre-filling: Auto-populates fields, parses comma-separated authors, formats dates to 'YYYY-MM-DD'.
+     - Optional File Replacement: Supports optional re-upload while preserving existing file if unedited.
+     - API Integration: Submits updated payload to UpdateIssueDetails() and refreshes issue list on success.
+
+  4. Service Layer (LpujournalbookService):
+     - Location: src/app/_services/lpujournalbook.service.ts
+     - AddNewIssuesDetails(FormData): POST api/LpuJournal/AddNewJournalIssueData
+     - GetJournalIssues(JournalId): GET api/LpuJournal/GetJournalIssuesDetails
+     - UpdateIssueDetails(FormData): POST api/LpuJournal/UpdateJournalIssueDetails
+     - DisableIssue(FormData): POST api/LpuJournal/UpdateJournalIssueStatus
+
+  5. Routing (app-routing.module.ts):
+     - Route 'NewVolume' -> NewJournalVolumeIssuesModule
+     - Route 'AllVolumesIssues' -> ViewAllJournalIssuesModule
+     - Route 'EditIssueDetails' -> UpdateIssueDetailsModule
+     (See 8_oct_26_branch_commit_details.txt for full technical report)
+
+================================================================================
+END OF TASK LIST & ACTIVITIES DOCUMENT
+================================================================================

@@ -29,7 +29,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
   ];
 
   isLoading: boolean = false;
-  JournalTitle: any = ''; 
+  JournalTitle: any = '';
   currentJournalId: number | null = null;
   currentJournalTitle: string = '';
 
@@ -54,11 +54,11 @@ export class EdsManageEditorDetailsComponent implements OnInit {
       JournalId: [{ value: '', disabled: true }, Validators.required],
       EditorName: ['', Validators.required],
       Designation: ['', Validators.required],
-      Email: ['', [Validators.required, Validators.email]], 
+      Email: ['', [Validators.required, Validators.email]],
       EditorAddress: ['', Validators.required],
-      EditorType: ['select', Validators.required] 
+      EditorType: ['select', Validators.required]
     });
-    this.updateFormControlsDisabledState(); 
+    this.updateFormControlsDisabledState();
   }
 
   loadJournals() {
@@ -75,7 +75,7 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     ).subscribe({
       next: (dataX: any) => {
         this.journalListsData = dataX?.item1 || [];
-        console.log(JSON.stringify(this.journalListsData)+'Data Journals')
+        // console.log(JSON.stringify(this.journalListsData)+'Data Journals')
       },
       error: (error: any) => {
         console.error('Error fetching journal data', error);
@@ -161,9 +161,9 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     formData.append('Email', formValue.Email ?? '');
     formData.append('EditorAddress', formValue.EditorAddress ?? '');
     formData.append('EditorType', formValue.EditorType ?? '');
-    
+
     let apiCall$;
-    if (this.isEditMode) {    
+    if (this.isEditMode) {
       const editorIdVal = formValue.EditorId ?? this.editorToEdit?.id;
       formData.append('EditorId', String(editorIdVal ?? '0'));
       apiCall$ = this.journalWebApiService.UpdateEditorDetails(formData);
@@ -173,12 +173,12 @@ export class EdsManageEditorDetailsComponent implements OnInit {
 
     apiCall$.pipe(
       finalize(() => {
-        this.isLoading = false;        
+        this.isLoading = false;
         this.editorForm.get('JournalId')?.disable();
         this.updateFormControlsDisabledState();
       })
     ).subscribe({
-      next: (data: any) => {        
+      next: (data: any) => {
         const row = Array.isArray(data?.item1) ? data.item1[0] : (data?.item1 ?? {});
         const returnId = row?.ReturnId ?? row?.returnId ?? -99;
         const msg = row?.Msg ?? row?.msg ?? (this.isEditMode ? 'Update completed.' : 'Insert completed.');
@@ -235,21 +235,21 @@ export class EdsManageEditorDetailsComponent implements OnInit {
 
   private updateFormControlsDisabledState() {
     const isEdit = this.isEditMode;
-    
+
     if (isEdit) {
       this.editorForm.get('EditorName')?.disable({ emitEvent: false });
     } else {
       this.editorForm.get('EditorName')?.enable({ emitEvent: false });
     }
-    
-    this.editorForm.get('JournalId')?.disable({ emitEvent: false }); 
-    
+
+    this.editorForm.get('JournalId')?.disable({ emitEvent: false });
+
     this.editorForm.get('Designation')?.enable({ emitEvent: false });
     this.editorForm.get('EditorAddress')?.enable({ emitEvent: false });
-    
+
      this.editorForm.get('EditorName')?.enable({ emitEvent: false });
-    this.editorForm.get('Email')?.enable({ emitEvent: false }); 
-    this.editorForm.get('EditorType')?.enable({ emitEvent: false }); 
+    this.editorForm.get('Email')?.enable({ emitEvent: false });
+    this.editorForm.get('EditorType')?.enable({ emitEvent: false });
   }
 
   deleteEditor(editor: any) {
@@ -331,13 +331,13 @@ export class EdsManageEditorDetailsComponent implements OnInit {
     if (this.currentJournalId) {
       this.editorForm.get('JournalId')?.setValue(this.currentJournalId);
     }
-    
+
     this.editorForm.get('EditorType')?.setValue('select');
 
-    
+
     this.updateFormControlsDisabledState();
 
-    
+
     this.isEditMode = false;
     this.editorToEdit = null;
     this.selectedEditorId = null;

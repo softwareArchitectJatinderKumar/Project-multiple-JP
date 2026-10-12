@@ -1,0 +1,220 @@
+================================================================================
+          DETAILED COMMIT REPORT: BRANCH '8-Oct-26' (Commit: 9f71dc86)
+================================================================================
+Project       : LpuJournalWeb (Journal Publication & Editorial Portal)
+Workspace     : e:\2025\Projects\Journal
+Branch        : 8-Oct-26 (Checked out from HEAD of 6-Oct-26)
+Commit Hash   : 9f71dc86e41388b56910cde3a4a9b63906660072
+Parent Commit : b46698a2b347111e579aa920752b52883f930ebb
+Author        : jatinder kumar <jatinder.sachdeva.js@gmail.com>
+Commit Title  : feat: add components, service, and views for managing journal 
+                volumes and issues in admin dashboard
+================================================================================
+
+1. EXECUTIVE SUMMARY & FEATURE OBJECTIVE
+--------------------------------------------------------------------------------
+This commit delivers an end-to-end Journal Volume and Issue Management subsystem 
+inside the Editor Dashboard. It empowers journal editors to:
+  1. Create and publish new Journal Volumes & Issues with attached PDF/documents.
+  2. View, filter, and paginate all published journal issues by journal title.
+  3. Edit existing issue metadata (Title, Volume, Issue No., Authors, Pages, Date).
+  4. Disapprove / Disable published issues with audit-tracked rejection reasons.
+  5. Connect all UI actions with backend .NET Web API endpoints via reactive services.
+
+--------------------------------------------------------------------------------
+2. FILES CREATED & MODIFIED
+--------------------------------------------------------------------------------
+
+A. New Component: AddNewVolumeIssue / NewJournalVolumeIssues
+   Location: src/app/views/pages/Journal-Editors-AdminDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/
+   - NewJournalVolumeIssues.component.ts   (341 lines - Business & Form Logic)
+   - NewJournalVolumeIssues.component.html (196 lines - Form UI, Steppers, Chips)
+   - NewJournalVolumeIssues.component.css  (744 bytes - Styling & Custom Theme)
+   - NewJournalVolumeIssues.module.ts      (760 bytes - Angular NgModule)
+
+B. New Component: ViewAllJournalIssues
+   Location: src/app/views/pages/Journal-Editors-AdminDashboard/ViewAllJournalIssues/
+   - ViewAllJournalIssues.component.ts     (256 lines - Listing & Status Actions)
+   - ViewAllJournalIssues.component.html   (99 lines - Grid, Table, Modal triggers)
+   - ViewAllJournalIssues.component.css    (1,760 bytes - Responsive Grid Styles)
+   - ViewAllJournalIssues.module.ts        (560 bytes - Angular NgModule)
+
+C. New Component: UpdateIssueDetails
+   Location: src/app/views/pages/Journal-Editors-AdminDashboard/UpdateIssueDetails/
+   - UpdateIssueDetails.component.ts       (439 lines - Edit Logic & Modal Handler)
+   - UpdateIssueDetails.html               (280 lines - Table & Bootstrap Modal)
+   - UpdateIssueDetails.scss               (1,760 bytes - Modal & Form Styles)
+   - UpdateIssueDetails.module.ts          (787 bytes - Angular NgModule)
+
+D. Web API Service Integration:
+   Location: src/app/_services/lpujournalbook.service.ts
+   - Added AddNewIssuesDetails() (Lines 599-610)
+   - Added GetJournalIssues()     (Lines 612-624)
+   - Added UpdateIssueDetails()   (Lines 626-637)
+   - Added DisableIssue()         (Lines 587-595)
+
+E. Angular Routing Registration:
+   Location: src/app/app-routing.module.ts
+   - Route 'NewVolume'        -> NewJournalVolumeIssuesModule      (Lines 346-350)
+   - Route 'AllVolumesIssues' -> ViewAllJournalIssuesModule        (Lines 352-357)
+   - Route 'EditIssueDetails' -> UpdateIssueDetailsModule          (Lines 360-365)
+
+--------------------------------------------------------------------------------
+3. IN-DEPTH TECHNICAL & FUNCTIONAL BREAKDOWN
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------
+MODULE 1: NewJournalVolumeIssues (Create & Publish Journal Issue)
+--------------------------------------------------------------------
+- Form Setup & Validation:
+  * Uses Angular FormBuilder reactive forms.
+  * Form Controls:
+      - IssueDescription : Required validator
+      - PublishDate      : Required validator
+      - IssueTitle       : Required validator
+      - PageNumber       : Required validator
+  * Dynamic Journal Dropdown:
+      - Calls GetAllBooksDetails() to populate all available journals.
+      - Upon journal selection, automatically populates JournalIdString, 
+        currentJournalTitle, currentJournalVolume, and currentIssueNumber.
+
+- Volume & Issue Stepper Controls:
+  * UpdateVolume() / UpdateVolume2():
+      - Enforces strict business rule: Users cannot increment volume by more 
+        than 1 above the existing base volume.
+      - Enforces minimum boundary: Users cannot reduce below original volume.
+  * UpdateIssueNumber() / UpdateIssueNumber2():
+      - Restricts issue numbering increments to a maximum of (JournalIssueNo + 1).
+      - Enforces lower bound to prevent reducing below original issue number.
+
+- Multi-Author Chip / Tag Input:
+  * Dynamic keyboard event listener handles 'Enter' and ',' (comma) triggers.
+  * Authors are parsed into an array with whitespace trimming.
+  * Automatic deduplication via JavaScript Set: [...new Set(this.authors)].
+  * Badge notification to assist user: "Multiple authors accepted. Press Enter or Comma."
+  * removeAuthor(index) handler allows interactive deletion of author chips.
+
+- File Upload & Sanitization:
+  * File Size Ceiling: Enforces strict 3MB limit (3,148,576 bytes) with SweetAlert2 alert.
+  * Regex Sanitization: Enforces valid file name pattern /^[a-zA-Z0-9._-]+$/.
+  * If invalid characters are detected, automatically replaces them with '_' and creates 
+    a clean File object via DataTransfer API.
+  * File Conversion: Uses FileReader to encode file data into base64 string for API payload.
+
+- API Payload Submission:
+  * Generates multipart/form-data with:
+      JournalId, AuthorName (joined by ', '), PageNumber, JournalTitle, Volume,
+      IssueNumber, PublishDate, IssueTitle, IssueFileName, IssueFileData, IssueDescription.
+  * Invokes journalWebApiService.AddNewIssuesDetails(formData).
+  * Minimum loading timer (100ms) with finalize() handler to ensure UI stability.
+  * SweetAlert2 handling for return codes:
+      - errorCode > 0  : "Issues are uploaded successfully"
+      - errorCode == -1: "Max issues are already uploaded"
+      - Default / err  : "Some Technical Issue" / Error modal with HTTP status text.
+
+--------------------------------------------------------------------
+MODULE 2: ViewAllJournalIssues (List, Filter, Paginate & Status Actions)
+--------------------------------------------------------------------
+- Dual Loader States:
+  * isLoadingPage    : Full-page loader spinner for initial journal metadata retrieval.
+  * isLoadingJournal : Inline spinner for issue retrieval when a journal is picked.
+  * delayHideLoader(): Smooth 500ms debounce before dismissing spinners.
+
+- Table Structure & Display Columns:
+  * Columns: Journal Title, Volume, Publish Date, Issue Title, Issue Number,
+             File, Issue Description, Author Name, Page Number, Action.
+  * Action Buttons:
+      - View File Button: Opens file directly via https://files.lpu.in/umsweb/Journal/<filename>.
+      - Disapprove Action: Triggers rejection workflow modal.
+
+- Client-Side Pagination:
+  * Default pageSizeEditor = 10 items per page.
+  * Dynamic calculation of totalPagesEditor: Math.ceil(length / pageSize).
+  * Previous / Next navigation controls with disabled state guards.
+
+- Issue Disapproval / Disable Workflow:
+  * DisapproveStatus(rowData): Opens SweetAlert2 input prompt requesting reason for rejection.
+  * Appends RecordId, DisapprovalReason, and UpdatedBy (logged-in user email) to FormData.
+  * Submits payload to DisableIssue(formData).
+  * Dispatches confirmation alerts ("Rejected successfully!" or "No Change!").
+
+- Security & Session Guard:
+  * Validates session from cookie 'authData' and StorageService.isLoggedIn().
+  * Extracts userRole, EmailId, and CandidateName.
+  * If invalid, displays "Invalid Login Details!" and executes automated logout.
+
+--------------------------------------------------------------------
+MODULE 3: UpdateIssueDetails (Interactive Issue Editing)
+--------------------------------------------------------------------
+- Modal-Based Editing Workflow:
+  * Connected with Bootstrap 5 Modal ('#UpdateIssueDetailsModal').
+  * On selecting an issue (onEditIssue):
+      - Extracts IssueId, pre-populates edit form.
+      - Converts comma-separated author string to author chips array.
+      - Formats dates via custom formatDate() utility into HTML5 compatible 'YYYY-MM-DD'.
+      - Resets file upload state to avoid accidental file overwrite.
+
+- Reactive Edit Form:
+  * Form controls: VolumeId, IssueDescription, PublishDate, IssueTitle, IssueNumber, PageNumber.
+  * Volume Steppers: UpdateVolume() and UpdateVolume2() for adjusting volume in edit mode.
+
+- File Replacement Support:
+  * Allows editors to optionally upload an updated issue file (<= 3MB, regex sanitized).
+  * If no new file is uploaded, sends empty strings so existing file remains unchanged on backend.
+
+- Submission & Refresh:
+  * Submits modified data to UpdateIssueDetails(formData).
+  * Closes Bootstrap modal dynamically via bootstrap.Modal.getInstance().hide().
+  * Displays SweetAlert2 success message and re-fetches issues to update table seamlessly.
+
+--------------------------------------------------------------------
+MODULE 4: Web API Endpoints Integrated in LpujournalbookService
+--------------------------------------------------------------------
+1. Add New Issue:
+   Method : POST
+   URL    : https://localhost:44362/api/LpuJournal/AddNewJournalIssueData
+   Headers: Authorization: Bearer <token>, Accept: */*
+   Payload: FormData containing issue details and base64 file data.
+
+2. Get Issues for Journal:
+   Method : GET
+   URL    : {LOCAL_API_URL}api/LpuJournal/GetJournalIssuesDetails?JournalId={id}
+   Headers: Authorization: Bearer <token>
+
+3. Update Issue Details:
+   Method : POST
+   URL    : {LOCAL_API_URL}api/LpuJournal/UpdateJournalIssueDetails
+   Headers: Authorization: Bearer <token>, Accept: */*
+   Payload: FormData with updated metadata and optional replacement file.
+
+4. Disable / Disapprove Issue:
+   Method : POST
+   URL    : {baseUrl}api/LpuJournal/UpdateJournalIssueStatus
+   Headers: Authorization: Bearer <token>
+   Payload: FormData (RecordId, DisapprovalReason, UpdatedBy)
+
+--------------------------------------------------------------------
+MODULE 5: Routing Configuration (app-routing.module.ts)
+--------------------------------------------------------------------
+  {
+    path: 'NewVolume',
+    loadChildren: () =>
+      import('./views/pages/Journal-Editors-AdminDashboard/AddNewVolumeIssue/NewJournalVolumeIssues/NewJournalVolumeIssues.module')
+        .then(m => m.NewJournalVolumeIssuesModule)
+  },
+  {
+    path: 'AllVolumesIssues',
+    loadChildren: () =>
+      import('./views/pages/Journal-Editors-AdminDashboard/ViewAllJournalIssues/ViewAllJournalIssues.module')
+        .then(m => m.ViewAllJournalIssuesModule)
+  },
+  {
+    path: 'EditIssueDetails',
+    loadChildren: () =>
+      import('./views/pages/Journal-Editors-AdminDashboard/UpdateIssueDetails/UpdateIssueDetails.module')
+        .then(m => m.UpdateIssueDetailsModule)
+  }
+
+================================================================================
+END OF COMMIT REPORT
+================================================================================

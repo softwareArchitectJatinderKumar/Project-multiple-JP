@@ -48,7 +48,7 @@ export class ReviewersHeaderComponent implements OnInit {
     const GetCookieData = this.cookieService.get('authData');
     const status = this.StoragesServices.isLoggedIn();
 
-    console.log('Cookie:', GetCookieData, 'Session:', status);
+    // console.log('Cookie:', GetCookieData, 'Session:', status);
 
     if (GetCookieData && status) {
       try {
@@ -180,7 +180,7 @@ export class ReviewersHeaderComponent implements OnInit {
 // }
 
 // ngOnInit(): void {
-  
+
 //   this.LoginStatus=this.checkUserLogin();
 //   if ( this.LoginStatus !== true ) {
 //     this.Logout();
@@ -189,7 +189,7 @@ export class ReviewersHeaderComponent implements OnInit {
 // checkUserLogin() {
 //   const GetCookieData = this.cookieService.get('authData');
 //   var status=this.StoragesServices.isLoggedIn();
-  
+
 //   if (GetCookieData && status==true) {
 //     const retrievedCookies = JSON.parse(GetCookieData);
 //     this.UserRole = retrievedCookies.userRole?.length > 0 ? retrievedCookies.userRole : 'Internal User';
@@ -211,22 +211,22 @@ export class ReviewersHeaderComponent implements OnInit {
 //   Logout() {
 //     this.cookieService.delete('authData');
 //     this.cookieService.delete('BookData');
-  
+
 //     this.cookieService.deleteAll();
-  
+
 //     sessionStorage.clear();
 //     localStorage.clear();
-  
+
 //     this.AuthSession.clearSession();
 //     this.StoragesServices.clean();
-  
+
 //     this.UserRole = null;
 //     this.user_Email = null;
 //     this.supervisorName = null;
 //     this.departmentName = null;
 //     this.candidateName = null;
 //     this.LoginStatus = false;
-  
+
 //     this.router.navigateByUrl('Home').then(() => {
 //       setTimeout(() => {
 //         location.reload();

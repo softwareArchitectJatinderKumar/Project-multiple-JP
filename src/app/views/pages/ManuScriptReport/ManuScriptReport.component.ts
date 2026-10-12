@@ -24,7 +24,7 @@ export class ManuScriptReportComponent implements OnInit {
   userId: any; serverUrl: any; supervisorName: any; departmentName: any;
   candidateName: any;
   Math: any;
- 
+
   constructor(
     private storageService: StorageService,
     private authService: AuthService,
@@ -43,30 +43,30 @@ export class ManuScriptReportComponent implements OnInit {
   VisitUrl(Id: any, name: any, Sufix: any) {
     this.router.navigateByUrl(Id + '/' + name + '/' + Sufix);
   }
-   
+
   ngOnInit(): void {
     const bookId: string | undefined = this.route.snapshot.params['Id'];
     const name: string = this.route.snapshot.params['name'];
-  
+
     this.serverUrl = 'https://files.lpu.in/umsweb/Journal/';
     this.newJournalTitle = name.replace(/-/g, ' ');
-  
+
     if (!this.storageService.isLoggedIn()) {
       this.VisitUrl(bookId, name, 'ExternalLogin');
       return;
     }
-  
+
     this.LoginStatus = this.checkUserLogin();
-  
+
     if (bookId && !this.isLoginFailed) {
       this.BookId = bookId;
       this.JournalId = bookId;
       this.JournalTitle = name.replace(/-/g, ' ');
     }
-  
+
     this.showData(this.userId);
   }
-  
+
   checkUserLogin() {
     const GetCookieData = this.cookieService.get('authData');
     if (GetCookieData) {
@@ -94,36 +94,36 @@ export class ManuScriptReportComponent implements OnInit {
 
   }
   exportExcel() {
-    
+
 
 
   }
 
- 
+
   onSelectFileXsss(a: any) {
     let aa = a;
     window.open(this.serverUrl+aa, '_blank');
   }
 
     // added on 12-Feb-26
- 
+
     onSelectFileX(fileUrl: string): void {
           Swal.fire({ title: 'Downloading...', didOpen: () => { Swal.showLoading(null); }});
-      
+
           this.journalWebApiService.downloadMOUFile(this.serverUrl+fileUrl).subscribe({
             next: (blob: Blob) => {
               const downloadUrl = window.URL.createObjectURL(blob);
               const link = document.createElement('a');
               link.href = downloadUrl;
-      
+
               const fileName = fileUrl.split('/').pop() || fileUrl;
               link.download = fileName;
-      
+
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
               window.URL.revokeObjectURL(downloadUrl);
-      
+
               Swal.close();
             },
             error: async (err) => {
@@ -137,7 +137,7 @@ export class ManuScriptReportComponent implements OnInit {
             }
           });
         }
-     
+
         // ended logic for 12-feb-26
 
   showData(Emailid: any) {
@@ -146,7 +146,7 @@ export class ManuScriptReportComponent implements OnInit {
         this.dataSource = dataX.item1;
         this.dataLoaded = true;
         this.ManuscriptData = dataX.item1;
-        console.log("ALL EDitors  Data" + JSON.stringify(this.ManuscriptData))
+        // console.log("ALL EDitors  Data" + JSON.stringify(this.ManuscriptData))
         if (this.ManuscriptData.length > 0) {
           this.ManuscriptDataColumns = Object.keys(this.ManuscriptData[0]);
 
@@ -171,7 +171,7 @@ export class ManuScriptReportComponent implements OnInit {
     window.open('https://files.lpu.in/umsweb/Journal/' + aa, '_blank');
   }
 
-  
+
   displayedManuscriptColumns: string[] = [
     // 'journalId',
     // 'manuScriptTitle',

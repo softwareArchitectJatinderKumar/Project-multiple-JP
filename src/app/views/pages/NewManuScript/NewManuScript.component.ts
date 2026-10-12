@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import * as XLSX from 'xlsx';  
-import * as mammoth from 'mammoth';  
+import * as XLSX from 'xlsx';
+import * as mammoth from 'mammoth';
 import * as JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
@@ -51,7 +51,7 @@ export class NewManuScriptComponent implements OnInit {
     { SubmissionTypeId: 9, SubItemType: 'Response to Reviewer' },
   ];
   cartItems: any[] = [];
-  showAddToCartButton: boolean = true;  
+  showAddToCartButton: boolean = true;
 
   userId: any;
   EditorInChief: any;
@@ -90,7 +90,7 @@ export class NewManuScriptComponent implements OnInit {
       this.GetJournalDetailsAbout(this.BookId);
       this.showData();
       this.getUserRolesforId();
-     
+
       this.showEditorData(this.userId);
     }
     else {
@@ -116,7 +116,7 @@ export class NewManuScriptComponent implements OnInit {
       if (response.item1 && response.item1.length > 0) {
         this.UserRolesData = response.item1[0];
         // this.UserRoles = this.UserRolesData.userRole;
-        console.log(JSON.stringify(this.UserRolesData))
+        // console.log(JSON.stringify(this.UserRolesData))
         //  alert(JSON.stringify(this.UserRoles))
       }
       else {
@@ -124,7 +124,7 @@ export class NewManuScriptComponent implements OnInit {
         // this.router.navigateByUrl('/');
       }
     });
-    
+
   }
   checkUserLogin() {
     const GetCookieData = this.cookieService.get('authData');
@@ -163,7 +163,7 @@ export class NewManuScriptComponent implements OnInit {
       }
     });
   }
- 
+
 
   showData() {
     this.journalWebApiService.GetAllBooksDetails().subscribe({
@@ -225,12 +225,12 @@ export class NewManuScriptComponent implements OnInit {
         this.fileStatus = true;
       };
 
-      this.selectedFiles.push(file);  
+      this.selectedFiles.push(file);
     } else {
       this.fileData = null;
       this.fileStatus = false;
     }
-  
+
   }
 
 
@@ -263,14 +263,14 @@ export class NewManuScriptComponent implements OnInit {
 
   getFileName(filePath: string): string {
     // Extract the file name from the full file path
-    return filePath.split('\\').pop()?.split('/').pop() || '';  
+    return filePath.split('\\').pop()?.split('/').pop() || '';
   }
 
   // 30-Jan-25 changes
   AllManuScriptType: any;
   AllSubItemTypes: any;
   AllSubmissionTypes: any;
-  selectedOption: string = 'zip';  
+  selectedOption: string = 'zip';
   uploadFile() {
     const reader = new FileReader();
     const fileName = 'merged-files.zip';
@@ -296,7 +296,7 @@ export class NewManuScriptComponent implements OnInit {
           this.fileStatus = false;
           return;
         }
-  
+
         reader.readAsDataURL(this.generatedFile);
         reader.onload = () => {
           const result = reader.result as string;
@@ -309,26 +309,26 @@ export class NewManuScriptComponent implements OnInit {
         this.fileStatus = false;
       }
     }
-  
-    
-  
+
+
+
     // Initialize the variables as empty strings
     this.AllManuScriptType = "";
     this.AllSubItemTypes = "";
     this.AllSubmissionTypes = "";
-  
+
     // Populate the variables with concatenated values
     this.cartItems.forEach(item => {
       this.AllManuScriptType += item.ManuScriptType + ',';
       this.AllSubItemTypes += item.SubItemType=='Select'? 'NA' :item.SubItemType + ',';
       this.AllSubmissionTypes += item.SubmissionType + ',';
     });
-  
+
     // Remove the trailing comma (optional for cleaner data)
     this.AllManuScriptType = this.AllManuScriptType.replace(/,$/, '');
     this.AllSubItemTypes = this.AllSubItemTypes.replace(/,$/, '');
     this.AllSubmissionTypes = this.AllSubmissionTypes.replace(/,$/, '');
-  
+
     // Create the FormData object
     const formData = new FormData();
     formData.append('JournalId', this.JournalId);
@@ -340,13 +340,13 @@ export class NewManuScriptComponent implements OnInit {
     formData.append('EditorInchief', this.EditorInChief);
     formData.append('FileUrl', fileName);
     formData.append('File', this.FileData);
-  
+
     // Call the API
     this.journalWebApiService.AddNewJournalMenuScriptData(formData).subscribe({
       next: (data) => {
         let result = data.item1[0]['msg'];
         let errorCode = data.item1[0]['returnId'];
-  
+
         if (result === 'OK') {
           Swal.fire({
             title: 'Uploaded all Documents',
@@ -372,23 +372,23 @@ export class NewManuScriptComponent implements OnInit {
       }
     });
   }
-   
+
   generatedFile: Blob | null = null; // Store generated file data
 
   generateZip() {
     // if (this.selectedOption == 'zip') {
       const zip = new JSZip();
-      
+
       this.selectedFiles.forEach(file => {
         zip.file(file.name, file);
       });
-  
+
       zip.generateAsync({ type: 'blob' }).then(content => {
         this.generatedFile = content; // Store zip file in variable
-        saveAs(content, 'merged-files.zip');  
+        saveAs(content, 'merged-files.zip');
       });
-  
-  
+
+
     }
 //  For Editor  Logic
 
@@ -411,7 +411,7 @@ export class NewManuScriptComponent implements OnInit {
 
 
 
-    
+
   showEditorData(Emailid: any) {
     this.journalWebApiService.UserWiseAllMenuScript(Emailid).subscribe({
       next: (dataX: any) => {

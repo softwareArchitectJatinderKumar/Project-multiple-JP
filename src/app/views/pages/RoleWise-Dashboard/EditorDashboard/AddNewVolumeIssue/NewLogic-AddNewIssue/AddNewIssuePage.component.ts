@@ -188,7 +188,7 @@ export class AddNewIssuePageComponent implements OnInit {
 
     this.IssueFileData = file;
     this.IssueFileStatus = true;
-    // alert(10);  
+    // alert(10);
     if (file) {
       reader.readAsDataURL(file);
       reader.onload = () => {
@@ -218,7 +218,7 @@ export class AddNewIssuePageComponent implements OnInit {
     const formData = new FormData();
     const formValue = this.journalForm.value;
 
-    // this.AuthorName: 
+    // this.AuthorName:
     // for (const key in formValue) {
     //   if (formValue.hasOwnProperty(key)) {
     //     formData.append(key, formValue[key]);
@@ -236,10 +236,10 @@ export class AddNewIssuePageComponent implements OnInit {
     formData.append('IssueFileData', this.IssueFileData);
     formData.append('IssueDescription', formValue.IssueDescription);
 
-    console.log('Submitting Form Data:');
-    formData.forEach((value, key) => {
-      console.log(key + ':', value);
-    });
+    // console.log('Submitting Form Data:');
+    // formData.forEach((value, key) => {
+    //   console.log(key + ':', value);
+    // });
 
     this.journalWebApiService.AddNewIssuesDetails(formData)
       .pipe(

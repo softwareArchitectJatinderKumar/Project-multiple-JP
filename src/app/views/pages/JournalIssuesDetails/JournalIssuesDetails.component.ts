@@ -66,7 +66,7 @@ export class JournalIssuesDetailsComponent implements OnInit {
     this.isLoading = true;
     this.journalService.GetJournalIssues(this.BookId).subscribe({
       next: (response: any) => {
-        console.log('Issues response:', response.item1);
+        // console.log('Issues response:', response.item1);
         this.issues = response.item1 || [];
         this.groupIssuesByYear(this.issues);
         this.isLoading = false;
