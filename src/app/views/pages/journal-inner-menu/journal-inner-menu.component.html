@@ -10,9 +10,9 @@
         </label>
         <input type="checkbox" id="drop" />
         <ul class="menu">
-            <li class="nextdrop" *ngIf="JournalIssues.length > 0"> <a class="dropa" (click)="VisitUrl(BookId, name, 'GetIssues')"> Published Issue(s) 
+            <li class="nextdrop" *ngIf="JournalIssues.length > 0"> <a class="dropa" (click)="VisitUrl(BookId, name, 'GetIssues')"> Published Volume(s)
                 <!-- <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ JournalIssues.length }} <span class="visually-hidden">unread issues</span> </span>  -->
-                <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ groupedIssuesByYear?.length }} <span class="visually-hidden">unread issues</span> </span> 
+                <span class="position-relative"> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {{ groupedIssuesByYear.length }} <span class="visually-hidden">unread issues</span> </span>
             </span> </a> </li>
             <li><a (click)="VisitUrl(BookId,name,'About')">About</a></li>
             <li><a (click)="VisitUrl(BookId,name,'EditorialBoard')">Editorial Board</a></li>
@@ -41,7 +41,7 @@
                     </svg></a>
                 <input type="checkbox" id="drop-2" />
                 <ul>
-                    <li><a  (click)="VisitUrl(BookId,name,'Policies/EditorialPolicy')">Editorial Policy</a></li> 
+                    <li><a  (click)="VisitUrl(BookId,name,'Policies/EditorialPolicy')">Editorial Policy</a></li>
                     <!-- <li><a routerLink="/EditorialPolicy/{{BookId}}/{{name}}" outerLinkActive="active"> Editorial Policy </a></li> -->
                     <li><a (click)="VisitUrl(BookId,name,'Policies/PeerReviewPolicy')" outerLinkActive="active">Peer Review Policy</a></li>
                     <li><a (click)="VisitUrl(BookId,name,'Policies/OpenAccessPolicy')">Open Access Policy</a></li>
@@ -82,13 +82,13 @@
                 </ul>
             </li>
             <!-- <li *ngIf="LoginStatus=== true;"><a (click)="Logout()">Logout</a></li> -->
-            
+
             <ng-template #loginRequired>
                 <li>
                     <a (click)="VisitUrl(BookId, name, 'ExternalLogin')">Login </a>
                 </li>
             </ng-template>
-              
+
         </ul>
     </nav>
 

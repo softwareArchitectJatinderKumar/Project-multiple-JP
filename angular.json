@@ -36,6 +36,11 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "sweetalert2",
+              "file-saver",
+              "jszip"
             ]
           },
           "configurations": {

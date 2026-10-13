@@ -33,7 +33,7 @@
                 <div class="accordion-item mb-4 border rounded shadow-sm overflow-hidden"
                     *ngFor="let yearGroup of groupedIssuesByYear; let yearIndex = index">
                     <h2 class="accordion-header" [id]="'heading-' + yearIndex">
-                        <button class="accordion-button accordionColor py-3" type="button"
+                        <button class="accordion-button issue-card py-3" type="button"
                             [class.collapsed]="!isYearOpen('year-' + yearIndex)"
                             (click)="toggleYear('year-' + yearIndex)">
                             <span class="fw-bold fs-5 text-warning-dark" style="color: #ef7d00;">Published Year: {{ yearGroup.year }}</span>
@@ -44,15 +44,15 @@
                         [class.show]="isYearOpen('year-' + yearIndex)">
 
                         <div class="accordion-body accordionColor p-3">
-                            
+
                             <!-- 2. VOLUME & ISSUE ACCORDION ITEMS -->
                             <div class="vi-container mb-2"
                                 *ngFor="let viGroup of yearGroup.volumeIssueGroups; let viIndex = index">
-                                
+
                                 <div class="vi-header d-flex justify-content-between align-items-center p-2 px-3 rounded cursor-pointer"
                                     [class.active-vi]="isVolumeIssueOpen('vi-' + yearIndex + '-' + viIndex)"
                                     (click)="toggleVolumeIssue('vi-' + yearIndex + '-' + viIndex)">
-                                    
+
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="badge-vol">Volume: {{ viGroup.volume }}</span>
                                         <span class="badge-issue">Issue: {{ viGroup.issueNumber }}</span>
@@ -75,7 +75,8 @@
                                                     <div>
                                                         <h5 class="fw-bold mb-3 issue-title-link" role="button" tabindex="0"
                                                             (click)="toggleTitle(yearIndex + '-' + viIndex + '-' + rowIndex + '-' + colIndex)"
-                                                            [attr.aria-expanded]="isTitleExpanded(yearIndex + '-' + viIndex + '-' + rowIndex + '-' + colIndex)">
+                                                            [attr.aria-expanded]="isTitleExpanded(yearIndex + '-' + viIndex + '-' + rowIndex + '-' + colIndex)"
+                                                            [attr.title]="formatIssueTitle(issue.issueTitle, true)">
 
                                                             {{ formatIssueTitle(issue.issueTitle, isTitleExpanded(yearIndex + '-' + viIndex + '-' + rowIndex + '-' + colIndex)) }}
                                                         </h5>

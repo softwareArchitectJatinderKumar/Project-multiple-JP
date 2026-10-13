@@ -1,4 +1,4 @@
-/* 
+/*
 
 /* Accordion styling */
 /* .blockHeight{
@@ -31,7 +31,7 @@
   box-shadow: none;
   border-color: rgba(0,0,0,0.125);
 }
- 
+
 .badge {
   font-size: 0.75rem;
   font-weight: 500;
@@ -39,7 +39,7 @@
   letter-spacing: 0.5px;
 }
 
- 
+
 .card {
   border-radius: 8px;
   transition: transform 0.2s;
@@ -49,60 +49,60 @@
 
 .card:hover {
   transform: translateY(-2px);
-}  
+}
 .accordion-body {
-  padding: 1rem;  
+  padding: 1rem;
 }
 .accordionColor{
   background-color: #FDFFF7 !important;
 }
 .accordion-item {
-  margin-bottom: 1rem;  
+  margin-bottom: 1rem;
 }
 
 .blockHeight {
-  min-height: calc(100vh - 200px);  
- 
+  min-height: calc(100vh - 200px);
+
 }
 
 footer {
- 
+
   height: 100px; }
 /* .tableHeight{
     margin-bottom: 45rem;
 }
- 
+
 .custom-table {
-    border: 2px solid #343a40 !important; 
+    border: 2px solid #343a40 !important;
     width: 100%;
   }
-  
- 
+
+
   .custom-table thead {
-    background-color: #212529 !important; 
-    color: #ffffff !important; 
+    background-color: #212529 !important;
+    color: #ffffff !important;
     text-align: center;
   }
-  
-  
+
+
   .custom-table th,
   .custom-table td {
-    border: 1px solid #dee2e6 !important; 
+    border: 1px solid #dee2e6 !important;
     padding: 10px;
     text-align: center;
   }
-  
-   
+
+
   .custom-table tbody tr:hover {
-    background-color: #f8f9fa !important; 
+    background-color: #f8f9fa !important;
   }
-  
-  
+
+
   .custom-table * {
     box-sizing: border-box;
   }
-  
-  
+
+
 
 .full-page-loader {
   position: fixed;
@@ -139,7 +139,7 @@ footer {
   width: 3rem;
   height: 3rem;
 }
- 
+
 .loader-container {
   margin: 2rem 0;
   text-align: center;
@@ -184,7 +184,7 @@ footer {
   font-size: 0.8rem;
   padding: 0.35em 0.65em;
 }
- */  
+ */
 
  /* --- General Card & Title Styling --- */
 
@@ -192,7 +192,7 @@ footer {
 
 .blockHeight {
     /* Ensures the main content area is appropriately sized */
-    min-height: calc(100vh - 200px); 
+    min-height: calc(100vh - 200px);
 }
 
 /* Your custom background color for the accordion sections */
@@ -252,7 +252,7 @@ footer {
 /* 2. Metadata (Volume, Date, Pages) */
 .issue-metadata-container {
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     gap: 0.75rem 1.5rem;
     font-size: 0.9rem;
     color: #6c757d; /* Muted text color for details */
@@ -268,13 +268,13 @@ footer {
 
 /* 3. Author List Fix (Replacing Badges) */
 
-/* Overriding the default Bootstrap .badge style that you provided, 
+/* Overriding the default Bootstrap .badge style that you provided,
    to ensure details look like text, not colored labels. */
 .badge {
     /* REMOVES ALL COLORED BADGE STYLING */
-    padding: 0; 
-    background-color: transparent !important; 
-    color: inherit !important; 
+    padding: 0;
+    background-color: transparent !important;
+    color: inherit !important;
     font-weight: 500;
     font-size: 0.95rem; /* Ensure text size is appropriate */
     margin: 0; /* Remove default badge margins */
@@ -303,7 +303,7 @@ footer {
 .author-name-tag {
     /* Allows the long string of author names to wrap gracefully */
       text-transform: capitalize;
-    display: block; 
+    display: block;
     line-height: 1.6;
     word-break: break-word;
     padding: 2px 0;
@@ -327,7 +327,7 @@ footer {
 }
 
 .vi-header {
-    background-color: #ffffff;
+    background-color: #fdf8ec;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
     padding: 8px 16px;
@@ -336,14 +336,14 @@ footer {
 }
 
 .vi-header:hover {
-    background-color: #f8fafc;
+    background-color: #ef7d00;
     border-color: #cbd5e1;
 }
 
 /* Active state matching screenshot: Light blue background tint + light blue border outline */
 .vi-header.active-vi {
-    background-color: #f0f7ff !important;
-    border: 1.5px solid #90caf9 !important;
+    background-color: #fdf8ec !important;
+    border: 1.5px solid #ef7d00 !important;
     box-shadow: 0 2px 6px rgba(13, 110, 253, 0.08);
 }
 
